@@ -115,6 +115,12 @@
     <Folder Include="EntityModel\ExamManage\" />
     <Folder Include="Model\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LayUI.Helper\LayUI.Utility.csproj">
+      <Project>{89741385-ffe5-463f-be39-f64b8bc4f650}</Project>
+      <Name>LayUI.Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
