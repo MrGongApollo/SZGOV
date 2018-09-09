@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4594B8DF-34C0-4D6C-BDAA-7715A3394151}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LayUI.Data</RootNamespace>
+    <AssemblyName>LayUI.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DbContext\TeamWorkDbContext.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TeamWorkDbContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\T_XT_Data_Entity.cs">
+      <DependentUpon>T_XT_Manage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\T_XT_LogRecords_Entity.cs">
+      <DependentUpon>T_XT_Manage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\T_XT_User_Entity.cs">
+      <DependentUpon>T_XT_Manage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\T_YH_Manage.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>T_YH_Manage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\T_XT_Manage.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>T_XT_Manage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\T_YH_Records_Entity.cs">
+      <DependentUpon>T_YH_Manage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\T_YH_SumRecords_Entity.cs">
+      <DependentUpon>T_YH_Manage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Infrastructure\ICreationAudited.cs" />
+    <Compile Include="Infrastructure\IDeleteAudited.cs" />
+    <Compile Include="Infrastructure\IEntity.cs" />
+    <Compile Include="Infrastructure\IModificationAudited.cs" />
+    <Compile Include="EntityModel\SystemManage\ESysUserEntity.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="EntityModel\T_YH_Manage.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>T_YH_Manage.cs</LastGenOutput>
+    </Content>
+    <None Include="packages.config" />
+    <None Include="ttinclude\DbHelper.ttinclude" />
+    <None Include="ttinclude\Manager.ttinclude" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="EntityModel\T_XT_Manage.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>T_XT_Manage.cs</LastGenOutput>
+    </Content>
+    <Content Include="DbContext\TeamWorkDbContext.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TeamWorkDbContext.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="EntityModel\ExamManage\" />
+    <Folder Include="Model\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
