@@ -247,9 +247,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\JDController.cs" />
     <Compile Include="Controllers\WHController.cs" />
-    <Compile Include="Controllers\ZDController.cs" />
     <Compile Include="Controllers\YHController.cs" />
     <Compile Include="Controllers\XTController.cs" />
     <Compile Include="Excels\Export\BaseExport.cs" />
