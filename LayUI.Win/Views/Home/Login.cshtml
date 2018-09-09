@@ -1,0 +1,188 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>用户登录</title>
+    <script>
+        if (window != window.top) top.location.href = self.location.href;
+    </script>
+
+    @Styles.Render("~/bundles/css")
+    @Styles.Render("~/Content/login.css")
+    @Styles.Render("~/plug/sideshow/css/normalize.css")
+    @Styles.Render("~/plug/sideshow/css/demo.css")
+    @Styles.Render("~/plug/sideshow/css/component.css")
+    
+    <!--[if IE]>
+        <script src="/plug/sideshow/js/html5.js"></script>
+    <![endif]-->
+    <style>
+        canvas {
+            position: absolute;
+            z-index: -1;
+        }
+        
+        .kit-login-box header h1 {
+            line-height: normal;
+        }
+        
+        .kit-login-box header {
+            height: auto;
+        }
+        
+        .content {
+            position: relative;
+        }
+        
+        .codrops-demos {
+            position: absolute;
+            bottom: 0;
+            left: 40%;
+            z-index: 10;
+        }
+        
+        .codrops-demos a {
+            border: 2px solid rgba(242, 242, 242, 0.41);
+            color: rgba(255, 255, 255, 0.51);
+        }
+        
+        .kit-pull-right button,
+        .kit-login-main .layui-form-item input {
+            background-color: transparent;
+            color: white;
+        }
+        
+        .kit-login-main .layui-form-item input::-webkit-input-placeholder {
+            color: white;
+        }
+        
+        .kit-login-main .layui-form-item input:-moz-placeholder {
+            color: white;
+        }
+        
+        .kit-login-main .layui-form-item input::-moz-placeholder {
+            color: white;
+        }
+        
+        .kit-login-main .layui-form-item input:-ms-input-placeholder {
+            color: white;
+        }
+        
+        .kit-pull-right button:hover {
+            border-color: #009688;
+            color: #009688
+        }
+    </style>
+</head>
+
+
+<body class="kit-login-bg">
+    <div class="container demo-1">
+        <div class="content">
+            <div id="large-header" class="large-header">
+                <canvas id="demo-canvas"></canvas>
+                <div class="kit-login-box">
+                    <header>
+                        <h1>用户登录</h1>
+                    </header>
+                    <div class="kit-login-main">
+                        <form action="/" class="layui-form" method="post">
+                            <div class="layui-form-item">
+                                <label class="kit-login-icon">
+                                    <i class="layui-icon">&#xe612;</i>
+                                </label>
+                                <input type="text" name="userName" lay-verify="required" autocomplete="off" placeholder="用户名/工号" class="layui-input">
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="kit-login-icon">
+                                    <i class="layui-icon">&#xe642;</i>
+                                </label>
+                                <input type="password" name="password" lay-verify="required" autocomplete="off" placeholder="密码" class="layui-input">
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="kit-pull-left kit-login-remember">
+                                    <input type="checkbox" name="rememberMe" value="true" lay-skin="primary" title="记住帐号?">
+                                </div>
+                                <div class="kit-pull-right">
+                                    <button class="layui-btn layui-btn-primary" lay-submit lay-filter="login">
+                                        <i class="fa fa-sign-in" aria-hidden="true"></i> 登录
+                                    </button>
+                                </div>
+                                <div class="kit-clear"></div>
+                            </div>
+                        </form>
+                    </div>
+                    <footer>
+                        <p> </p>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /container -->
+    @Scripts.Render("~/bundles/Commonjs")
+    @Scripts.Render("~/Scripts/Cookie")
+    @Scripts.Render("~/plug/sideshow/js/TweenLite.min.js")
+    @Scripts.Render("~/plug/sideshow/js/EasePack.min.js")
+    @Scripts.Render("~/plug/sideshow/js/rAF.js")
+    @Scripts.Render("~/plug/sideshow/js/demo-1.js")
+    <script>
+        layui.use(['layer', 'form'], function() {
+            var layer = layui.layer,
+                $ = layui.jquery,
+                form = layui.form,
+                User = $.cookie("User");
+            $(window).on('load', function () {
+
+                if (User)
+                {
+                    $("[name='rememberMe']").attr("checked", true);
+                    User = $.parseJSON(User);
+                    $("[name='userName']").val(User.user);
+                    $("[name='password']").val(User.psw);
+                    form.render();
+                }
+                
+
+                form.on('submit(login)', function(data) {
+                    var loadIndex = layer.load(0, {
+                        shade: [0.3, '#333']
+                    });
+                    var _field=data.field;
+                    $.get("@Url.Content("~/Home/SignIn")", _field).done(function (xhr) {
+                        layer.close(loadIndex);
+                        loadIndex=layer.msg(xhr.Msg);
+                        if (xhr.Ret)
+                        {
+                            if ($("[name='rememberMe']").is(":checked")) {
+                                $.cookie("User", JSON.stringify({ user: data.field.userName, psw: data.field.password }), { path: '/', expires: 30 });
+                            }
+                            else if (User){
+                                $.cookie("User","");
+                            }
+
+                            setTimeout(function () {
+                                layer.close(loadIndex);
+                                location.href = "@Url.Content("~/Home/Index")?tm=" + $.Cm_DateTime.TimeTicks();
+                            }, 500);
+                        }
+                    });
+
+                   
+                    return false;
+                });
+            }());
+
+        });
+    </script>
+</body>
+
+</html>
