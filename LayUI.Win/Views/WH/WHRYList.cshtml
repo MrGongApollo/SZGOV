@@ -32,12 +32,12 @@
                     }
             }
             , {
-                field: 'CommonlyCnt', width: 120, align: "center", title: '姓名', templet: function (data) {
+                field: '', width: 120, align: "center", title: '姓名', templet: function (data) {
                     return "李伟鸣";
                 }
             }
             , {
-                field: 'MajorCnt', width: 120, align: "center", title: '身份证号', templet: function (data) {
+                field: '', width: 180, align: "center", title: '身份证号', templet: function (data) {
                     return "310108195908212831";
                 }
             }
@@ -47,17 +47,17 @@
                 }
             }
             , {
-                field: '', align: "center", title: '户籍地址', templet: function (data) {
+                field: '', width: 180, align: "center", title: '户籍地址', templet: function (data) {
                     return "广西壮族自治区柳州地区来宾县";
                 }
             }
             , {
-                field: '', width: 120, align: "center", title: '现居住地地址', templet: function (data) {
+                field: '', width: 160, align: "center", title: '现居住地地址', templet: function (data) {
                     return "松兰路328弄16号201室";
                 }
             }
             , {
-                field: '', width: 120, align: "center", title: '从业人员所持证件', templet: function (data) {
+                field: '',  align: "center", title: '从业人员所持证件', templet: function (data) {
                     return "危险化学品从业人员";
                 }
             }
@@ -124,11 +124,11 @@
             open: function (options) {
                 TopWin.layer.open({
                     type: 2,
-                    title: "隐患详情",
-                    area: ['100%', '90%'],
+                    title: "从业人员信息采集维护",
+                    area: ['800px', '480px'],
                     fixed: true, //不固定
-                    maxmin: true,
-                    content: "@Url.Content("~/YH/YHEdit")",
+                    maxmin: false,
+                    content: "@Url.Content("~/WH/WHRYEdit")",
                     success: function (frm) {
                         var _frm = frm.find("iframe").get(0).contentWindow;
                         if (typeof _frm.pageLoad == "function") {

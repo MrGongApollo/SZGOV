@@ -149,11 +149,11 @@
             open: function (options) {
                 TopWin.layer.open({
                     type: 2,
-                    title: "隐患详情",
-                    area: ['100%', '90%'],
+                    title: "剧毒品维护",
+                    area: ['800px', '480px'],
                     fixed: true, //不固定
-                    maxmin: true,
-                    content: "@Url.Content("~/YH/YHEdit")",
+                    maxmin: false,
+                    content: "@Url.Content("~/WH/JDEdit")",
                     success: function (frm) {
                         var _frm = frm.find("iframe").get(0).contentWindow;
                         if (typeof _frm.pageLoad == "function") {
