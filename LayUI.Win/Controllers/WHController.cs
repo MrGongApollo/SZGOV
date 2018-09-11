@@ -51,6 +51,11 @@ namespace LayUI.Win.Controllers
         {
             return View();
         }
+
+        public ActionResult ZDWXEdit()
+        {
+            return View();
+        }
         #endregion
 
         #region 剧毒化学品月度申报

@@ -621,6 +621,7 @@
     <Content Include="Views\WH\JDEdit.cshtml" />
     <Content Include="Views\WH\TWSEdit.cshtml" />
     <Content Include="Views\WH\WHRYEdit.cshtml" />
+    <Content Include="Views\WH\ZDWXEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

@@ -4,10 +4,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<style>
-    textarea.layui-textarea { height: 200px!important; }
-</style>
-
 <div class="content-padding">
  
 <form class="layui-form layui-form-pane" action="">
@@ -171,36 +167,6 @@
           </div>
       </div>  
 
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">隐患来源</label>
-                <div class="layui-input-inline">
-                    <input type="text" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">填报人</label>
-                <div class="layui-input-block">
-                    <input type="text" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">整改责任人</label>
-                <div class="layui-input-inline">
-                    <input type="text" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">整改期限</label>
-                <div class="layui-input-block">
-                    <input type="text" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-        </div>
-
     </fieldset>
   
   <fieldset class="layui-elem-field site-demo-button padding_lr_5">
@@ -234,6 +200,8 @@
 
   <div class="layui-form-item text-center">
         <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="btnSub">保存</button>
+
+        <button class="layui-btn layui-btn-primary" lay-submit="" lay-filter="btnBack">返回</button>
   </div>
 </form>
 </div>              
