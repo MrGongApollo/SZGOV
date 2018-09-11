@@ -494,7 +494,7 @@ layui.define(['layer'], function (exports) {
                     ['<i class="fa fa-fw fa-window-maximize"></i> ' + Win10.lang('进入全屏', 'Enable Full Screen'), function () { Win10.enableFullScreen() }],
                     ['<i class="fa fa-fw fa-window-restore"></i> ' + Win10.lang('退出全屏', 'Disable Full Screen'), function () { Win10.disableFullScreen() }],
                     '|',
-                    ['<i class="fa fa-fw fa-info-circle"></i> ' + Win10.lang('关于', 'About Us'), function () { Win10.aboutUs() }],
+                    //['<i class="fa fa-fw fa-info-circle"></i> ' + Win10.lang('关于', 'About Us'), function () { Win10.aboutUs() }],
                 ]);
                 Win10.setContextMenu('#win10_btn_group_middle', [
                     ['<i class="fa fa-fw fa-window-maximize"></i> ' + Win10.lang('全部显示', 'Show All Windows'), function () { Win10.showWins() }],
