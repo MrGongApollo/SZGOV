@@ -33,12 +33,12 @@
             , {field: 'CommonlyCnt', width: 120, title: '一般隐患'}
             , { field: 'MajorCnt', width: 120, title: '一般隐患' }
             , {
-                field: '', width: 120, title: '自查合计', templet: function (data) {
+                field: '', width: 120, align: "center", title: '自查合计', templet: function (data) {
                     return data.CommonlyCnt + data.MajorCnt;
                 }
             }
             , {
-                field: '', title: '操作', templet: function (data) {
+                field: '', align: "center", title: '操作', templet: function (data) {
                     var nowMon = moment(new Date()).format("YYYYMM");
                     return data.MonthDate == nowMon?("<div class='text-center'>" +
                             "<a href='javascript:;' class='color-blue margin_lr_5 text-s'>录入</a>" +
@@ -48,27 +48,27 @@
                 }
             }
             , {
-                field: '', width: 120, title: '监管部门查处', templet: function (data) {
+                field: '', width: 120, align: "center", title: '监管部门查处', templet: function (data) {
                     return data.CheckedCnt;
                 }
             }
             , {
-                field: '', width: 120, title: '隐患总数', templet: function (data) {
+                field: '', width: 120, align: "center", title: '隐患总数', templet: function (data) {
                     return data.CommonlyCnt + data.MajorCnt + data.CheckedCnt;
                 }
             }
             , {
-                field: '', width: 120, title: '已整改数', templet: function (data) {
+                field: '', width: 120, align: "center", title: '已整改数', templet: function (data) {
                     return data.CommonlyCnt + data.MajorCnt + data.CheckedCnt;
                 }
             }
             , {
-                field: '', width: 120, title: '整改完成率', templet: function (data) {
+                field: '', width: 120, align: "center", title: '整改完成率', templet: function (data) {
                     return "100%";
                 }
             }
             , {
-                field: '', width: 120, title: '按期整改率', templet: function (data) {
+                field: '', width: 120, align: "center", title: '按期整改率', templet: function (data) {
                     return "100%";
                 }
             }
