@@ -28,57 +28,57 @@
               { type: 'checkbox' }
             , {
                 field: '', width: 120, title: '年度月份', templet: function (data) {
-                return data.CreateTime && moment(data.CreateTime).format("YYYYMM") || "";
+                    return "201809";
                     }
             }
             , {
-                field: 'CommonlyCnt', width: 120, title: '核素名称', templet: function (data) {
+                field: 'CommonlyCnt', align: "center", width: 120, title: '核素名称', templet: function (data) {
+                    return "镅-铍（Am--Be）";
+                }
+            }
+            , {
+                field: 'MajorCnt', align: "center", width: 120, title: '上月库存数量', templet: function (data) {
+                    return "18";
+                }
+            }
+            , {
+                field: '', width: 120, align: "center", title: '本月入库量', templet: function (data) {
+                    return "0";
+                }
+            }
+            , {
+                field: '', align: "center", title: '本月出库量', templet: function (data) {
+                    return "9";
+                }
+            }
+            , {
+                field: '', width: 120, align: "center", title: '本月库存量', templet: function (data) {
+                    return "9";
+                }
+            }
+            , {
+                field: '', width: 120, align: "center", title: '存放地点', templet: function (data) {
+                    return "同位素源库";
+                }
+            }
+            , {
+                field: '', align: "center", title: '保管人', templet: function (data) {
+                    return "沈海宾";
+                }
+            }
+            , {
+                field: '', width: 120, align: "center", title: '联系方式', templet: function (data) {
                     return "";
                 }
             }
             , {
-                field: 'MajorCnt', width: 120, title: '上月库存数量', templet: function (data) {
-                    return "";
+                field: '', width: 120, align: "center", title: '从业人员是否发生变化', templet: function (data) {
+                    return "否";
                 }
             }
             , {
-                field: '', width: 120, title: '本月入库量', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: '', title: '本月出库量', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: '', width: 120, title: '本月库存量', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: '', width: 120, title: '存放地点', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: '', title: '保管人', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: '', width: 120, title: '联系方式', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: '', width: 120, title: '从业人员是否发生变化', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: '', width: 120, title: '检查人', templet: function (data) {
-                    return "";
+                field: '', width: 120, align: "center", title: '检查人', templet: function (data) {
+                    return "胡明成";
                 }
             }
           ]],

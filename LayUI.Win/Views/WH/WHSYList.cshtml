@@ -27,63 +27,63 @@
           , cols: [[
               { type: 'checkbox' }
             , {
-                field: '', width: 120, title: '危险化学品名称', templet: function (data) {
-                return data.CreateTime && moment(data.CreateTime).format("YYYYMM") || "";
+                field: '', width: 120, align: "center", title: '危险化学品名称', templet: function (data) {
+                    return "甲基苯";
                     }
             }
             , {
-                field: 'CommonlyCnt', width: 120, title: '危规号', templet: function (data) {
-                    return "";
+                field: 'CommonlyCnt', width: 120, align: "center", title: '危规号', templet: function (data) {
+                    return "108-88-3";
                 }
             }
             , {
-                field: 'MajorCnt', width: 120, title: '年使用量', templet: function (data) {
-                    return "";
+                field: 'MajorCnt', width: 120, align: "center", title: '年使用量', templet: function (data) {
+                    return "0.2L";
                 }
             }
             , {
-                field: '', width: 120, title: '最大存储量', templet: function (data) {
-                    return "";
+                field: '', width: 120, align: "center", title: '最大存储量', templet: function (data) {
+                    return "0.5L";
                 }
             }
             , {
-                field: '', title: '贮存地点', templet: function (data) {
-                    return "";
+                field: '', title: '贮存地点', align: "center", templet: function (data) {
+                    return "危险品仓库";
                 }
             }
             , {
-                field: '', width: 120, title: '包装方式', templet: function (data) {
-                    return "";
+                field: '', width: 120, align: "center", title: '包装方式', templet: function (data) {
+                    return "桶装";
                 }
             }
             , {
-                field: '', width: 120, title: '生产企业', templet: function (data) {
-                    return "";
+                field: '', width: 120, align: "center", title: '生产企业', templet: function (data) {
+                    return "南京化学试剂有限公司";
                 }
             }
             , {
-                field: '', title: 'MSDS', templet: function (data) {
-                    return "";
+                field: '', align: "center", title: 'MSDS', templet: function (data) {
+                    return "有";
                 }
             }
             , {
-                field: '', width: 120, title: '是否重点监管化学品', templet: function (data) {
-                    return "";
+                field: '', width: 120, align: "center", title: '是否重点监管化学品', templet: function (data) {
+                    return "是";
                 }
             }
             , {
-                field: '', width: 120, title: '是否易制毒化学品', templet: function (data) {
-                    return "";
+                field: '', width: 120, align: "center", title: '是否易制毒化学品', templet: function (data) {
+                    return "是";
                 }
             }
             , {
-                field: '', width: 120, title: '是否易制爆化学品', templet: function (data) {
-                    return "";
+                field: '', width: 120, align: "center", title: '是否易制爆化学品', templet: function (data) {
+                    return "是";
                 }
             }
             , {
-                field: '', width: 120, title: '是否剧毒化学品', templet: function (data) {
-                    return "";
+                field: '', width: 120, align: "center", title: '是否剧毒化学品', templet: function (data) {
+                    return "否";
                 }
             }
           ]],

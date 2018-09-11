@@ -28,51 +28,51 @@
               { type: 'checkbox' }
             , {
                 field: '', width: 120, title: '重大危险源名称', templet: function (data) {
-                return data.CreateTime && moment(data.CreateTime).format("YYYYMM") || "";
+                    return "液氧";
                     }
             }
             , {
-                field: 'CommonlyCnt', width: 120, title: '所在地址', templet: function (data) {
+                field: 'CommonlyCnt', width: 120, align: "center", title: '所在地址', templet: function (data) {
                     return "";
                 }
             }
             , {
-                field: 'MajorCnt', width: 120, title: '主要负责人', templet: function (data) {
+                field: 'MajorCnt', width: 120, align: "center", title: '主要负责人', templet: function (data) {
+                    return "丁加仓";
+                }
+            }
+            , {
+                field: '', width: 120, align: "center", title: '联系电话', templet: function (data) {
+                    return "0514-86432669";
+                }
+            }
+            , {
+                field: '', align: "center", title: '政府备案部门', templet: function (data) {
+                    return "扬州市江都区安全生产监督管理局";
+                }
+            }
+            , {
+                field: '', width: 120, align: "center", title: '最近评估日期', templet: function (data) {
+                    return "2016/12/31";
+                }
+            }
+            , {
+                field: '', width: 120, align: "center", title: '评估机构', templet: function (data) {
+                    return "江苏帮驰茂元安全技术科技有限公司";
+                }
+            }
+            , {
+                field: '', align: "center", title: '等级', templet: function (data) {
+                    return "四级";
+                }
+            }
+            , {
+                field: '', width: 120, align: "center", title: '附件（基本特征）', templet: function (data) {
                     return "";
                 }
             }
             , {
-                field: '', width: 120, title: '联系电话', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: '', title: '政府备案部门', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: '', width: 120, title: '最近评估日期', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: '', width: 120, title: '评估机构', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: '', title: '等级', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: '', width: 120, title: '附件（基本特征）', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: '', width: 120, title: '附件（备案等级）', templet: function (data) {
+                field: '', width: 120, align: "center", title: '附件（备案等级）', templet: function (data) {
                     return "";
                 }
             }

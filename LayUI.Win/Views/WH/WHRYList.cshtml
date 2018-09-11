@@ -27,38 +27,38 @@
           , cols: [[
               { type: 'checkbox' }
             , {
-                field: '', width: 120, title: '岗位', templet: function (data) {
-                return data.CreateTime && moment(data.CreateTime).format("YYYYMM") || "";
+                field: '', width: 120,align:"center", title: '岗位', templet: function (data) {
+                    return "料液岗";
                     }
             }
             , {
-                field: 'CommonlyCnt', width: 120, title: '姓名', templet: function (data) {
+                field: 'CommonlyCnt', width: 120, align: "center", title: '姓名', templet: function (data) {
+                    return "李伟鸣";
+                }
+            }
+            , {
+                field: 'MajorCnt', width: 120, align: "center", title: '身份证号', templet: function (data) {
+                    return "310108195908212831";
+                }
+            }
+            , {
+                field: '', width: 120, align: "center", title: '联系电话', templet: function (data) {
                     return "";
                 }
             }
             , {
-                field: 'MajorCnt', width: 120, title: '身份证号', templet: function (data) {
-                    return "";
+                field: '', align: "center", title: '户籍地址', templet: function (data) {
+                    return "广西壮族自治区柳州地区来宾县";
                 }
             }
             , {
-                field: '', width: 120, title: '联系电话', templet: function (data) {
-                    return "";
+                field: '', width: 120, align: "center", title: '现居住地地址', templet: function (data) {
+                    return "松兰路328弄16号201室";
                 }
             }
             , {
-                field: '', title: '户籍地址', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: '', width: 120, title: '现居住地地址', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: '', width: 120, title: '从业人员所持证件', templet: function (data) {
-                    return "";
+                field: '', width: 120, align: "center", title: '从业人员所持证件', templet: function (data) {
+                    return "危险化学品从业人员";
                 }
             }
           ]],
