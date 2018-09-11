@@ -3,12 +3,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
 <script>
-    layui.use(['datatable', 'win10'], function () {
+    layui.use(['datatable', 'win10',"form"], function () {
         var datatable = layui.datatable,
             Win10 = layui.win10,
             $ = layui.jquery,
-            tableId="datagrid",
+            tableId = "datagrid",
+            form = layui.form,
             reloadTable = function () {
                 datatable.reload(tableId, { page: { curr: 1 } });
             };
@@ -18,6 +20,7 @@
           , url: baseConst.odata + "T_YH_SumRecords_Entity"
           , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
           , id: tableId
+          , initSort: { field: 'MonthDate', type: 'desc' }
           , getFilters: function ()
           {
               var filters = [];
@@ -26,10 +29,7 @@
           }
           , cols: [[
               { type: 'checkbox' }
-            , { field: '', width: 120, title: '年度月份',  templet: function (data) {
-                return data.MonthDate || "";
-                    }
-            }
+            , {field: 'MonthDate', width: 120, title: '年度月份'}
             , {field: 'CommonlyCnt', width: 120, title: '一般隐患'}
             , { field: 'MajorCnt', width: 120, title: '一般隐患' }
             , {
@@ -41,8 +41,8 @@
                 field: '', align: "center", title: '操作', templet: function (data) {
                     var nowMon = moment(new Date()).format("YYYYMM");
                     return data.MonthDate == nowMon?("<div class='text-center'>" +
-                            "<a href='javascript:;' class='color-blue margin_lr_5 text-s'>录入</a>" +
-                            "<a href='javascript:;' class='color-blue margin_lr_5 text-s'>零隐患上报</a>" +
+                            "<a href='javascript:;' class='color-blue margin_lr_5 text-s' lay-event='fnadd'>录入</a>" +
+                            "<a href='javascript:;' class='color-blue margin_lr_5 text-s' lay-event='fnmodify'>零隐患上报</a>" +
                             "</div>"
                             ) : "<div class='text-center'><a href='javascript:;' class='color-blue'>查看</a></div>";
                 }
@@ -82,6 +82,17 @@
             page: false
         });
 
+        //监听行工具事件
+        datatable.on('tool(datagrid)', function (obj) {
+            var data = obj.data;
+            fncontrolMenus[obj.event]();
+        });
+
+        function YHOpera()
+        {
+            var type = $(this).attr("data-type");
+            fncontrolMenus[type]();
+        }
 
         var fncontrolMenus = {
             fnadd: function () {
@@ -156,25 +167,44 @@
 
                     },
                     end: function (index) {
-                        reloadTable();
+                       // reloadTable();
                     }
                 });
             }
         };
 
 
-        $("#controlMenus>.layui-btn").click(function () {
-            var type = $(this).attr("data-type");
-            fncontrolMenus[type]();
-        });
+ 
+
+        //$("#controlMenus>.layui-btn").click(function () {
+        //    var type = $(this).attr("data-type");
+        //    fncontrolMenus[type]();
+        //});
+
     });
 </script>
 
 <div class="content-padding">
-    <div class="layui-btn-group" id="controlMenus">
+    @*<div class="layui-btn-group" id="controlMenus">
         <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnadd"><i class="fa fa-paint-brush"></i> 我要填报</button>
         <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnmodify"><i class="fa fa-circle-o"></i> 零隐患上报</button>
-        
-    </div>
-    <table class="layui-hide" id="datagrid"></table>
+    </div>*@
+
+  <form class="layui-form lb-p-m layui-panel" action="">
+      <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">年度</label>
+                <div class="layui-input-inline">
+                    <select name="quiz1">
+                        <option value="2018">2018</option>
+                        <option value="2017">2017</option>
+                        <option value="2016">2016</option>
+                        <option value="2015">2015</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <table class="layui-hide" id="datagrid" lay-filter="datagrid"></table>
 </div>

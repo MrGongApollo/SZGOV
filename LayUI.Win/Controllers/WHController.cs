@@ -27,10 +27,20 @@ namespace LayUI.Win.Controllers
         {
             return View();
         }
+
+        public ActionResult WHSCEdit()
+        {
+            return View();
+        }
         #endregion
 
         #region 危化品使用列表视图
         public ActionResult WHSYList()
+        {
+            return View();
+        }
+
+        public ActionResult WHSYEdit()
         {
             return View();
         }
@@ -48,6 +58,11 @@ namespace LayUI.Win.Controllers
         {
             return View();
         }
+
+        public ActionResult JDEdit()
+        {
+            return View();
+        }
         #endregion
 
         #region 同位素放射源备案
@@ -55,10 +70,20 @@ namespace LayUI.Win.Controllers
         {
             return View();
         }
+
+        public ActionResult TWSEdit()
+        {
+            return View();
+        }
         #endregion
 
         #region 危化品/剧毒品/同位素从业人员备案
         public ActionResult WHRYList()
+        {
+            return View();
+        }
+
+        public ActionResult WHRYEdit()
         {
             return View();
         }
