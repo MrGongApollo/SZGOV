@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F7AFFEA1-AAA8-486F-BF1B-314A92111E86}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AnBao.ExcelReport</RootNamespace>
+    <AssemblyName>AnBao.ExcelReport</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>packages\NPOI.2.1.3.1\lib\net40\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI">
+      <HintPath>packages\NPOI.2.1.3.1\lib\net40\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.Extend">
+      <HintPath>packages\NPOI.Extend.1.0.3.0\lib\net40\NPOI.Extend.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OOXML">
+      <HintPath>packages\NPOI.2.1.3.1\lib\net40\NPOI.OOXML.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net">
+      <HintPath>packages\NPOI.2.1.3.1\lib\net40\NPOI.OpenXml4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats">
+      <HintPath>packages\NPOI.2.1.3.1\lib\net40\NPOI.OpenXmlFormats.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Exceptions\ExcelReportException.cs" />
+    <Compile Include="Exceptions\ExcelReportFormatException.cs" />
+    <Compile Include="Exceptions\ExcelReportTemplateException.cs" />
+    <Compile Include="Export.cs" />
+    <Compile Include="ExportHelper.cs" />
+    <Compile Include="Extend\EnumerableExtend.cs" />
+    <Compile Include="Extend\ImageExtend.cs" />
+    <Compile Include="Extend\ObjectExtend.cs" />
+    <Compile Include="Extend\TypeExtend.cs" />
+    <Compile Include="Formatters\Complex\ComplexFormatter.cs" />
+    <Compile Include="Formatters\Complex\RepeaterFormatter.cs" />
+    <Compile Include="Formatters\Complex\TableFormatter.cs" />
+    <Compile Include="Formatters\ElementFormatter.cs" />
+    <Compile Include="Formatters\EmbeddedFormatter.cs" />
+    <Compile Include="Formatters\Simple\CellFormatter.cs" />
+    <Compile Include="Formatters\Simple\PartFormatter.cs" />
+    <Compile Include="Formatters\Simple\SimpleFormatter.cs" />
+    <Compile Include="Others\Accumulation.cs" />
+    <Compile Include="Others\RowIndexAccumulation.cs" />
+    <Compile Include="Parameter\Parameter.cs" />
+    <Compile Include="Parameter\SheetParameterContainer.cs" />
+    <Compile Include="Parameter\WorkbookParameterContainer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SheetAdapter.cs" />
+    <Compile Include="SheetFormatter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages\NPOI.2.1.3.1\LICENSE" />
+    <None Include="packages\NPOI.2.1.3.1\NPOI.2.1.3.1.nupkg" />
+    <None Include="packages\NPOI.Extend.1.0.3.0\NPOI.Extend.1.0.3.0.nupkg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages\NPOI.2.1.3.1\lib\net20\ICSharpCode.SharpZipLib.dll" />
+    <Content Include="packages\NPOI.2.1.3.1\lib\net20\NPOI.dll" />
+    <Content Include="packages\NPOI.2.1.3.1\lib\net20\NPOI.OOXML.dll" />
+    <Content Include="packages\NPOI.2.1.3.1\lib\net20\NPOI.OOXML.XML" />
+    <Content Include="packages\NPOI.2.1.3.1\lib\net20\NPOI.OpenXml4Net.dll" />
+    <Content Include="packages\NPOI.2.1.3.1\lib\net20\NPOI.OpenXml4Net.XML" />
+    <Content Include="packages\NPOI.2.1.3.1\lib\net20\NPOI.OpenXmlFormats.dll" />
+    <Content Include="packages\NPOI.2.1.3.1\lib\net20\NPOI.XML" />
+    <Content Include="packages\NPOI.2.1.3.1\lib\net40\ICSharpCode.SharpZipLib.dll" />
+    <Content Include="packages\NPOI.2.1.3.1\lib\net40\NPOI.dll" />
+    <Content Include="packages\NPOI.2.1.3.1\lib\net40\NPOI.OOXML.dll" />
+    <Content Include="packages\NPOI.2.1.3.1\lib\net40\NPOI.OOXML.XML" />
+    <Content Include="packages\NPOI.2.1.3.1\lib\net40\NPOI.OpenXml4Net.dll" />
+    <Content Include="packages\NPOI.2.1.3.1\lib\net40\NPOI.OpenXml4Net.XML" />
+    <Content Include="packages\NPOI.2.1.3.1\lib\net40\NPOI.OpenXmlFormats.dll" />
+    <Content Include="packages\NPOI.2.1.3.1\lib\net40\NPOI.XML" />
+    <Content Include="packages\NPOI.2.1.3.1\logo\120_120.jpg" />
+    <Content Include="packages\NPOI.2.1.3.1\logo\240_240.png" />
+    <Content Include="packages\NPOI.2.1.3.1\logo\32_32.jpg" />
+    <Content Include="packages\NPOI.2.1.3.1\logo\60_60.jpg" />
+    <Content Include="packages\NPOI.2.1.3.1\Read Me.txt" />
+    <Content Include="packages\NPOI.2.1.3.1\Release Notes.txt" />
+    <Content Include="packages\NPOI.Extend.1.0.3.0\lib\net40\NPOI.Extend.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

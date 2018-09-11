@@ -1,0 +1,181 @@
+﻿@{
+    ViewBag.Title = "同位素放射源备案";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    layui.use(['datatable', 'win10'], function () {
+        var datatable = layui.datatable,
+            Win10 = layui.win10,
+            $ = layui.jquery,
+            tableId="datagrid",
+            reloadTable = function () {
+                datatable.reload(tableId, { page: { curr: 1 } });
+            };
+
+        datatable.render({
+            elem: '#datagrid'
+          , url: baseConst.odata + "T_YH_Records_Entity"
+          , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+          , id: tableId
+          , getFilters: function ()
+          {
+              var filters = [];
+              filters.push("IsDeleted eq false");
+              return filters;
+          }
+          , cols: [[
+              { type: 'checkbox' }
+            , {
+                field: '', width: 120, title: '年度月份', templet: function (data) {
+                    return "201809";
+                    }
+            }
+            , {
+                field: 'CommonlyCnt', align: "center", width: 120, title: '核素名称', templet: function (data) {
+                    return "镅-铍（Am--Be）";
+                }
+            }
+            , {
+                field: 'MajorCnt', align: "center", width: 120, title: '上月库存数量', templet: function (data) {
+                    return "18";
+                }
+            }
+            , {
+                field: '', width: 120, align: "center", title: '本月入库量', templet: function (data) {
+                    return "0";
+                }
+            }
+            , {
+                field: '', align: "center", title: '本月出库量', templet: function (data) {
+                    return "9";
+                }
+            }
+            , {
+                field: '', width: 120, align: "center", title: '本月库存量', templet: function (data) {
+                    return "9";
+                }
+            }
+            , {
+                field: '', width: 120, align: "center", title: '存放地点', templet: function (data) {
+                    return "同位素源库";
+                }
+            }
+            , {
+                field: '', align: "center", title: '保管人', templet: function (data) {
+                    return "沈海宾";
+                }
+            }
+            , {
+                field: '', width: 120, align: "center", title: '联系方式', templet: function (data) {
+                    return "";
+                }
+            }
+            , {
+                field: '', width: 120, align: "center", title: '从业人员是否发生变化', templet: function (data) {
+                    return "否";
+                }
+            }
+            , {
+                field: '', width: 120, align: "center", title: '检查人', templet: function (data) {
+                    return "胡明成";
+                }
+            }
+          ]],
+            page: true
+        });
+
+
+        var fncontrolMenus = {
+            fnadd: function () {
+                fncontrolMenus.open({
+                    editMode: "add",
+                    pageData: {
+                        WorkTime:new Date()
+                    }
+                });
+            },
+            fncopy: function () {
+                var datas = datatable.checkStatus(tableId).data;
+                if (datas.length != 1) { TopWin.layer.msg((datas.length ? "只能" : "至少") + "选择一行数据！"); return; }
+                fncontrolMenus.open({
+                    editMode: "add",
+                    pageData: datas[0]
+                });
+            },
+            fnmodify: function () {
+                var datas = datatable.checkStatus(tableId).data;
+                if (datas.length != 1) { TopWin.layer.msg((datas.length ? "只能" : "至少") + "选择一行数据！"); return; }
+                fncontrolMenus.open({
+                    editMode: "edit",
+                    pageData: datas[0]
+                });
+            },
+            fndelete: function () {
+                var datas = datatable.checkStatus(tableId).data;
+                if (!datas.length) { TopWin.layer.msg("至少选择一行数据！"); return; }
+                var _index = TopWin.layer.load(), total = datas.length;
+                $.each(datas, function (_i, _t) {
+                    $.Cm_Ajax.putAsync(baseConst.odata + "T_XT_WorkRecords_Entity('" + _t.RecordId + "')", { IsDeleted: true }).always(function () {
+                        total--;
+                        if (!total)
+                        {
+                            TopWin.layer.close(_index);
+                            TopWin.layer.msg("操作成功！",{time:1500});
+                            reloadTable();
+                        }
+                    });
+                });
+            },
+            fnview: function () {
+                var datas = datatable.checkStatus(tableId).data;
+                if (datas.length != 1) { TopWin.layer.msg((datas.length ? "只能" : "至少") + "选择一行数据！"); return; }
+                fncontrolMenus.open({
+                    editMode: "view",
+                    pageData: datas[0]
+                });
+            },
+            fnimport: function () {
+
+            },
+            fnexport: function () {
+
+            },
+            open: function (options) {
+                TopWin.layer.open({
+                    type: 2,
+                    title: "同位素放射源维护",
+                    area: ['800px', '90%'],
+                    fixed: true, //不固定
+                    maxmin: false,
+                    content: "@Url.Content("~/WH/TWSEdit")",
+                    success: function (frm) {
+                        var _frm = frm.find("iframe").get(0).contentWindow;
+                        if (typeof _frm.pageLoad == "function") {
+                            _frm.pageLoad(options);
+                        }
+                    },
+                    close: function (index) {
+
+                    },
+                    end: function (index) {
+                        reloadTable();
+                    }
+                });
+            }
+        };
+
+
+        $("#controlMenus>.layui-btn").click(function () {
+            var type = $(this).attr("data-type");
+            fncontrolMenus[type]();
+        });
+    });
+</script>
+
+<div class="content-padding">
+    <div class="layui-btn-group" id="controlMenus">
+        <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnadd"><i class="fa fa-plus"></i> 新增</button>
+    </div>
+    <table class="layui-hide" id="datagrid"></table>
+</div>

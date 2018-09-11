@@ -1,0 +1,222 @@
+﻿@{
+    ViewBag.Title = "危化品申报（使用）信息维护";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    textarea.layui-textarea { height: 200px !important; }
+    .layui-form.lb-p-m .layui-inline > .layui-form-label { width: 120px; }
+    .layui-form.lb-p-m .layui-inline > .layui-form-label + .layui-input-block { margin-left: 150px; }
+</style>
+
+<div class="content-padding">
+
+    <form class="layui-form lb-p-m" action="">
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">危险化学品名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">危规号</label>
+                <div class="layui-input-block">
+                    <input type="text" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">年产量</label>
+                <div class="layui-input-inline">
+                    <input type="text" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">年销售量</label>
+                <div class="layui-input-block">
+                    <input type="text" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">最大存储量</label>
+                <div class="layui-input-inline">
+                    <input type="text" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">贮存地点</label>
+                <div class="layui-input-block">
+                    <input type="text" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">包装方式</label>
+                <div class="layui-input-inline">
+                    <select name="quiz1">
+                        <option value="">请选择</option>
+                        <option value="桶装">桶装</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">安全许可证</label>
+                <div class="layui-input-inline">
+                    <select name="quiz1">
+                        <option value="">请选择</option>
+                        <option value="有">有</option>
+                        <option value="无">无</option>
+                    </select>
+                </div>
+            </div>
+          <div class="layui-inline">
+              <label class="layui-form-label">销售许可证</label>
+              <div class="layui-input-inline">
+                  <select name="quiz1">
+                      <option value="">请选择</option>
+                      <option value="有">有</option>
+                      <option value="无">无</option>
+                  </select>
+              </div>
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">是否易制毒化学品</label>
+                <div class="layui-input-inline">
+                    <select name="quiz1">
+                        <option value="">请选择</option>
+                        <option value="是">是</option>
+                        <option value="否">否</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">是否易制爆化学品</label>
+                <div class="layui-input-inline">
+                    <select name="quiz1">
+                        <option value="">请选择</option>
+                        <option value="是">是</option>
+                        <option value="否">否</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">是否剧毒化学品</label>
+                <div class="layui-input-inline">
+                    <select name="quiz1">
+                        <option value="">请选择</option>
+                        <option value="是">是</option>
+                        <option value="否">否</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item text-center">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="btnSub">保存</button>
+
+            <button class="layui-btn layui-btn-primary" lay-submit="" lay-filter="btnBack">返回</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    var _RecordId = "";
+    function pageLoad(postData) {
+        layui.use(['form', 'laydate'], function () {
+            var form = null,
+                $ = layui.jquery,
+                layer = layui.layer,
+                laydate = layui.laydate,
+                Cm_editMode = $.Cm_Setting.editMode,
+                _self = parent.layer.getFrameIndex(window.name), //获取窗口索引
+                IsReadOnly = postData.editMode == Cm_editMode.view,
+                IsEdit = postData.editMode == Cm_editMode.edit,
+                saveMethed = IsEdit ? "putAsync" : "postAsync",
+                user = $.Cm_Auth.userInfo(),
+                _pageData = postData.pageData || {};
+
+            _RecordId = _pageData.RecordId || $.Cm_Common.getGuid();
+
+            //常规用法
+            laydate.render({
+                elem: "[name='CheckDate']"
+            });
+
+            $("[name='WorkTime']").val(_pageData.WorkTime && moment(_pageData.WorkTime).format("YYYY-MM-DD") || "");
+            $("[name='Detail']").val(_pageData.Detail || "");
+
+            switch (postData.editMode) {
+                case Cm_editMode.view:
+                case Cm_editMode.edit:
+                    $("[name='WorkTime']").attr("disabled", true);
+                    if (IsReadOnly) {
+                        $(":input").attr("disabled", true);
+                        $("[lay-filter='btnSub']").remove();
+                    }
+                    break;
+                case Cm_editMode.add:
+                    _RecordId = $.Cm_Common.getGuid();
+                    break;
+            }
+
+            form = layui.form;
+
+            //监听提交
+            form.on('submit(btnSub)', function (data) {
+                var saveData = {},
+                    _url = baseConst.odata + "T_XT_WorkRecords_Entity";
+
+                $.extend(saveData, data.field);
+                if (IsEdit) {
+                    _url += "('" + _RecordId + "')";
+                    $.extend(saveData, {
+                        ModifyEmpCode: user.EmpCode,
+                        ModifyEmpName: user.EmpName,
+                        ModifyTime: new Date()
+                    });
+                }
+                else {
+                    $.extend(saveData, {
+                        RecordId: _RecordId
+                        , EmpCode: user.EmpCode
+                        , EmpName: user.EmpName
+                        , CreateByEmpCode: user.EmpCode
+                        , CreateByEmpName: user.EmpName
+                        , CreateTime: new Date()
+                        , IsDeleted: false
+                    });
+                }
+                return;
+                ($.Cm_Ajax)[saveMethed](_url, saveData).done(function () {
+                    TopWin.layer.alert("操作成功", function (index) {
+                        TopWin.layer.close(index);
+                        TopWin.layer.close(_self);
+                    });
+                });
+                return false;
+            });
+
+
+        });
+    }
+</script>
+
