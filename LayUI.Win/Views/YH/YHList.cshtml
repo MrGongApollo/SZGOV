@@ -3,6 +3,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    .layui-table-cell{height:auto;line-height:1;}
+    .layui-table-view .layui-table td{padding:3px 0;}
+</style>
+
 <script>
     layui.use(['datatable', 'win10'], function () {
         var datatable = layui.datatable,
@@ -17,6 +22,7 @@
             elem: '#datagrid'
           , url: baseConst.odata + "T_YH_Records_Entity"
           , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+          , height: 'full-100'
           , id: tableId
           , getFilters: function ()
           {
@@ -26,22 +32,22 @@
           }
           , cols: [[
               { type: 'checkbox' }
-            , { field: '', width: 120,align:"center",title: '隐患编号',  templet: function (data) {
+            , { field: '', width: 90,align:"center",title: '隐患编号',  templet: function (data) {
                 return data.CreateTime && moment(data.CreateTime).format("YYYYMM") || "";
                     }
             }
             , {
-                field: 'CommonlyCnt', align: "center", width: 120, title: '整改状态', templet: function (data) {
+                field: 'CommonlyCnt', align: "center", width: 90, title: '整改状态', templet: function (data) {
                     return "";
                 }
             }
             , {
-                field: 'MajorCnt', align: "center", width: 120, title: '填报单位', templet: function (data) {
+                field: 'MajorCnt', align: "center", width: 90, title: '填报单位', templet: function (data) {
                     return "";
                 }
             }
             , {
-                field: '', width: 120, align: "center", title: '检查时间', templet: function (data) {
+                field: '', width: 90, align: "center", title: '检查时间', templet: function (data) {
                     return "";
                 }
             }
@@ -51,12 +57,12 @@
                 }
             }
             , {
-                field: '', width: 120, align: "center", title: '隐患大类', templet: function (data) {
+                field: '', width: 90, align: "center", title: '隐患大类', templet: function (data) {
                     return "";
                 }
             }
             , {
-                field: '', width: 120, align: "center", title: '隐患小类', templet: function (data) {
+                field: '', width: 90, align: "center", title: '隐患小类', templet: function (data) {
                     return "";
                 }
             }
@@ -66,17 +72,17 @@
                 }
             }
             , {
-                field: '', width: 120, align: "center", title: '整改期限', templet: function (data) {
+                field: '', width: 90, align: "center", title: '整改期限', templet: function (data) {
                     return "";
                 }
             }
             , {
-                field: '', width: 120, align: "center", title: '完成日期', templet: function (data) {
+                field: '', width: 90, align: "center", title: '完成日期', templet: function (data) {
                     return "";
                 }
             }
             , {
-                field: '', width: 120, align: "center", title: '验证日期', templet: function (data) {
+                field: '', width: 90, align: "center", title: '验证日期', templet: function (data) {
                     return "";
                 }
             }
