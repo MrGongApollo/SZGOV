@@ -41,10 +41,10 @@
                 field: '', align: "center", title: '操作', templet: function (data) {
                     var nowMon = moment(new Date()).format("YYYYMM");
                     return data.MonthDate == nowMon?("<div class='text-center'>" +
-                            "<a href='javascript:;' class='color-blue margin_lr_5 text-s' lay-event='fnadd'>录入</a>" +
-                            "<a href='javascript:;' class='color-blue margin_lr_5 text-s' lay-event='fnmodify'>零隐患上报</a>" +
+                            "<a href='javascript:;' class='margin_lr_5 text-s layui-btn layui-btn-normal layui-btn-xs' lay-event='fnadd'>录入</a>" +
+                            "<a href='javascript:;' class='margin_lr_5 text-s layui-btn layui-btn-normal layui-btn-xs' lay-event='fnmodify'>零隐患上报</a>" +
                             "</div>"
-                            ) : "<div class='text-center'><a href='javascript:;' class='color-blue'>查看</a></div>";
+                            ) : "<div class='text-center'><a href='javascript:;' class='layui-btn layui-btn-xs layui-btn-normal'>查看</a></div>";
                 }
             }
             , {
@@ -112,6 +112,7 @@
                 });
             },
             fnmodify: function () {
+                TopWin.layer.msg("上报成功！"); return;
                 var datas = datatable.checkStatus(tableId).data;
                 if (datas.length != 1) { TopWin.layer.msg((datas.length ? "只能" : "至少") + "选择一行数据！"); return; }
                 fncontrolMenus.open({
@@ -153,7 +154,7 @@
                 TopWin.layer.open({
                     type: 2,
                     title: "隐患详情",
-                    area: ['100%', '90%'],
+                    area: ['700px', '90%'],
                     fixed: false, //不固定
                     maxmin: false,
                     content: "@Url.Content("~/YH/YHEdit")",
