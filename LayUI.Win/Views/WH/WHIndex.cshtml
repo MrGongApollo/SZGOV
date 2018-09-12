@@ -47,35 +47,37 @@ layui.use('element', function(){
 
 });
 </script>
+<style>
+    .container-tab{margin:5px 0 0 0;padding:5px;}
+</style>
 
-
-<div class="layui-tab">
-  <ul class="layui-tab-title">
-    <li class="layui-this">危化品申报(生产)</li>
-    <li>危化品申报(使用)</li>
-    <li>重大危险源备案</li>
-    <li>剧毒化学品月度申报</li>
-    <li>同位素放射源备案</li>
-    <li>危化品/剧毒品/同位素从业人员备案</li>
-  </ul>
-  <div class="layui-tab-content">
-    <div class="layui-tab-item layui-show">
-        <iframe src="@Url.Content("~/WH/WHSCList")" frameborder="0" width="100%" height="500"></iframe>
+<div class="layui-tab container-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">危化品申报(生产)</li>
+            <li>危化品申报(使用)</li>
+            <li>重大危险源备案</li>
+            <li>剧毒化学品月度申报</li>
+            <li>同位素放射源备案</li>
+            <li>危化品/剧毒品/同位素从业人员备案</li>
+        </ul>
+        <div class="layui-tab-content nopadding">
+            <div class="layui-tab-item layui-show">
+                <iframe src="@Url.Content("~/WH/WHSCList")" frameborder="0" width="100%" height="500"></iframe>
+            </div>
+            <div class="layui-tab-item">
+                <iframe src="@Url.Content("~/WH/WHSYList")" frameborder="0" width="100%" height="500"></iframe>
+            </div>
+            <div class="layui-tab-item">
+                <iframe src="@Url.Content("~/WH/ZDWXList")" frameborder="0" width="100%" height="500"></iframe>
+            </div>
+            <div class="layui-tab-item">
+                <iframe src="@Url.Content("~/WH/JDList")" frameborder="0" width="100%" height="500"></iframe>
+            </div>
+            <div class="layui-tab-item">
+                <iframe src="@Url.Content("~/WH/TWSList")" frameborder="0" width="100%" height="500"></iframe>
+            </div>
+            <div class="layui-tab-item">
+                <iframe src="@Url.Content("~/WH/WHRYList")" frameborder="0" width="100%" height="500"></iframe>
+            </div>
+        </div>
     </div>
-    <div class="layui-tab-item">
-        <iframe src="@Url.Content("~/WH/WHSYList")" frameborder="0" width="100%" height="500"></iframe>
-    </div>
-    <div class="layui-tab-item">
-         <iframe src="@Url.Content("~/WH/ZDWXList")" frameborder="0" width="100%" height="500"></iframe>
-    </div>
-    <div class="layui-tab-item">
-         <iframe src="@Url.Content("~/WH/JDList")" frameborder="0" width="100%" height="500"></iframe>
-    </div>
-    <div class="layui-tab-item">
-         <iframe src="@Url.Content("~/WH/TWSList")" frameborder="0" width="100%" height="500"></iframe>
-    </div>
-    <div class="layui-tab-item">
-         <iframe src="@Url.Content("~/WH/WHRYList")" frameborder="0" width="100%" height="500"></iframe>
-    </div>
-  </div>
-</div>

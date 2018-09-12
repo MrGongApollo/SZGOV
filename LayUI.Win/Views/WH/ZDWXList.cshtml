@@ -3,6 +3,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    .layui-table-cell{height:auto;line-height:1;}
+    .layui-table-view .layui-table td{padding:3px 0;}
+</style>
+
 <script>
     layui.use(['datatable', 'win10'], function () {
         var datatable = layui.datatable,
@@ -17,6 +22,8 @@
             elem: '#datagrid'
           , url: baseConst.odata + "T_YH_Records_Entity"
           , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+          , height: 'full-100'
+
           , id: tableId
           , getFilters: function ()
           {
@@ -27,7 +34,7 @@
           , cols: [[
               { type: 'checkbox' }
             , {
-                field: '', width: 120, title: '重大危险源名称', templet: function (data) {
+                field: '', width: 200, title: '重大危险源名称', templet: function (data) {
                     return "液氧";
                     }
             }
@@ -47,7 +54,7 @@
                 }
             }
             , {
-                field: '', align: "center", title: '政府备案部门', templet: function (data) {
+                field: '', align: "center", width: 200, title: '政府备案部门', templet: function (data) {
                     return "扬州市江都区安全生产监督管理局";
                 }
             }
@@ -67,7 +74,7 @@
                 }
             }
             , {
-                field: '', width: 120, align: "center", title: '附件（基本特征）', templet: function (data) {
+                field: '', width: 200, align: "center", title: '附件（基本特征）', templet: function (data) {
                     return "";
                 }
             }
@@ -143,7 +150,7 @@
                     title: "重大危险源备案",
                     area: ['800px', '600px'],
                     fixed: true, //不固定
-                    maxmin: true,
+                    maxmin: false,
                     content: "@Url.Content("~/WH/ZDWXEdit")",
                     success: function (frm) {
                         var _frm = frm.find("iframe").get(0).contentWindow;

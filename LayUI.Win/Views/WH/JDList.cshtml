@@ -3,6 +3,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    .layui-table-cell{height:auto;line-height:1;}
+    .layui-table-view .layui-table td{padding:3px 0;}
+</style>
+
 <script>
     layui.use(['datatable', 'win10'], function () {
         var datatable = layui.datatable,
@@ -17,6 +22,7 @@
             elem: '#datagrid'
           , url: baseConst.odata + "T_YH_Records_Entity"
           , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+          , height: 'full-100'
           , id: tableId
           , getFilters: function ()
           {
@@ -62,7 +68,7 @@
                 }
             }
             , {
-                field: '', title: '联系方式', templet: function (data) {
+                field: '', width: 120, title: '联系方式', templet: function (data) {
                     return "";
                 }
             }
@@ -82,7 +88,7 @@
                 }
             }
              , {
-                 field: '', width: 120, title: '从业人员是否发生变化', templet: function (data) {
+                 field: '', width: 200, title: '从业人员是否发生变化', templet: function (data) {
                      return "";
                  }
              }

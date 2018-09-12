@@ -3,6 +3,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    .layui-table-cell{height:auto;line-height:1;}
+    .layui-table-view .layui-table td{padding:3px 0;}
+</style>
+
 <script>
     layui.use(['datatable', 'win10'], function () {
         var datatable = layui.datatable,
@@ -17,6 +22,7 @@
             elem: '#datagrid'
           , url: baseConst.odata + "T_YH_Records_Entity"
           , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+          , height: 'full-100'
           , id: tableId
           , getFilters: function ()
           {
@@ -42,7 +48,7 @@
                 }
             }
             , {
-                field: '', width: 120, align: "center", title: '联系电话', templet: function (data) {
+                field: '', width: 150, align: "center", title: '联系电话', templet: function (data) {
                     return "";
                 }
             }
@@ -52,12 +58,12 @@
                 }
             }
             , {
-                field: '', width: 160, align: "center", title: '现居住地地址', templet: function (data) {
+                field: '', width: 180, align: "center", title: '现居住地地址', templet: function (data) {
                     return "松兰路328弄16号201室";
                 }
             }
             , {
-                field: '',  align: "center", title: '从业人员所持证件', templet: function (data) {
+                field: '', align: "center", title: '从业人员所持证件', templet: function (data) {
                     return "危险化学品从业人员";
                 }
             }
@@ -125,7 +131,7 @@
                 TopWin.layer.open({
                     type: 2,
                     title: "从业人员信息采集维护",
-                    area: ['800px', '480px'],
+                    area: ['800px', '350px'],
                     fixed: true, //不固定
                     maxmin: false,
                     content: "@Url.Content("~/WH/WHRYEdit")",
