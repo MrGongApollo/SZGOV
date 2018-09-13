@@ -30,6 +30,10 @@ namespace LayUI.Win
           "~/Content/base.css"));
             #endregion
 
+            #region Editcss
+            bundles.Add(new StyleBundle("~/bundles/Editcss").Include("~/Content/edit.css"));
+            #endregion
+
             #region jQuery.Cookie
             bundles.Add(new ScriptBundle("~/Scripts/Cookie").Include("~/Scripts/jquery.cookie.min.js"));
             #endregion
