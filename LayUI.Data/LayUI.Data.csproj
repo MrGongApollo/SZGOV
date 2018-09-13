@@ -94,6 +94,7 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>T_YH_Manage.cs</LastGenOutput>
     </Content>
+    <None Include="DbDesign\数据模型.pdm" />
     <None Include="packages.config" />
     <None Include="ttinclude\DbHelper.ttinclude" />
     <None Include="ttinclude\Manager.ttinclude" />
