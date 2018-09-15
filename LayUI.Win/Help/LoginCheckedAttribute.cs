@@ -11,9 +11,9 @@ namespace LayUI.Win.Help
     {
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            string empCode = HttpContext.Current.Session["User"] + "";
             try
             {
+                string empCode = HttpContext.Current.Session["User"] + "";
                 return true;
                 if(string.IsNullOrEmpty(empCode)) 
                 {
