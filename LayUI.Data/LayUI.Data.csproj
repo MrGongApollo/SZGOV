@@ -54,7 +54,28 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TeamWorkDbContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntityModel\T_WH_DangerChemPro_Entity.cs">
+      <DependentUpon>T_WH_Manage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\T_WH_DangerChemUse_Entity.cs">
+      <DependentUpon>T_WH_Manage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\T_WH_Isotope_Entity.cs">
+      <DependentUpon>T_WH_Manage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\T_WH_MajorHazardDossier_Entity.cs">
+      <DependentUpon>T_WH_Manage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\T_WH_PersonRecord_Entity.cs">
+      <DependentUpon>T_WH_Manage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\T_WH_Toxic_Entity.cs">
+      <DependentUpon>T_WH_Manage.tt</DependentUpon>
+    </Compile>
     <Compile Include="EntityModel\T_XT_Data_Entity.cs">
+      <DependentUpon>T_XT_Manage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\T_XT_Doc_Entity.cs">
       <DependentUpon>T_XT_Manage.tt</DependentUpon>
     </Compile>
     <Compile Include="EntityModel\T_XT_LogRecords_Entity.cs">
@@ -62,6 +83,14 @@
     </Compile>
     <Compile Include="EntityModel\T_XT_User_Entity.cs">
       <DependentUpon>T_XT_Manage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\T_WH_Manage.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>T_WH_Manage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\T_YH_HiddenDanger_Entity.cs">
+      <DependentUpon>T_YH_Manage.tt</DependentUpon>
     </Compile>
     <Compile Include="EntityModel\T_YH_Manage.cs">
       <AutoGen>True</AutoGen>
@@ -95,6 +124,10 @@
       <LastGenOutput>T_YH_Manage.cs</LastGenOutput>
     </Content>
     <None Include="DbDesign\数据模型.pdm" />
+    <Content Include="EntityModel\T_WH_Manage.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>T_WH_Manage.cs</LastGenOutput>
+    </Content>
     <None Include="packages.config" />
     <None Include="ttinclude\DbHelper.ttinclude" />
     <None Include="ttinclude\Manager.ttinclude" />
