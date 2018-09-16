@@ -62,7 +62,7 @@ namespace LayUI.Win.Controllers
                         _u = et.T_YH_HiddenDanger_Entity.Add(saveData);
                     }
                     et.SaveChanges();
-                   
+                    Ret.Data = saveData.HiddenDangerID;
                     Ret.Msg = "保存成功";
                     Ret.Ret = true;
                    
