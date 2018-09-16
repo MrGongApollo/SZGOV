@@ -36,5 +36,50 @@ namespace LayUI.Win.Controllers
         }
         #endregion
 
+        #region 新增隐患
+        /// <summary>
+        /// 新增隐患
+        /// </summary>
+        /// <param name="userName">用户名</param>
+        /// <param name="password">密码</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult HiddenDangerAdd(T_YH_HiddenDanger_Entity saveData)
+        {
+            JsonRetModel Ret = new JsonRetModel { Ret = false };
+            #region 验证
+            try
+            {
+                using (TeamWorkDbContext et = new TeamWorkDbContext())
+                {
+
+                    T_YH_HiddenDanger_Entity _u = et.T_YH_HiddenDanger_Entity.Find(saveData.HiddenDangerID);
+                    if (_u != null)
+                    {
+                        _u = saveData;
+                    }
+                    else 
+                    {
+                        saveData.HiddenDangerID = System.Guid.NewGuid().ToString("N");
+                        _u = et.T_YH_HiddenDanger_Entity.Add(saveData);
+                    }
+                    et.SaveChanges();
+                   
+                    Ret.Msg = "保存成功";
+                    Ret.Ret = true;
+                   
+                }
+            }
+            #endregion
+            #region 异常
+            catch (Exception ex)
+            {
+                Ret.Ret = false;
+                Ret.Msg = ex.Message;
+            }
+            #endregion
+            return Json(Ret, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
     }
 }

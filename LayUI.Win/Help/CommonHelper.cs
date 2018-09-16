@@ -8,6 +8,7 @@ using System.IO;
 using LayUI.Data;
 using LayUI.Data.EntityModel;
 using System.Web;
+using System.Text.RegularExpressions;
 
 namespace LayUI.Win.Help
 {
@@ -555,6 +556,20 @@ namespace LayUI.Win.Help
 
             }
             return _u;
+        }
+        #endregion
+
+        #region 取得String中的时间日期
+        /// <summary>
+        /// 取得String中的时间日期
+        /// </summary>
+        /// <returns></returns>
+        public static DateTime getDateTimeFromString(string empCode)
+        {
+            string s = empCode;
+            string sf = string.Format("{0:D4}-{1:D2}-{2:D2} {3:D2}:{4:D2}:{5:D2}", Regex.Matches(s, "\\d+").Cast<Match>().Select(x => (object)int.Parse(x.Value)).ToArray());
+            DateTime dt = DateTime.ParseExact(sf, "yyyy-MM-dd HH:mm:ss", null);
+            return dt;
         }
         #endregion
     }
