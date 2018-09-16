@@ -323,7 +323,8 @@
             url: "@Url.Content("~/YH/HiddenDangerAdd")",
             data:  saveData,
             success: function (data) {
-                layer.msg(data.Msg)
+                layer.msg(data.Msg);
+                $("#HiddenDangerID").val(data.Data);
             }
         });
     }
