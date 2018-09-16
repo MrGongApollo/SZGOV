@@ -40,8 +40,6 @@ namespace LayUI.Win.Controllers
         /// <summary>
         /// 新增隐患
         /// </summary>
-        /// <param name="userName">用户名</param>
-        /// <param name="password">密码</param>
         /// <returns></returns>
         [HttpPost]
         public JsonResult HiddenDangerAdd(T_YH_HiddenDanger_Entity saveData)
