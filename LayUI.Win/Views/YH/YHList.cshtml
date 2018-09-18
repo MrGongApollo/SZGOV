@@ -32,61 +32,17 @@
           }
           , cols: [[
               { type: 'checkbox' }
-            , {
-                field: 'SerialNo', width: 90, align: "center", title: '隐患编号', templet: function (data) {
-                return data.CreateTime && moment(data.CreateTime).format("YYYYMM") || "";
-                    }
-            }
-            , {
-                field: 'Result', align: "center", width: 90, title: '整改状态', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: 'MajorCnt', align: "center", width: 90, title: '填报单位', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: 'CheckTime', width: 90, align: "center", title: '检查时间', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: 'HiddenPart', title: '隐患部位', align: "center", templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: 'HiddenTypeL', width: 90, align: "center", title: '隐患大类', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: 'HiddenTypeS', width: 90, align: "center", title: '隐患小类', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: 'HiddenContent', align: "center", title: '隐患内容', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: 'TimeLimit', width: 90, align: "center", title: '整改期限', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: 'CompleteTime', width: 90, align: "center", title: '完成日期', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: '', width: 90, align: "center", title: '验证日期', templet: function (data) {
-                    return "";
-                }
-            }
+            , { field: 'SerialNo', width: 90, align: "center", title: '隐患编号' }
+            , { field: 'Result', align: "center", width: 90, title: '整改状态' }
+            , { field: 'MajorCnt', align: "center", width: 90, title: '填报单位' }
+            , { field: 'CheckTime', width: 90, align: "center", title: '检查时间' }
+            , { field: 'HiddenPart', title: '隐患部位', align: "center" }
+            , { field: 'HiddenTypeL', width: 90, align: "center", title: '隐患大类' }
+            , { field: 'HiddenTypeS', width: 90, align: "center", title: '隐患小类' }
+            , { field: 'HiddenContent', align: "center", title: '隐患内容' }
+            , { field: 'TimeLimit', width: 90, align: "center", title: '整改期限' }
+            , { field: 'CompleteTime', width: 90, align: "center", title: '完成日期' }
+            , { field: '', width: 90, align: "center", title: '验证日期' }
             //, {
             //    field: 'WorkTime', width: 160, title: '工作日期',  templet: function (data) {
             //        return data.WorkTime && moment(data.WorkTime).format("YYYY-MM-DD") || "";
@@ -189,5 +145,10 @@
         <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnadd"><i class="fa fa-paint-brush"></i> 我要填报</button>
         <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnmodify"><i class="fa fa-circle-o"></i> 零隐患上报</button>
     </div>*@
+    <div class="layui-btn-group" id="controlMenus">
+        <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnadd"><i class="fa fa-plus"></i> 新增</button>
+        <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnmodify"><i class="fa fa-edit"></i> 修改</button>
+        <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fndelete"><i class="fa fa-remove"></i> 删除</button>
+    </div>
     <table class="layui-hide" id="datagrid"></table>
 </div>

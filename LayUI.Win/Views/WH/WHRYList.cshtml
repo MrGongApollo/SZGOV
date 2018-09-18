@@ -32,41 +32,13 @@
           }
           , cols: [[
               { type: 'checkbox' }
-            , {
-                field: '', width: 120,align:"center", title: '岗位', templet: function (data) {
-                    return "料液岗";
-                    }
-            }
-            , {
-                field: '', width: 120, align: "center", title: '姓名', templet: function (data) {
-                    return "李伟鸣";
-                }
-            }
-            , {
-                field: '', width: 180, align: "center", title: '身份证号', templet: function (data) {
-                    return "310108195908212831";
-                }
-            }
-            , {
-                field: '', width: 150, align: "center", title: '联系电话', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: '', width: 180, align: "center", title: '户籍地址', templet: function (data) {
-                    return "广西壮族自治区柳州地区来宾县";
-                }
-            }
-            , {
-                field: '', width: 180, align: "center", title: '现居住地地址', templet: function (data) {
-                    return "松兰路328弄16号201室";
-                }
-            }
-            , {
-                field: '', align: "center", title: '从业人员所持证件', templet: function (data) {
-                    return "危险化学品从业人员";
-                }
-            }
+            , { field: 'Post', width: 120, align: "center", title: '岗位' }
+            , { field: 'EmpName', width: 120, align: "center", title: '姓名' }
+            , { field: 'IdcardNo', width: 180, align: "center", title: '身份证号' }
+            , { field: 'ContactNum', width: 150, align: "center", title: '联系电话' }
+            , { field: 'PermanentAddress', width: 180, align: "center", title: '户籍地址' }
+            , { field: 'CurAddress', width: 180, align: "center", title: '现居住地地址' }
+            , { field: '', align: "center", title: '从业人员所持证件' }
           ]],
             page: true
         });
@@ -102,7 +74,7 @@
                 if (!datas.length) { TopWin.layer.msg("至少选择一行数据！"); return; }
                 var _index = TopWin.layer.load(), total = datas.length;
                 $.each(datas, function (_i, _t) {
-                    $.Cm_Ajax.putAsync(baseConst.odata + "T_XT_WorkRecords_Entity('" + _t.RecordId + "')", { IsDeleted: true }).always(function () {
+                    $.Cm_Ajax.putAsync(baseConst.odata + "T_YH_Records_Entity('" + _t.RecordId + "')", { IsDeleted: true }).always(function () {
                         total--;
                         if (!total)
                         {
@@ -162,6 +134,9 @@
 <div class="content-padding">
     <div class="layui-btn-group" id="controlMenus">
         <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnadd"><i class="fa fa-plus"></i> 新增</button>
+        <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnmodify"><i class="fa fa-edit"></i> 修改</button>
+        <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fndelete"><i class="fa fa-remove"></i> 删除</button>
+        <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnview"><i class="fa fa-eye"></i> 查看</button>
     </div>
     <table class="layui-hide" id="datagrid"></table>
 </div>

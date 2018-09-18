@@ -33,56 +33,16 @@
           }
           , cols: [[
               { type: 'checkbox' }
-            , {
-                field: '', width: 160, align: "center", title: '重大危险源名称', templet: function (data) {
-                    return "液氧";
-                    }
-            }
-            , {
-                field: 'CommonlyCnt', width: 120, align: "center", title: '所在地址', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: 'MajorCnt', width: 120, align: "center", title: '主要负责人', templet: function (data) {
-                    return "丁加仓";
-                }
-            }
-            , {
-                field: '', width: 120, align: "center", title: '联系电话', templet: function (data) {
-                    return "0514-86432669";
-                }
-            }
-            , {
-                field: '', align: "center", width: 160, title: '政府备案部门', templet: function (data) {
-                    return "扬州市江都区安全生产监督管理局";
-                }
-            }
-            , {
-                field: '', width: 120, align: "center", title: '最近评估日期', templet: function (data) {
-                    return "2016/12/31";
-                }
-            }
-            , {
-                field: '', width: 120, align: "center", title: '评估机构', templet: function (data) {
-                    return "江苏帮驰茂元安全技术科技有限公司";
-                }
-            }
-            , {
-                field: '', align: "center", title: '等级', templet: function (data) {
-                    return "四级";
-                }
-            }
-            , {
-                field: '', width: 200, align: "center", title: '附件（基本特征）', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: '', width: 120, align: "center", title: '附件（备案登记）', templet: function (data) {
-                    return "";
-                }
-            }
+            , { field: '', width: 160, align: "center", title: '重大危险源名称' }
+            , { field: 'Address', width: 120, align: "center", title: '所在地址' }
+            , { field: 'ResponseEmpName', width: 120, align: "center", title: '主要负责人' }
+            , { field: 'ContactNum', width: 120, align: "center", title: '联系电话' }
+            , { field: 'RecordOrgName', align: "center", width: 160, title: '政府备案部门' }
+            , { field: 'EvaluationTime', width: 120, align: "center", title: '最近评估日期' }
+            , { field: 'EvaluationOrg', width: 120, align: "center", title: '评估机构' }
+            , { field: 'MajorHazardLevel', align: "center", title: '等级' }
+            , { field: '', width: 200, align: "center", title: '附件（基本特征）' }
+            , { field: '', width: 120, align: "center", title: '附件（备案登记）' }
           ]],
             page: true
         });
@@ -118,7 +78,7 @@
                 if (!datas.length) { TopWin.layer.msg("至少选择一行数据！"); return; }
                 var _index = TopWin.layer.load(), total = datas.length;
                 $.each(datas, function (_i, _t) {
-                    $.Cm_Ajax.putAsync(baseConst.odata + "T_XT_WorkRecords_Entity('" + _t.RecordId + "')", { IsDeleted: true }).always(function () {
+                    $.Cm_Ajax.putAsync(baseConst.odata + "T_WH_MajorHazardDossier_Entity('" + _t.RecordId + "')", { IsDeleted: true }).always(function () {
                         total--;
                         if (!total)
                         {
@@ -179,6 +139,9 @@
 <div class="content-padding">
     <div class="layui-btn-group" id="controlMenus">
         <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnadd"><i class="fa fa-plus"></i> 新增</button>
+        <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnmodify"><i class="fa fa-edit"></i> 修改</button>
+        <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fndelete"><i class="fa fa-remove"></i> 删除</button>
+        <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnview"><i class="fa fa-eye"></i> 查看</button>
     </div>
     <table class="layui-hide" id="datagrid"></table>
 </div>

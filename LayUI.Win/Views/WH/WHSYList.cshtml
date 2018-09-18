@@ -32,66 +32,18 @@
           }
           , cols: [[
               { type: 'checkbox' }
-            , {
-                field: '', width: 150, align: "center", title: '危险化学品名称', templet: function (data) {
-                    return "甲基苯";
-                    }
-            }
-            , {
-                field: 'CommonlyCnt', width: 80, align: "center", title: '危规号', templet: function (data) {
-                    return "108-88-3";
-                }
-            }
-            , {
-                field: 'MajorCnt', width: 90, align: "center", title: '年使用量', templet: function (data) {
-                    return "0.2L";
-                }
-            }
-            , {
-                field: '', width: 100, align: "center", title: '最大存储量', templet: function (data) {
-                    return "0.5L";
-                }
-            }
-            , {
-                field: '', title: '贮存地点', width: 100, align: "center", templet: function (data) {
-                    return "危险品仓库";
-                }
-            }
-            , {
-                field: '', width: 90, align: "center", title: '包装方式', templet: function (data) {
-                    return "桶装";
-                }
-            }
-            , {
-                field: '', width: 90, align: "center", title: '生产企业', templet: function (data) {
-                    return "南京化学试剂有限公司";
-                }
-            }
-            , {
-                field: '', align: "center", title: 'MSDS', templet: function (data) {
-                    return "有";
-                }
-            }
-            , {
-                field: '', width: 160, align: "center", title: '是否重点监管化学品', templet: function (data) {
-                    return "是";
-                }
-            }
-            , {
-                field: '', width: 160, align: "center", title: '是否易制毒化学品', templet: function (data) {
-                    return "是";
-                }
-            }
-            , {
-                field: '', width: 160, align: "center", title: '是否易制爆化学品', templet: function (data) {
-                    return "是";
-                }
-            }
-            , {
-                field: '', width: 160, align: "center", title: '是否剧毒化学品', templet: function (data) {
-                    return "否";
-                }
-            }
+            , { field: 'ToxicName', width: 150, align: "center", title: '危险化学品名称' }
+            , { field: 'DangerChemCode', width: 80, align: "center", title: '危规号' }
+            , { field: 'YearWastage', width: 90, align: "center", title: '年使用量' }
+            , { field: 'StockMax', width: 100, align: "center", title: '最大存储量' }
+            , { field: 'StoragePoint', title: '贮存地点', width: 100, align: "center" }
+            , { field: 'PackWay', width: 90, align: "center", title: '包装方式' }
+            , { field: '', width: 90, align: "center", title: '生产企业' }
+            , { field: 'HasMSDS', align: "center", title: 'MSDS' }
+            , { field: 'HighSupervise', width: 160, align: "center", title: '是否重点监管化学品' }
+            , { field: 'IsEasyDrugPro', width: 160, align: "center", title: '是否易制毒化学品' }
+            , { field: 'IsEasybBastPro', width: 160, align: "center", title: '是否易制爆化学品' }
+            , { field: 'IsHighlyToxic', width: 160, align: "center", title: '是否剧毒化学品' }
           ]],
             page: true
         });
@@ -127,7 +79,7 @@
                 if (!datas.length) { TopWin.layer.msg("至少选择一行数据！"); return; }
                 var _index = TopWin.layer.load(), total = datas.length;
                 $.each(datas, function (_i, _t) {
-                    $.Cm_Ajax.putAsync(baseConst.odata + "T_XT_WorkRecords_Entity('" + _t.RecordId + "')", { IsDeleted: true }).always(function () {
+                    $.Cm_Ajax.putAsync(baseConst.odata + "T_WH_DangerChemUse_Entity('" + _t.RecordId + "')", { IsDeleted: true }).always(function () {
                         total--;
                         if (!total)
                         {
@@ -187,6 +139,9 @@
 <div class="content-padding">
     <div class="layui-btn-group" id="controlMenus">
         <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnadd"><i class="fa fa-plus"></i> 新增</button>
+        <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnmodify"><i class="fa fa-edit"></i> 修改</button>
+        <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fndelete"><i class="fa fa-remove"></i> 删除</button>
+        <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnview"><i class="fa fa-eye"></i> 查看</button>
     </div>
     <table class="layui-hide" id="datagrid"></table>
 </div>

@@ -32,66 +32,19 @@
           }
           , cols: [[
               { type: 'checkbox' }
-            , {
-                field: '', width: 90,align:"center", title: '年度月份', templet: function (data) {
-                return data.CreateTime && moment(data.CreateTime).format("YYYYMM") || "";
-                    }
-            }
-            , {
-                field: 'CommonlyCnt', width: 100, align: "center", title: '剧毒化学品', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: 'MajorCnt', width: 80, align: "center", title: '用途', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: '', width: 120, title: '使用部门', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: '', align: "center", title: '责任人', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: '', align: "center", width: 120, title: '联系方式', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: '', align: "center", width: 120, title: '保管人', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: '', align: "center", width: 120, title: '联系方式', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: '', align: "center", width: 100, title: '当月进货量', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: '', align: "center", width: 100, title: '当月使用量', templet: function (data) {
-                    return "";
-                }
-            }
-            , {
-                field: '', align: "center", width: 90, title: '现库存量', templet: function (data) {
-                    return "";
-                }
-            }
-             , {
-                 field: '', align: "center", width: 160, title: '从业人员是否发生变化', templet: function (data) {
-                     return "";
-                 }
-             }
+            , { field: 'Year', width: 120, title: '年度' }
+            , { field: 'Month', width: 120, title: '月份' }
+            , { field: 'ToxicName', width: 100, align: "center", title: '剧毒化学品' }
+            , { field: 'Useage', width: 80, align: "center", title: '用途' }
+            , { field: 'UseOrgName', width: 120, title: '使用部门' }
+            , { field: 'ResponseEmpName', align: "center", title: '责任人' }
+            , { field: '', align: "center", width: 120, title: '联系方式' }
+            , { field: 'StoreMan', align: "center", width: 120, title: '保管人' }
+            , { field: '', align: "center", width: 120, title: '联系方式' }
+            , { field: 'StorageCurMonth', align: "center", width: 100, title: '当月进货量' }
+            , { field: 'StorageOutCurMonth', align: "center", width: 100, title: '当月使用量' }
+            , { field: 'StockCurMonth', align: "center", width: 90, title: '现库存量' }
+            , { field: '', align: "center", width: 160, title: '从业人员是否发生变化' }
           ]],
             page: true
         });
@@ -127,7 +80,7 @@
                 if (!datas.length) { TopWin.layer.msg("至少选择一行数据！"); return; }
                 var _index = TopWin.layer.load(), total = datas.length;
                 $.each(datas, function (_i, _t) {
-                    $.Cm_Ajax.putAsync(baseConst.odata + "T_XT_WorkRecords_Entity('" + _t.RecordId + "')", { IsDeleted: true }).always(function () {
+                    $.Cm_Ajax.putAsync(baseConst.odata + "T_WH_Toxic_Entity('" + _t.RecordId + "')", { IsDeleted: true }).always(function () {
                         total--;
                         if (!total)
                         {
@@ -187,6 +140,9 @@
 <div class="content-padding">
     <div class="layui-btn-group" id="controlMenus">
         <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnadd"><i class="fa fa-plus"></i> 新增</button>
+        <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnmodify"><i class="fa fa-edit"></i> 修改</button>
+        <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fndelete"><i class="fa fa-remove"></i> 删除</button>
+        <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnview"><i class="fa fa-eye"></i> 查看</button>
     </div>
     <table class="layui-hide" id="datagrid"></table>
 </div>
