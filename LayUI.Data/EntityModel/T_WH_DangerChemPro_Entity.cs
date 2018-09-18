@@ -74,6 +74,11 @@ namespace LayUI.Data.EntityModel
         public string SaleLicense { get; set; }
         
         /// <summary>
+        /// 是否重点监管化学品
+        /// </summary>
+        public string IsKeySupervise { get; set; }
+        
+        /// <summary>
         /// 是否易制毒化学品
         /// </summary>
         public string IsEasyDrugPro { get; set; }
