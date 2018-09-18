@@ -8,7 +8,7 @@ namespace LayUI.Data.EntityModel
     /// 
     /// </summary>
 	[Table("T_XT_Data")]
-    public partial class T_XT_Data_Entity : IEntity, ICreationAudited, IModificationAudited, IDeleteAudited
+    public partial class T_XT_Data_Entity : IEntity
 	{
 		#region 数据库属性字段
 		
@@ -86,12 +86,12 @@ namespace LayUI.Data.EntityModel
         /// <summary>
         /// 修改时间
         /// </summary>
-        public string ModifyEmpCode { get; set; }
+        public string ModifyByEmpCode { get; set; }
         
         /// <summary>
         /// 修改时间
         /// </summary>
-        public string ModifyEmpName { get; set; }
+        public string ModifyByEmpName { get; set; }
         
         /// <summary>
         /// 修改时间

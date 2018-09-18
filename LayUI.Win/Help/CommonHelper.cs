@@ -9,6 +9,7 @@ using LayUI.Data;
 using LayUI.Data.EntityModel;
 using System.Web;
 using System.Text.RegularExpressions;
+using System.Data.Entity.Infrastructure;
 
 namespace LayUI.Win.Help
 {
@@ -570,6 +571,29 @@ namespace LayUI.Win.Help
             string sf = string.Format("{0:D4}-{1:D2}-{2:D2} {3:D2}:{4:D2}:{5:D2}", Regex.Matches(s, "\\d+").Cast<Match>().Select(x => (object)int.Parse(x.Value)).ToArray());
             DateTime dt = DateTime.ParseExact(sf, "yyyy-MM-dd HH:mm:ss", null);
             return dt;
+        }
+        #endregion
+
+        #region 清除DbContest锁定
+        /// <summary>
+        /// 清除DbContest锁定
+        /// </summary>
+        /// <returns></returns>
+        public static Boolean RemoveHoldingEntityInContext<T>(T entity, TeamWorkDbContext et) where T : class
+        {
+            var objContext = ((IObjectContextAdapter)et).ObjectContext;
+            var objSet = objContext.CreateObjectSet<T>();
+            var entityKey = objContext.CreateEntityKey(objSet.EntitySet.Name, entity);
+
+            Object foundEntity;
+            var exists = objContext.TryGetObjectByKey(entityKey, out foundEntity);
+
+            if (exists)
+            {
+                objContext.Detach(foundEntity);
+            }
+
+            return (exists);
         }
         #endregion
     }

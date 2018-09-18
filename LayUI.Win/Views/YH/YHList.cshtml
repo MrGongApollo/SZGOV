@@ -20,7 +20,7 @@
 
         datatable.render({
             elem: '#datagrid'
-          , url: baseConst.odata + "T_YH_HiddenDanger_Entity"
+          , url:  "@Url.Content("~/YH/getHiddenDangerLsit")"
           , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
           , height: 'full-100'
           , id: tableId
@@ -32,12 +32,13 @@
           }
           , cols: [[
               { type: 'checkbox' }
-            , { field: '', width: 90,align:"center",title: '隐患编号',  templet: function (data) {
+            , {
+                field: 'SerialNo', width: 90, align: "center", title: '隐患编号', templet: function (data) {
                 return data.CreateTime && moment(data.CreateTime).format("YYYYMM") || "";
                     }
             }
             , {
-                field: 'CommonlyCnt', align: "center", width: 90, title: '整改状态', templet: function (data) {
+                field: 'Result', align: "center", width: 90, title: '整改状态', templet: function (data) {
                     return "";
                 }
             }
@@ -47,37 +48,37 @@
                 }
             }
             , {
-                field: '', width: 90, align: "center", title: '检查时间', templet: function (data) {
+                field: 'CheckTime', width: 90, align: "center", title: '检查时间', templet: function (data) {
                     return "";
                 }
             }
             , {
-                field: '', title: '隐患部位', align: "center", templet: function (data) {
+                field: 'HiddenPart', title: '隐患部位', align: "center", templet: function (data) {
                     return "";
                 }
             }
             , {
-                field: '', width: 90, align: "center", title: '隐患大类', templet: function (data) {
+                field: 'HiddenTypeL', width: 90, align: "center", title: '隐患大类', templet: function (data) {
                     return "";
                 }
             }
             , {
-                field: '', width: 90, align: "center", title: '隐患小类', templet: function (data) {
+                field: 'HiddenTypeS', width: 90, align: "center", title: '隐患小类', templet: function (data) {
                     return "";
                 }
             }
             , {
-                field: '', align: "center", title: '隐患内容', templet: function (data) {
+                field: 'HiddenContent', align: "center", title: '隐患内容', templet: function (data) {
                     return "";
                 }
             }
             , {
-                field: '', width: 90, align: "center", title: '整改期限', templet: function (data) {
+                field: 'TimeLimit', width: 90, align: "center", title: '整改期限', templet: function (data) {
                     return "";
                 }
             }
             , {
-                field: '', width: 90, align: "center", title: '完成日期', templet: function (data) {
+                field: 'CompleteTime', width: 90, align: "center", title: '完成日期', templet: function (data) {
                     return "";
                 }
             }

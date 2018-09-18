@@ -9,10 +9,10 @@ using LayUI.Data.EntityModel;
 using LayUI.Win.Models;
 using LayUI.Utility.Helper;
 using System.Data;
+using System.Data.Entity;
 
 namespace LayUI.Win.Controllers
 {
-    [LoginChecked]
     public class YHController : BaseController
     {
         #region 隐患汇总视图
@@ -51,15 +51,17 @@ namespace LayUI.Win.Controllers
                 using (TeamWorkDbContext et = new TeamWorkDbContext())
                 {
 
-                    T_YH_HiddenDanger_Entity _u = et.T_YH_HiddenDanger_Entity.Find(saveData.HiddenDangerID);
-                    if (_u != null)
+                    T_YH_HiddenDanger_Entity u = et.T_YH_HiddenDanger_Entity.Find(saveData.HiddenDangerID);
+                    if (u != null)
                     {
-                        _u = saveData;
+                        CommonHelper.RemoveHoldingEntityInContext<T_YH_HiddenDanger_Entity>(u, et);
+                        u = saveData;
+                        et.Entry<T_YH_HiddenDanger_Entity>(u).State = System.Data.Entity.EntityState.Modified;
                     }
                     else 
                     {
                         saveData.HiddenDangerID = System.Guid.NewGuid().ToString("N");
-                        _u = et.T_YH_HiddenDanger_Entity.Add(saveData);
+                        u = et.T_YH_HiddenDanger_Entity.Add(saveData);
                     }
                     et.SaveChanges();
                     Ret.Data = saveData.HiddenDangerID;
@@ -77,6 +79,52 @@ namespace LayUI.Win.Controllers
             }
             #endregion
             return Json(Ret, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
+        #region 查询列表
+        /// <summary>
+        /// 查询列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult getHiddenDangerLsit(int page, int limit)
+        {
+            Dictionary<String, Object> Ret = new Dictionary<String, Object>();
+            #region 验证
+            try
+            {
+                TeamWorkDbContext et = new TeamWorkDbContext();
+
+                //var list = et.T_YH_HiddenDanger_Entity.OrderBy(u => u.SerialNo).Skip((page - 1) * limit).Take(limit);
+                var list = et.T_YH_HiddenDanger_Entity; 
+                int total = et.T_YH_HiddenDanger_Entity.Count<T_YH_HiddenDanger_Entity>();
+                var dic = new Dictionary<string, object>
+                {
+                    {"data",list },
+                    {"count", total},
+                    {"msg","查询成功" },
+                    {"code", 0}
+                };
+                return Json(dic, JsonRequestBehavior.AllowGet);
+
+                
+            }
+            #endregion
+            #region 异常
+            catch (Exception ex)
+            {
+                var dic = new Dictionary<string, object>
+                    {
+                    {"msg",ex.Message },
+                    {"code", 1}
+                    };
+                return Json(dic, JsonRequestBehavior.AllowGet);
+            }
+            #endregion
+            finally{
+               
+            }
         }
         #endregion
     }
