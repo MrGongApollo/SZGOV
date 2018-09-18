@@ -189,11 +189,6 @@
 
             _DangerChemId = _pageData.DangerChemId || $.Cm_Common.getGuid();
 
-            //常规用法
-            laydate.render({
-                elem: "[name='CheckDate']"
-            });
-
             //$("[name='ToxicName']").val(_pageData.ToxicName && moment(_pageData.WorkTime).format("YYYY-MM-DD") || "");
 
             switch (postData.editMode) {
@@ -201,7 +196,6 @@
                 case Cm_editMode.edit:
 
                     var fileds = [
-                        "ToxicName",
                         "ToxicName",
                         "DangerChemCode",
                         "YearYield",

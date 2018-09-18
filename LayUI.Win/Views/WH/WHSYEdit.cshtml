@@ -3,85 +3,98 @@
     ViewBag.Title = "危化品申报（生产）信息维护";
     Layout = "~/Views/Shared/_Edit.cshtml";
 }
-
+<style>
+    .layui-form.lb-p-m .layui-inline >.layui-form-label { font-size:13px; }
+</style>
 <div class="content-padding">
  
 <form class="layui-form lb-p-m" action="">
-    <input id="DangerChemId" name="DangerChemId" type="hidden">
-      <div class="layui-form-item">
+    <div class="layui-form-item">
+        <div class="layui-col-xs6">
             <div class="layui-inline">
                 <label class="layui-form-label">危险化学品名称</label>
                 <div class="layui-input-inline">
                     <input type="text" name="ToxicName" autocomplete="off" class="layui-input">
                 </div>
             </div>
+
+        </div><div class="layui-col-xs6">
             <div class="layui-inline">
                 <label class="layui-form-label">危规号</label>
-                <div class="layui-input-block">
+                <div class="layui-input-inline">
                     <input type="text" name="DangerChemCode" autocomplete="off" class="layui-input">
                 </div>
             </div>
         </div>
-  
-      <div class="layui-form-item">
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-col-xs6">
             <div class="layui-inline">
                 <label class="layui-form-label">年使用量</label>
                 <div class="layui-input-inline">
                     <input type="text" name="YearWastage" autocomplete="off" class="layui-input">
                 </div>
             </div>
+        </div><div class="layui-col-xs6">
             <div class="layui-inline">
                 <label class="layui-form-label">最大存储量</label>
-                <div class="layui-input-block">
+                <div class="layui-input-inline">
                     <input type="text" name="StockMax" autocomplete="off" class="layui-input">
                 </div>
             </div>
         </div>
+    </div>
 
     <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">贮存地点</label>
-            <div class="layui-input-inline">
-                <input type="text" name="StoragePoint" autocomplete="off" class="layui-input">
+        <div class="layui-col-xs6">
+            <div class="layui-inline">
+                <label class="layui-form-label">贮存地点</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="StoragePoint" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+        </div><div class="layui-col-xs6">
+            <div class="layui-inline">
+                <label class="layui-form-label">生产企业</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="Manufacturer" autocomplete="off" class="layui-input">
+                </div>
             </div>
         </div>
-
-        <div class="layui-inline">
-            <label class="layui-form-label">生产企业</label>
-            <div class="layui-input-inline">
-                <input type="text" name="" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-
     </div>
 
 
 
-      <div class="layui-form-item">
-        <div class="layui-inline">
-              <label class="layui-form-label">包装方式</label>
-              <div class="layui-input-inline">
-                  <select name="PackWay">
-                      <option value="">请选择</option>
-                      <option value="桶装">桶装</option>
-                  </select>
-              </div>
-          </div>
+    <div class="layui-form-item">
+        <div class="layui-col-xs6">
+            <div class="layui-inline">
+                <label class="layui-form-label">包装方式</label>
+                <div class="layui-input-inline">
+                    <select name="PackWay">
+                        <option value="">请选择</option>
+                        <option value="桶装">桶装</option>
+                    </select>
+                </div>
+            </div>
 
-          <div class="layui-inline">
-              <label class="layui-form-label">是否拥有MSDS</label>
-              <div class="layui-input-inline">
-                  <select name="HasMSDS">
-                      <option value="">请选择</option>
-                      <option value="是">是</option>
-                      <option value="否">否</option>
-                  </select>
-              </div>
-          </div>
+        </div><div class="layui-col-xs6">
+            <div class="layui-inline">
+                <label class="layui-form-label">是否拥有MSDS</label>
+                <div class="layui-input-inline">
+                    <select name="HasMSDS">
+                        <option value="">请选择</option>
+                        <option value="是">是</option>
+                        <option value="否">否</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
 
-      </div>
-
-      <div class="layui-form-item">
+    <div class="layui-form-item">
+        <div class="layui-col-xs6">
             <div class="layui-inline">
                 <label class="layui-form-label">是否重点监管化学品</label>
                 <div class="layui-input-inline">
@@ -92,19 +105,22 @@
                     </select>
                 </div>
             </div>
-          <div class="layui-inline">
-              <label class="layui-form-label">是否易制毒化学品</label>
-              <div class="layui-input-inline">
-                  <select name="IsEasyDrugPro">
-                      <option value="">请选择</option>
-                      <option value="是">是</option>
-                      <option value="否">否</option>
-                  </select>
-              </div>
-          </div>
+        </div><div class="layui-col-xs6">
+            <div class="layui-inline">
+                <label class="layui-form-label">是否易制毒化学品</label>
+                <div class="layui-input-inline">
+                    <select name="IsEasyDrugPro">
+                        <option value="">请选择</option>
+                        <option value="是">是</option>
+                        <option value="否">否</option>
+                    </select>
+                </div>
+            </div>
         </div>
+    </div>
 
-       <div class="layui-form-item">
+    <div class="layui-form-item">
+        <div class="layui-col-xs6">
             <div class="layui-inline">
                 <label class="layui-form-label">是否易制爆化学品</label>
                 <div class="layui-input-inline">
@@ -116,122 +132,125 @@
                 </div>
             </div>
 
-           <div class="layui-inline">
-               <label class="layui-form-label">是否剧毒化学品</label>
-               <div class="layui-input-inline">
-                   <select name="IsHighlyToxic">
-                       <option value="">请选择</option>
-                       <option value="是">是</option>
-                       <option value="否">否</option>
-                   </select>
-               </div>
-           </div>
+        </div><div class="layui-col-xs6">
+            <div class="layui-inline">
+                <label class="layui-form-label">是否剧毒化学品</label>
+                <div class="layui-input-inline">
+                    <select name="IsHighlyToxic">
+                        <option value="">请选择</option>
+                        <option value="是">是</option>
+                        <option value="否">否</option>
+                    </select>
+                </div>
+            </div>
         </div>
-
+    </div>
 
   <div class="layui-form-item text-center">
         <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="btnSub">保存</button>
-        <button class="layui-btn layui-btn-primary" lay-submit="" lay-filter="btnBack">返回</button>
+        <button class="layui-btn layui-btn-primary" id="btnBack">返回</button>
   </div>
 </form>
 </div>              
 
 <script>
-    var _RecordId = "";
-    layui.use(['form', 'laydate'], function (postData) {
+    var _DangerChemId = "";
+
+    pageLoad = function (postData) {
+        layui.use(['form', 'laydate'], function () {
             var form = null,
                 $ = layui.jquery,
                 layer = layui.layer,
-                laydate=layui.laydate,
+                laydate = layui.laydate,
                 Cm_editMode = $.Cm_Setting.editMode,
                 _self = parent.layer.getFrameIndex(window.name), //获取窗口索引
                 IsReadOnly = postData.editMode == Cm_editMode.view,
                 IsEdit = postData.editMode == Cm_editMode.edit,
                 saveMethed = IsEdit ? "putAsync" : "postAsync",
-                user=$.Cm_Auth.userInfo(),
+                user = $.Cm_Auth.userInfo(),
                 _pageData = postData.pageData || {};
 
-            _RecordId = _pageData.RecordId || $.Cm_Common.getGuid();
-
-            //常规用法
-            laydate.render({
-                elem: "[name='CheckDate']"
-            });
-
-            $("[name='WorkTime']").val(_pageData.WorkTime && moment(_pageData.WorkTime).format("YYYY-MM-DD") || "");
-            $("[name='Detail']").val(_pageData.Detail || "");
+            _DangerChemId = _pageData.DangerChemId || $.Cm_Common.getGuid();
 
             switch (postData.editMode) {
                 case Cm_editMode.view:
                 case Cm_editMode.edit:
-                    $("[name='WorkTime']").attr("disabled", true);
+                    var fileds = [
+                         "ToxicName",
+                         "DangerChemCode",
+                         "YearWastage",
+                         "StockMax",
+                         "StoragePoint",
+                         "Manufacturer",
+                         "PackWay",
+                         "HasMSDS",
+                         "HighSupervise",
+                         "IsEasyDrugPro",
+                         "IsEasybBastPro",
+                         "IsHighlyToxic"
+                    ];
+
+                    $.each(fileds, function (_i, _t) {
+                        $("[name='" + _t + "']").val(_pageData[_t] || "");
+                    });
+
                     if (IsReadOnly) {
-                        $(":input").attr("disabled", true);
+                        $(":input:not(#btnBack)").attr("disabled", true);
                         $("[lay-filter='btnSub']").remove();
                     }
                     break;
                 case Cm_editMode.add:
-                    _RecordId = $.Cm_Common.getGuid();
+                    _DangerChemId = $.Cm_Common.getGuid();
                     break;
             }
 
             form = layui.form;
+            form.render();
+
+            //返回
+            $("#btnBack").click(function () {
+                TopWin.layer.close(_self);
+            });
 
             //监听提交
-            form.on('submit(btnSub)', function (data)
-            {
+            form.on('submit(btnSub)', function (data) {
                 var saveData = {},
-                  //  _url = baseConst.odata + "T_XT_WorkRecords_Entity";
-                _url = "@Url.Content("~/WH/DangerChemUseAdd")";
+                   _url = baseConst.odata + "T_WH_DangerChemUse_Entity";
                 $.extend(saveData, data.field);
                 if (IsEdit) {
-                    _url += "('" + _RecordId + "')";
+                    _url += "('" + _DangerChemId + "')";
                     $.extend(saveData, {
-                        //ModifyEmpCode: user.EmpCode,
-                        //ModifyEmpName: user.EmpName,
                         ModifyEmpCode: '11'
                     , ModifyEmpName: '11'
-                    , ModifyTime: formatDate(new Date())
+                    , ModifyTime: new Date()
                     });
+                    saveData.CreateTime = moment(saveData.CreateTime);
                 }
                 else {
                     $.extend(saveData, {
-                        RecordId: _RecordId
-                        //, EmpCode: user.EmpCode
-                        // , EmpName: user.EmpName
-                        // , CreateByEmpCode: user.EmpCode
-                        // , CreateByEmpName: user.EmpName
-                    , EmpCode: '11'
-                    , EmpName: '11'
+                        DangerChemId: _DangerChemId
                     , CreateByEmpCode: '11'
                     , CreateByEmpName: '11'
-                    , CreateTime: $.Cm_DateTime.Now()
+                    , CreateTime: new Date()
                     , IsDeleted: false
                     });
                 }
-                //return;
+
+                saveData.YearWastage = parseFloat(saveData.YearWastage);
+                saveData.StockMax = parseFloat(saveData.StockMax);
+
                 ($.Cm_Ajax)[saveMethed](_url, saveData).done(function () {
-                   TopWin.layer.alert("操作成功", function (index) {
+                    TopWin.layer.alert("操作成功", function (index) {
                         TopWin.layer.close(index);
                         TopWin.layer.close(_self);
                     });
                 });
-              //  DangerChemUseAdd(saveData);
                 return false;
             });
 
 
         });
-    function DangerChemUseAdd(saveData) {
-        $.ajax({
-            type: 'POST',
-            url: "@Url.Content("~/WH/DangerChemUseAdd")",
-            data:  saveData,
-        success: function (data) {
-            layer.msg(data.Msg);
-            $("#DangerChemId").val(data.Data);
-        }
-    });
     }
+
 </script>
 

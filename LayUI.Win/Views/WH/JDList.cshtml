@@ -38,9 +38,9 @@
             , { field: 'Useage', width: 80, align: "center", title: '用途' }
             , { field: 'UseOrgName', width: 120, title: '使用部门' }
             , { field: 'ResponseEmpName', align: "center", title: '责任人' }
-            , { field: '', align: "center", width: 120, title: '联系方式' }
+            , { field: 'ResponseNumber', align: "center", width: 120, title: '联系方式' }
             , { field: 'StoreMan', align: "center", width: 120, title: '保管人' }
-            , { field: '', align: "center", width: 120, title: '联系方式' }
+            , { field: 'StoreManNumber', align: "center", width: 120, title: '联系方式' }
             , { field: 'StorageCurMonth', align: "center", width: 100, title: '当月进货量' }
             , { field: 'StorageOutCurMonth', align: "center", width: 100, title: '当月使用量' }
             , { field: 'StockCurMonth', align: "center", width: 90, title: '现库存量' }
@@ -80,7 +80,7 @@
                 if (!datas.length) { TopWin.layer.msg("至少选择一行数据！"); return; }
                 var _index = TopWin.layer.load(), total = datas.length;
                 $.each(datas, function (_i, _t) {
-                    $.Cm_Ajax.putAsync(baseConst.odata + "T_WH_Toxic_Entity('" + _t.RecordId + "')", { IsDeleted: true }).always(function () {
+                    $.Cm_Ajax.putAsync(baseConst.odata + "T_WH_Toxic_Entity('" + _t.ToxicId + "')", { IsDeleted: true }).always(function () {
                         total--;
                         if (!total)
                         {
