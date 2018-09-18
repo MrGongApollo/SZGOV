@@ -26,6 +26,7 @@
 
 		public virtual DbSet<T_WH_DangerChemPro_Entity> T_WH_DangerChemPro_Entity { get; set; }
 		public virtual DbSet<T_WH_DangerChemUse_Entity> T_WH_DangerChemUse_Entity { get; set; }
+		public virtual DbSet<T_WH_Evaluate_Entity> T_WH_Evaluate_Entity { get; set; }
 		public virtual DbSet<T_WH_Isotope_Entity> T_WH_Isotope_Entity { get; set; }
 		public virtual DbSet<T_WH_MajorHazardDossier_Entity> T_WH_MajorHazardDossier_Entity { get; set; }
 		public virtual DbSet<T_WH_PersonRecord_Entity> T_WH_PersonRecord_Entity { get; set; }

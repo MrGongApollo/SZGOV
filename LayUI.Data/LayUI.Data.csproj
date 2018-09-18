@@ -60,6 +60,9 @@
     <Compile Include="EntityModel\T_WH_DangerChemUse_Entity.cs">
       <DependentUpon>T_WH_Manage.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntityModel\T_WH_Evaluate_Entity.cs">
+      <DependentUpon>T_WH_Manage.tt</DependentUpon>
+    </Compile>
     <Compile Include="EntityModel\T_WH_Isotope_Entity.cs">
       <DependentUpon>T_WH_Manage.tt</DependentUpon>
     </Compile>

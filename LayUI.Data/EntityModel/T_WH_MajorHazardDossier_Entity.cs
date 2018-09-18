@@ -69,6 +69,11 @@ namespace LayUI.Data.EntityModel
         public string MajorHazardLevel { get; set; }
         
         /// <summary>
+        /// 危险名称
+        /// </summary>
+        public string MajorHazardName { get; set; }
+        
+        /// <summary>
         /// 创建人工号
         /// </summary>
         public string CreateByEmpCode { get; set; }

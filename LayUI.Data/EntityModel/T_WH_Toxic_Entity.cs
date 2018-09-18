@@ -74,6 +74,11 @@ namespace LayUI.Data.EntityModel
         public string StoreMan { get; set; }
         
         /// <summary>
+        /// 保管员号码
+        /// </summary>
+        public string StoreManNumber { get; set; }
+        
+        /// <summary>
         /// 责任人工号
         /// </summary>
         public string ResponseEmpCode { get; set; }
@@ -82,6 +87,11 @@ namespace LayUI.Data.EntityModel
         /// 责任人姓名
         /// </summary>
         public string ResponseEmpName { get; set; }
+        
+        /// <summary>
+        /// 责任人号码
+        /// </summary>
+        public string ResponseNumber { get; set; }
         
         /// <summary>
         /// 使用单位码

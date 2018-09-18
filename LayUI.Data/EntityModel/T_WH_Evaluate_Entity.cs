@@ -7,8 +7,8 @@ namespace LayUI.Data.EntityModel
 	/// <summary>
     /// 
     /// </summary>
-	[Table("T_WH_DangerChemUse")]
-    public partial class T_WH_DangerChemUse_Entity : IEntity, ICreationAudited, IModificationAudited, IDeleteAudited
+	[Table("T_WH_Evaluate")]
+    public partial class T_WH_Evaluate_Entity : IEntity, ICreationAudited, IModificationAudited, IDeleteAudited
 	{
 		#region 数据库属性字段
 		
@@ -16,7 +16,12 @@ namespace LayUI.Data.EntityModel
         /// 主键
         /// </summary>
 		[Key]
-        public string DangerChemId { get; set; }
+        public string EvaluateId { get; set; }
+        
+        /// <summary>
+        /// 单位码
+        /// </summary>
+        public string DossierId { get; set; }
         
         /// <summary>
         /// 单位码
@@ -29,64 +34,24 @@ namespace LayUI.Data.EntityModel
         public string OrgName { get; set; }
         
         /// <summary>
-        /// 危险化学品名称
+        /// 危险等级
         /// </summary>
-        public string ToxicName { get; set; }
+        public string MajorHazardLevel { get; set; }
         
         /// <summary>
-        /// 危规号
+        /// 评价
         /// </summary>
-        public string DangerChemCode { get; set; }
+        public string SafetyEvalua { get; set; }
         
         /// <summary>
-        /// 年使用量
+        /// 评估机构
         /// </summary>
-        public decimal? YearWastage { get; set; }
+        public string EvaluateOrgName { get; set; }
         
         /// <summary>
-        /// 最大储存量
+        /// 评估日期
         /// </summary>
-        public decimal? StockMax { get; set; }
-        
-        /// <summary>
-        /// 贮存地点
-        /// </summary>
-        public string StoragePoint { get; set; }
-        
-        /// <summary>
-        /// 包装方式
-        /// </summary>
-        public string PackWay { get; set; }
-        
-        /// <summary>
-        /// 生产商
-        /// </summary>
-        public string Manufacturer { get; set; }
-        
-        /// <summary>
-        /// 是否拥有MSDS
-        /// </summary>
-        public string HasMSDS { get; set; }
-        
-        /// <summary>
-        /// 是否重点监管化学品
-        /// </summary>
-        public string HighSupervise { get; set; }
-        
-        /// <summary>
-        /// 是否易制毒化学品
-        /// </summary>
-        public string IsEasyDrugPro { get; set; }
-        
-        /// <summary>
-        /// 是否易制爆化学品
-        /// </summary>
-        public string IsEasybBastPro { get; set; }
-        
-        /// <summary>
-        /// 是否剧毒化学品
-        /// </summary>
-        public string IsHighlyToxic { get; set; }
+        public string EvaluateTime { get; set; }
         
         /// <summary>
         /// 创建人工号
