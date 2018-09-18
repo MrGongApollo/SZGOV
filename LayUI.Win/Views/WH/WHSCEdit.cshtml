@@ -6,7 +6,6 @@
 <div class="content-padding">
 
     <form class="layui-form lb-p-m" action="">
-        <input id="DangerChemId" name="DangerChemId" type="hidden">
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">危险化学品名称</label>
@@ -41,7 +40,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">最大存储量</label>
                 <div class="layui-input-inline">
-                    <input type="text" autocomplete="off" class="layui-input">
+                    <input type="text" name="StockMax" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
@@ -133,8 +132,10 @@
 </div>
 
 <script>
-    var _RecordId = "";
-    layui.use(['form', 'laydate'], function (postData) {
+    var _DangerChemId = "";
+    pageLoad = function (postData)
+    {
+        layui.use(['form', 'laydate'], function () {
             var form = null,
                 $ = layui.jquery,
                 layer = layui.layer,
@@ -147,27 +148,54 @@
                 user = $.Cm_Auth.userInfo(),
                 _pageData = postData.pageData || {};
 
-            _RecordId = _pageData.RecordId || $.Cm_Common.getGuid();
+            _DangerChemId = _pageData.DangerChemId || $.Cm_Common.getGuid();
 
             //常规用法
             laydate.render({
                 elem: "[name='CheckDate']"
             });
 
-            $("[name='WorkTime']").val(_pageData.WorkTime && moment(_pageData.WorkTime).format("YYYY-MM-DD") || "");
-            $("[name='Detail']").val(_pageData.Detail || "");
+            //$("[name='ToxicName']").val(_pageData.ToxicName && moment(_pageData.WorkTime).format("YYYY-MM-DD") || "");
+
 
             switch (postData.editMode) {
                 case Cm_editMode.view:
                 case Cm_editMode.edit:
-                    $("[name='WorkTime']").attr("disabled", true);
+                    var fileds = [
+                        { name: "ToxicName", type: "txt" },
+                        { name: "ToxicName", type: "txt" },
+                        { name: "DangerChemCode", type: "txt" },
+                        { name: "YearYield", type: "txt" },
+                        { name: "YearSales", type: "txt" },
+                        { name: "StockMax", type: "txt" },
+                        { name: "StoragePoint", type: "txt" },
+                        { name: "PackWay", type: "radio" },
+                        { name: "SecurityLicense", type: "radio" },
+                        { name: "SaleLicense", type: "radio" },
+                        { name: "IsKeySupervise", type: "radio" },
+                        { name: "IsEasyDrugPro", type: "radio" },
+                        { name: "IsEasybBastPro", type: "radio" },
+                        { name: "IsHighlyToxic", type: "radio" }
+                    ];
+                   
+                    $.each(fileds, function (_i, _t) {
+                        //switch (_t.type) {
+                        //    case "radio":
+
+                        //        break;
+                        //    default:
+                        //}
+                        $("[name='" + _t.name + "']").val(_pageData[_t.name] || "");
+                    });
+
+
                     if (IsReadOnly) {
                         $(":input").attr("disabled", true);
                         $("[lay-filter='btnSub']").remove();
                     }
                     break;
                 case Cm_editMode.add:
-                    _RecordId = $.Cm_Common.getGuid();
+                    _DangerChemId = $.Cm_Common.getGuid();
                     break;
             }
 
@@ -217,16 +245,8 @@
 
 
         });
-    function DangerChemProAdd(saveData) {
-        $.ajax({
-            type: 'POST',
-            url: "@Url.Content("~/WH/DangerChemProAdd")",
-            data:  saveData,
-        success: function (data) {
-            layer.msg(data.Msg);
-            $("#DangerChemId").val(data.Data);
-        }
-    });
+       
     }
+    
 </script>
 
