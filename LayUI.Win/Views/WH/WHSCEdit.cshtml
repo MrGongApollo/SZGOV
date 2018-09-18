@@ -196,7 +196,6 @@
 
             //$("[name='ToxicName']").val(_pageData.ToxicName && moment(_pageData.WorkTime).format("YYYY-MM-DD") || "");
 
-
             switch (postData.editMode) {
                 case Cm_editMode.view:
                 case Cm_editMode.edit:
@@ -237,6 +236,7 @@
 
             form.render();//渲染
             
+            //返回
             $("#btnBack").click(function () {
                 TopWin.layer.close(_self);
             });
@@ -271,8 +271,6 @@
                 saveData.YearSales = parseFloat(saveData.YearSales);
                 saveData.StockMax = parseFloat(saveData.StockMax);
 
-                //saveData.CreateTime = new Date();
-                //return;
                 ($.Cm_Ajax)[saveMethed](_url, saveData).done(function () {
                     TopWin.layer.alert("操作成功", function (index) {
                         TopWin.layer.close(index);
@@ -281,7 +279,7 @@
                 }).fail(function (err) {
                     console.log(err)
                 });
-                //DangerChemProAdd(saveData);
+
                 return false;
             });
 
