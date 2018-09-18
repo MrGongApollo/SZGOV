@@ -223,7 +223,7 @@
 
 
                     if (IsReadOnly) {
-                        $(":input").attr("disabled", true);
+                        $(":input:not(#btnBack)").attr("disabled", true);
                         $("[lay-filter='btnSub']").remove();
                     }
                     break;
