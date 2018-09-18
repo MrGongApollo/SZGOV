@@ -161,31 +161,26 @@
             switch (postData.editMode) {
                 case Cm_editMode.view:
                 case Cm_editMode.edit:
+
                     var fileds = [
-                        { name: "ToxicName", type: "txt" },
-                        { name: "ToxicName", type: "txt" },
-                        { name: "DangerChemCode", type: "txt" },
-                        { name: "YearYield", type: "txt" },
-                        { name: "YearSales", type: "txt" },
-                        { name: "StockMax", type: "txt" },
-                        { name: "StoragePoint", type: "txt" },
-                        { name: "PackWay", type: "radio" },
-                        { name: "SecurityLicense", type: "radio" },
-                        { name: "SaleLicense", type: "radio" },
-                        { name: "IsKeySupervise", type: "radio" },
-                        { name: "IsEasyDrugPro", type: "radio" },
-                        { name: "IsEasybBastPro", type: "radio" },
-                        { name: "IsHighlyToxic", type: "radio" }
+                        "ToxicName",
+                        "ToxicName",
+                        "DangerChemCode",
+                        "YearYield",
+                        "YearSales",
+                        "StockMax",
+                        "StoragePoint",
+                        "PackWay",
+                        "SecurityLicense",
+                        "SaleLicense",
+                        "IsKeySupervise", 
+                        "IsEasyDrugPro",
+                        "IsEasybBastPro", 
+                        "IsHighlyToxic"
                     ];
                    
                     $.each(fileds, function (_i, _t) {
-                        //switch (_t.type) {
-                        //    case "radio":
-
-                        //        break;
-                        //    default:
-                        //}
-                        $("[name='" + _t.name + "']").val(_pageData[_t.name] || "");
+                        $("[name='" + _t + "']").val(_pageData[_t] || "");
                     });
 
 
