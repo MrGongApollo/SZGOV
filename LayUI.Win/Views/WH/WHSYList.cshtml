@@ -20,7 +20,7 @@
 
         datatable.render({
             elem: '#datagrid'
-          , url: baseConst.odata + "T_YH_Records_Entity"
+          , url: baseConst.odata + "T_WH_DangerChemUse_Entity"
           , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
           , height: 'full-100'
           , id: tableId
@@ -156,7 +156,7 @@
                 TopWin.layer.open({
                     type: 2,
                     title: "危化品申报（使用）信息维护",
-                    area: ['800px', '420px'],
+                    area: ['800px', '550px'],
                     fixed: true, //不固定
                     maxmin: false,
                     content: "@Url.Content("~/WH/WHSYEdit")",

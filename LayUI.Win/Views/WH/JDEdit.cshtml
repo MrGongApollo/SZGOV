@@ -178,8 +178,8 @@
             form.on('submit(btnSub)', function (data)
             {
                 var saveData = {},
-                    _url = baseConst.odata + "T_XT_WorkRecords_Entity";
-
+                   // _url = baseConst.odata + "T_XT_WorkRecords_Entity";
+                    _url ="@Url.Content("~/WH/ToxicAdd")";
                 $.extend(saveData, data.field);
                 if (IsEdit)
                 {
@@ -187,7 +187,7 @@
                     $.extend(saveData, {
                         //ModifyEmpCode: user.EmpCode,
                         //ModifyEmpName: user.EmpName,
-                        ModifyEmpCode: '11'
+                      ModifyEmpCode: '11'
                     , ModifyEmpName: '11'
                     , ModifyTime: formatDate(new Date())
                     });
@@ -208,19 +208,20 @@
                     , IsDeleted: false
                     });
                 }
-                //return;
-                //($.Cm_Ajax)[saveMethed](_url, saveData).done(function () {
-                //   TopWin.layer.alert("操作成功", function (index) {
-                //        TopWin.layer.close(index);
-                //        TopWin.layer.close(_self);
-                //    });
-                //});
-                ToxicAdd(saveData);
+
+                ($.Cm_Ajax)[saveMethed](_url, saveData).done(function () {
+                   TopWin.layer.alert("操作成功", function (index) {
+                        TopWin.layer.close(index);
+                        TopWin.layer.close(_self);
+                    });
+                });
+               // ToxicAdd(saveData);
                 return false;
             });
 
 
-        });
+    });
+
         function ToxicAdd(saveData) {
             $.ajax({
                 type: 'POST',

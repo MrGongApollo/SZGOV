@@ -181,8 +181,8 @@
             form.on('submit(btnSub)', function (data)
             {
                 var saveData = {},
-                    _url = baseConst.odata + "T_XT_WorkRecords_Entity";
-
+                  //  _url = baseConst.odata + "T_XT_WorkRecords_Entity";
+                _url = "@Url.Content("~/WH/DangerChemUseAdd")";
                 $.extend(saveData, data.field);
                 if (IsEdit) {
                     _url += "('" + _RecordId + "')";
@@ -210,13 +210,13 @@
                     });
                 }
                 //return;
-                //($.Cm_Ajax)[saveMethed](_url, saveData).done(function () {
-                //   TopWin.layer.alert("操作成功", function (index) {
-                //        TopWin.layer.close(index);
-                //        TopWin.layer.close(_self);
-                //    });
-                //});
-                DangerChemUseAdd(saveData);
+                ($.Cm_Ajax)[saveMethed](_url, saveData).done(function () {
+                   TopWin.layer.alert("操作成功", function (index) {
+                        TopWin.layer.close(index);
+                        TopWin.layer.close(_self);
+                    });
+                });
+              //  DangerChemUseAdd(saveData);
                 return false;
             });
 

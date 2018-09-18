@@ -19,84 +19,31 @@
 
         datatable.render({
             elem: '#datagrid'
-          , url: baseConst.odata + "T_YH_Records_Entity"
+          , url: baseConst.odata + "T_WH_DangerChemPro_Entity"
           , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
           , height: 'full-100'
           , id: tableId
           , getFilters: function ()
           {
               var filters = [];
-              filters.push("IsDeleted eq false");
+              filters.push("IsDeleted ne null");
               return filters;
           }
           , cols: [[
               { type: 'checkbox' }
-            , {
-                field: '', width: 130, align: "center", title: '危险化学品名称', templet: function (data) {
-                return "甲苯";
-                    }
-            }
-            , {
-                field: 'CommonlyCnt', width: 90, align: "center", title: '危规号', templet: function (data) {
-                    return "108-88-3";
-                }
-            }
-            , {
-                field: 'MajorCnt', width: 80, align: "center", title: '年产量', templet: function (data) {
-                    return "14000T";
-                }
-            }
-            , {
-                field: '', width: 90, align: "center", title: '年销售量', templet: function (data) {
-                    return "9000T";
-                }
-            }
-            , {
-                field: '', align: "center", width: 100, title: '最大存储量', templet: function (data) {
-                    return "1550T";
-                }
-            }
-            , {
-                field: '', align: "center", width:90, title: '贮存地点', templet: function (data) {
-                    return "危险品仓库";
-                }
-            }
-            , {
-                field: '', align: "center", width:90, title: '包装方式', templet: function (data) {
-                    return "桶装";
-                }
-            }
-            , {
-                field: '', align: "center", width:100, title: '生产许可证', templet: function (data) {
-                    return "有";
-                }
-            }
-            , {
-                field: '', align: "center", width: 100, title: '销售许可证', templet: function (data) {
-                    return "有";
-                }
-            }
-            , {
-                field: '', align: "center", width: 160, title: '是否重点监管化学品', templet: function (data) {
-                    return "是";
-                }
-            }
-            , {
-                field: '', align: "center", width: 160, title: '是否易制毒化学品', templet: function (data) {
-                    return "是";
-                }
-            }
-                , {
-                    field: '', width: 160, align: "center", title: '是否易制爆化学品', templet: function (data) {
-                        return "是";
-                    } 
-                } ,
-                {
-                    field: '', width: 160, align: "center", title: '是否剧毒化学品', templet: function (data) {
-                        return "否";
-
-                    }
-                }
+            , {field: 'ToxicName', width: 130, align: "center", title: '危险化学品名称'}
+            , {field: 'DangerChemCode', width: 90, align: "center", title: '危规号'}
+            , {field: 'YearYield', width: 80, align: "center", title: '年产量'}
+            , {field: 'YearSales', width: 90, align: "center", title: '年销售量'}
+            , {field: 'StockMax', align: "center", width: 100, title: '最大存储量'}
+            , {field: 'StoragePoint', align: "center", width: 90, title: '贮存地点'}
+            , {field: 'PackWay', align: "center", width: 90, title: '包装方式'}
+            , {field: 'SecurityLicense', align: "center", width: 100, title: '生产许可证'}
+            , { field: 'SaleLicense', align: "center", width: 100, title: '销售许可证' }
+            , { field: 'IsKeySupervise', align: "center", width: 160, title: '是否重点监管化学品' }
+            , { field: 'IsEasyDrugPro', align: "center", width: 160, title: '是否易制毒化学品' }
+            , { field: 'IsEasybBastPro', align: "center", width: 160, title: '是否易制爆化学品' }
+            , { field: 'IsHighlyToxic', align: "center", width: 160, title: '是否剧毒化学品' }
           ]],
             page: true
         });

@@ -125,7 +125,8 @@
             form.on('submit(btnSub)', function (data)
             {
                 var saveData = {},
-                    _url = baseConst.odata + "T_XT_WorkRecords_Entity";
+                   // _url = baseConst.odata + "T_XT_WorkRecords_Entity";
+                _url = "@Url.Content("~/WH/PersonRecordAdd")";
 
                 $.extend(saveData, data.field);
                 if (IsEdit) {
@@ -154,13 +155,13 @@
                     });
                 }
                 //return;
-                //($.Cm_Ajax)[saveMethed](_url, saveData).done(function () {
-                //   TopWin.layer.alert("操作成功", function (index) {
-                //        TopWin.layer.close(index);
-                //        TopWin.layer.close(_self);
-                //    });
-                //});
-                PersonRecordAdd(saveData);
+                ($.Cm_Ajax)[saveMethed](_url, saveData).done(function () {
+                   TopWin.layer.alert("操作成功", function (index) {
+                        TopWin.layer.close(index);
+                        TopWin.layer.close(_self);
+                    });
+                });
+              //  PersonRecordAdd(saveData);
                 return false;
             });
 
