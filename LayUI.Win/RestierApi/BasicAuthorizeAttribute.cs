@@ -14,9 +14,10 @@ namespace LayUI.RestierApi
     {
         public override void OnAuthorization(HttpActionContext actionContext)
         {
-            string empCode = HttpContext.Current.Session["User"] + "";
+           
             try
             {
+                string empCode = HttpContext.Current.Session["User"] + "";
                 if (string.IsNullOrEmpty(empCode))
                 {
                 }
