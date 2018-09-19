@@ -20,7 +20,7 @@
 
         datatable.render({
             elem: '#datagrid'
-          , url: baseConst.odata + "T_YH_Records_Entity"
+          , url: baseConst.odata + "T_WH_Isotope_Entity"
           , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
           , height: 'full-100'
           , id: tableId
@@ -34,7 +34,7 @@
               { type: 'checkbox' }
             , { field: 'Year', width: 120, title: '年度' }
             , { field: 'Month', width: 120, title: '月份' }
-            , { field: 'CommonlyCnt', align: "center", width: 120, title: '核素名称' }
+            , { field: 'IsotopeName', align: "center", width: 120, title: '核素名称' }
             , { field: 'StockLastMonth', align: "center", width: 120, title: '上月库存数量' }
             , { field: 'StorageCurMonth', width: 120, align: "center", title: '本月入库量' }
             , { field: 'StorageOutCurMonth', width: 120, align: "center", title: '本月出库量' }
@@ -42,8 +42,8 @@
             , { field: 'StoragePoint', width: 120, align: "center", title: '存放地点' }
             , { field: 'StoreMan', align: "center", title: '保管人' }
             , { field: 'ContactNumber', width: 120, align: "center", title: '联系方式' }
-            , { field: '', width: 200, align: "center", title: '从业人员是否发生变化' }
-            , { field: '', width: 120, align: "center", title: '检查人' }
+            , { field: 'IsPersonChange', width: 200, align: "center", title: '从业人员是否发生变化' }
+            , { field: 'CheckEmpName', width: 120, align: "center", title: '检查人' }
           ]],
             page: true
         });
@@ -79,7 +79,7 @@
                 if (!datas.length) { TopWin.layer.msg("至少选择一行数据！"); return; }
                 var _index = TopWin.layer.load(), total = datas.length;
                 $.each(datas, function (_i, _t) {
-                    $.Cm_Ajax.putAsync(baseConst.odata + "T_YH_Records_Entity('" + _t.RecordId + "')", { IsDeleted: true }).always(function () {
+                    $.Cm_Ajax.putAsync(baseConst.odata + "T_WH_Isotope_Entity('" + _t.IsotopeId + "')", { IsDeleted: true }).always(function () {
                         total--;
                         if (!total)
                         {
@@ -108,7 +108,7 @@
                 TopWin.layer.open({
                     type: 2,
                     title: "同位素放射源维护",
-                    area: ['800px', '550px'],
+                    area: ['800px', '500px'],
                     fixed: true, //不固定
                     maxmin: false,
                     content: "@Url.Content("~/WH/TWSEdit")",

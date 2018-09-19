@@ -20,7 +20,7 @@
 
         datatable.render({
             elem: '#datagrid'
-          , url: baseConst.odata + "T_YH_Records_Entity"
+          , url: baseConst.odata + "T_WH_PersonRecord_Entity"
           , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
           , height: 'full-100'
           , id: tableId
@@ -74,7 +74,7 @@
                 if (!datas.length) { TopWin.layer.msg("至少选择一行数据！"); return; }
                 var _index = TopWin.layer.load(), total = datas.length;
                 $.each(datas, function (_i, _t) {
-                    $.Cm_Ajax.putAsync(baseConst.odata + "T_YH_Records_Entity('" + _t.RecordId + "')", { IsDeleted: true }).always(function () {
+                    $.Cm_Ajax.putAsync(baseConst.odata + "T_WH_PersonRecord_Entity('" + _t.RecordId + "')", { IsDeleted: true }).always(function () {
                         total--;
                         if (!total)
                         {
@@ -103,7 +103,7 @@
                 TopWin.layer.open({
                     type: 2,
                     title: "从业人员信息采集维护",
-                    area: ['800px', '400px'],
+                    area: ['800px', '300px'],
                     fixed: true, //不固定
                     maxmin: false,
                     content: "@Url.Content("~/WH/WHRYEdit")",

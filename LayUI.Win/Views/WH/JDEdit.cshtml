@@ -58,7 +58,7 @@
         </div><div class="layui-col-xs6">
             <div class="layui-inline">
                 <label class="layui-form-label">剧毒化学品名称</label>
-                <div class="layui-input-block">
+                <div class="layui-input-inline">
                     <input type="text" name="ToxicName" autocomplete="off" class="layui-input">
                 </div>
             </div>
@@ -76,7 +76,7 @@
         </div><div class="layui-col-xs6">
             <div class="layui-inline">
                 <label class="layui-form-label">用途</label>
-                <div class="layui-input-block">
+                <div class="layui-input-inline">
                     <input type="text" name="Useage" autocomplete="off" class="layui-input">
                 </div>
             </div>
@@ -108,13 +108,13 @@
             <div class="layui-inline">
                 <label class="layui-form-label">现库存量</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="StockCurMonth" autocomplete="off" class="layui-input">
+                    <input type="text" name="StockCur" autocomplete="off" class="layui-input">
                 </div>
             </div>
 
         </div><div class="layui-col-xs6">
             <div class="layui-inline">
-                <label class="layui-form-label">使用单位、部门</label>
+                <label class="layui-form-label">使用单位</label>
                 <div class="layui-input-inline">
                     <input type="text" name="UseOrgName" autocomplete="off" class="layui-input">
                 </div>
@@ -160,9 +160,20 @@
         </div>
     </div>
 
+    <div class="layui-form-item">
+        <div class="layui-col-xs6">
+            <div class="layui-inline">
+                <label class="layui-form-label">从业人员是否变化</label>
+                <div class="layui-input-inline">
+                    <input type="radio" name="IsPersonChange" value="是" title="是" checked="">
+                    <input type="radio" name="IsPersonChange" value="否" title="否">
+                </div>
+            </div>
+        </div>
+    </div>
+
 <div class="layui-form-item text-center">
         <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="btnSub">保存</button>
-
         <button class="layui-btn layui-btn-primary" id="btnBack">返回</button>
   </div>
 </form>
@@ -205,12 +216,14 @@
                          "StoreManNumber",
                          "StorageCurMonth",
                          "StorageOutCurMonth",
-                         "StockCurMonth"
+                         "StockCur"
                     ];
 
                     $.each(fileds, function (_i, _t) {
                         $("[name='" + _t + "']").val(_pageData[_t] || "");
                     });
+
+                    $("[name='IsPersonChange'][value='" + _pageData.IsPersonChange + "']").attr("checked",true);
 
                     if (IsReadOnly) {
                         $(":input:not(#btnBack)").attr("disabled", true);
@@ -261,7 +274,7 @@
                 saveData.Month = parseFloat(saveData.Month);
                 saveData.StorageCurMonth = parseFloat(saveData.StorageCurMonth);
                 saveData.StorageOutCurMonth = parseFloat(saveData.StorageOutCurMonth);
-                saveData.StockCurMonth = parseFloat(saveData.StockCurMonth);
+                saveData.StockCur = parseFloat(saveData.StockCur);
 
                 ($.Cm_Ajax)[saveMethed](_url, saveData).done(function () {
                     TopWin.layer.alert("操作成功", function (index) {
