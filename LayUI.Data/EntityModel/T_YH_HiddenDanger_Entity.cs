@@ -21,6 +21,7 @@ namespace LayUI.Data.EntityModel
         /// <summary>
         /// 隐患编号
         /// </summary>
+       [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
         public decimal SerialNo { get; set; }
         
         /// <summary>
