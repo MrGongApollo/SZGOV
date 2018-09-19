@@ -12,99 +12,109 @@
 <div class="content-padding">
  
 <form class="layui-form layui-form-pane lb-p-m" action="">
-  <input id="HiddenDangerID" name="HiddenDangerID" type="hidden">
+
   <fieldset class="layui-elem-field site-demo-button padding_lr_5">
   <legend>隐患信息</legend>
   
       <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">企业名称</label>
-                <div class="layui-input-inline">
-                    <input type="text" id="OrgName" name="OrgName" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">隐患部位</label>
-                <div class="layui-input-block">
-                    <input type="text" id="HiddenPart" name="HiddenPart" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-        </div>
-  
-      <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">检查时间</label>
-                <div class="layui-input-inline">
-                    <input type="text" autocomplete="off" id="CheckTime" name="CheckTime" class="layui-input input-data">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">检查人员</label>
-                <div class="layui-input-block">
-                    <input type="text" id="CheckEmpName" name="CheckEmpName" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-        </div>
-
-      <div class="layui-form-item">
-        <div class="layui-inline">
-              <label class="layui-form-label">隐患大类</label>
-              <div class="layui-input-inline">
-                  <select name="HiddenTypeL" id="HiddenTypeL">
-                      <option value="">请选择</option>
-                      <option value="基础管理">基础管理</option>
-                      <option value="现场管理">现场管理</option>
-                  </select>
+          <div class="layui-col-xs6">
+              <div class="layui-inline">
+                  <label class="layui-form-label">企业名称</label>
+                  <div class="layui-input-inline">
+                      <input type="text" id="OrgName" name="OrgName" autocomplete="off" class="layui-input">
+                  </div>
               </div>
-          </div>
-
-        <div class="layui-inline">
-              <label class="layui-form-label">隐患小类</label>
-              <div class="layui-input-inline">
-                  <select name="HiddenTypeS" id="HiddenTypeS">
-                      <option value="">请选择</option>
-                      <option value="A01">资质证照</option>
-                      <option value="A02">安全生产管理机构及人员</option>
-                      <option value="A03">安全规章制度</option>
-                      <option value="A04">安全培训教育</option>
-                      <option value="A05">安全投入</option>
-                      <option value="A06">相关方面管理</option>
-                      <option value="A07">重大危险源管理</option>
-                      <option value="A08">个体防护装备</option>
-                      <option value="A09">职业健康</option>
-                      <option value="A10">应急管理</option>
-                      <option value="A11">隐患排查治理</option>
-                      <option value="A12">事故报告、调查和处理</option>
-                      <option value="A99">其他</option>
-                  </select>
+          </div><div class="layui-col-xs6">
+              <div class="layui-inline">
+                  <label class="layui-form-label">隐患部位</label>
+                  <div class="layui-input-inline">
+                      <input type="text" id="HiddenPart" name="HiddenPart" autocomplete="off" class="layui-input">
+                  </div>
               </div>
           </div>
       </div>
 
       <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">隐患级别</label>
-                <div class="layui-input-inline">
-                    <select name="HiddenLevel" id="HiddenLevel">
-                        <option value="">请选择</option>
-                        <option value="一般隐患">一般隐患</option>
-                        <option value="重大隐患">重大隐患</option>
-                    </select>
-                </div>
-            </div>
-            @*<div class="layui-inline text-s color-red">
-                    危害和整改难度较小，发现后能够在3日内排除，或者无需停止使用相关设施设备、停产停业即可排除的隐患，为三级事故隐患。
-            </div>*@
-        </div>
+          <div class="layui-col-xs6">
+              <div class="layui-inline">
+                  <label class="layui-form-label">检查时间</label>
+                  <div class="layui-input-inline">
+                      <input type="text" autocomplete="off" id="CheckTime" name="CheckTime" class="layui-input laydate">
+                  </div>
+              </div>
+          </div><div class="layui-col-xs6">
+              <div class="layui-inline">
+                  <label class="layui-form-label">检查人员</label>
+                  <div class="layui-input-inline">
+                      <input type="text" id="CheckEmpName" name="CheckEmpName" autocomplete="off" class="layui-input">
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <div class="layui-form-item">
+          <div class="layui-col-xs6">
+              <div class="layui-inline">
+                  <label class="layui-form-label">隐患大类</label>
+                  <div class="layui-input-inline">
+                      <select name="HiddenTypeL" id="HiddenTypeL">
+                          <option value="">请选择</option>
+                          <option value="基础管理">基础管理</option>
+                          <option value="现场管理">现场管理</option>
+                      </select>
+                  </div>
+              </div>
+
+          </div><div class="layui-col-xs6">
+              <div class="layui-inline">
+                  <label class="layui-form-label">隐患小类</label>
+                  <div class="layui-input-inline">
+                      <select name="HiddenTypeS" id="HiddenTypeS">
+                          <option value="">请选择</option>
+                          <option value="A01">资质证照</option>
+                          <option value="A02">安全生产管理机构及人员</option>
+                          <option value="A03">安全规章制度</option>
+                          <option value="A04">安全培训教育</option>
+                          <option value="A05">安全投入</option>
+                          <option value="A06">相关方面管理</option>
+                          <option value="A07">重大危险源管理</option>
+                          <option value="A08">个体防护装备</option>
+                          <option value="A09">职业健康</option>
+                          <option value="A10">应急管理</option>
+                          <option value="A11">隐患排查治理</option>
+                          <option value="A12">事故报告、调查和处理</option>
+                          <option value="A99">其他</option>
+                      </select>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <div class="layui-form-item">
+          <div class="layui-col-xs6">
+              <div class="layui-inline">
+                  <label class="layui-form-label">隐患级别</label>
+                  <div class="layui-input-inline">
+                      <select name="HiddenLevel" id="HiddenLevel">
+                          <option value="">请选择</option>
+                          <option value="一般隐患">一般隐患</option>
+                          <option value="重大隐患">重大隐患</option>
+                      </select>
+                  </div>
+              </div>
+          </div>
+      </div>
 
       <div class="layui-form-item layui-form-text">
-        <label class="layui-form-label">隐患内容</label>
-        <div class="layui-input-block">
-            <textarea placeholder="请描述简单隐患内容" id="HiddenContent" name="HiddenContent" class="layui-textarea" lay-verify="required"></textarea>
-        </div>
+          <div class="layui-col-xs12">
+                  <label class="layui-form-label">隐患内容</label>
+                  <div class="layui-input-block">
+                      <textarea placeholder="请描述简单隐患内容" id="HiddenContent" name="HiddenContent" class="layui-textarea" lay-verify="required"></textarea>
+                  </div>
+          </div>
       </div>
 
-            <div class="layui-form-item layui-form-text">
+      <div class="layui-form-item layui-form-text">
           <label class="layui-form-label">整改前照片</label>
           <div class="layui-input-block padding_lr_5 padding_tb_5">
               <div class="layui-upload">
@@ -120,35 +130,41 @@
 
   <fieldset class="layui-elem-field site-demo-button padding_lr_5">
         <legend>整改信息</legend>
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">整改责任部门</label>
-                <div class="layui-input-inline">
-                    <input type="text" id="ResponseOrgName" name="ResponseOrgName" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">整改期限</label>
-                <div class="layui-input-block">
-                    <input type="text" id="TimeLimit" autocomplete="off" name="TimeLimit" class="layui-input input-data">
-                </div>
-            </div>
-        </div>
+      <div class="layui-form-item">
+          <div class="layui-col-xs6">
+              <div class="layui-inline">
+                  <label class="layui-form-label">整改责任部门</label>
+                  <div class="layui-input-inline">
+                      <input type="text" id="ResponseOrgName" name="ResponseOrgName" autocomplete="off" class="layui-input">
+                  </div>
+              </div>
+          </div><div class="layui-col-xs6">
+              <div class="layui-inline">
+                  <label class="layui-form-label">整改期限</label>
+                  <div class="layui-input-inline">
+                      <input type="text" id="TimeLimit" autocomplete="off" name="TimeLimit" class="layui-input laydate">
+                  </div>
+              </div>
+          </div>
+      </div>
 
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">整改责任人</label>
-                <div class="layui-input-inline">
-                    <input type="text" id="ResponseEmpName" name="ResponseEmpName" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">责任人电话</label>
-                <div class="layui-input-block">
-                    <input type="text" id="ResponseNumer" name="ResponseNumer" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-        </div>
+      <div class="layui-form-item">
+          <div class="layui-col-xs6">
+              <div class="layui-inline">
+                  <label class="layui-form-label">整改责任人</label>
+                  <div class="layui-input-inline">
+                      <input type="text" id="ResponseEmpName" name="ResponseEmpName" autocomplete="off" class="layui-input">
+                  </div>
+              </div>
+          </div><div class="layui-col-xs6">
+              <div class="layui-inline">
+                  <label class="layui-form-label">责任人电话</label>
+                  <div class="layui-input-inline">
+                      <input type="text" id="ResponseNumer" name="ResponseNumer" autocomplete="off" class="layui-input">
+                  </div>
+              </div>
+          </div>
+      </div>
 
       <div class="layui-form-item layui-form-text">
           <label class="layui-form-label">整改措施</label>
@@ -157,24 +173,27 @@
           </div>
       </div>
 
-        <div class="layui-form-item">
-          <div class="layui-inline">
-              <label class="layui-form-label">整改结果</label>
-              <div class="layui-input-inline">
-                  <select name="Result" id="Result">
-                      <option value="">请选择</option>
-                      <option value="已整改">已整改</option>
-                      <option value="未整改">未整改</option>
-                  </select>
+      <div class="layui-form-item">
+          <div class="layui-col-xs6">
+              <div class="layui-inline">
+                  <label class="layui-form-label">整改结果</label>
+                  <div class="layui-input-inline">
+                      <select name="Result" id="Result">
+                          <option value="">请选择</option>
+                          <option value="已整改">已整改</option>
+                          <option value="未整改">未整改</option>
+                      </select>
+                  </div>
+              </div>
+          </div><div class="layui-col-xs6">
+              <div class="layui-inline">
+                  <label class="layui-form-label">完成日期</label>
+                  <div class="layui-input-inline">
+                      <input type="text" id="CompleteTime" autocomplete="off" name="CompleteTime" class="layui-input laydate">
+                  </div>
               </div>
           </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">完成日期</label>
-                <div class="layui-input-block">
-                    <input type="text" id="CompleteTime" autocomplete="off" name="CompleteTime" class="layui-input input-data">
-                </div>
-            </div>
-        </div>
+      </div>
 
       <div class="layui-form-item layui-form-text">
           <label class="layui-form-label">整改后照片</label>
@@ -193,139 +212,137 @@
   
   <fieldset class="layui-elem-field site-demo-button padding_lr_5">
         <legend>验证信息</legend>
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">验证部门</label>
-                <div class="layui-input-inline">
-                    <input type="text" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">验证人员</label>
-                <div class="layui-input-block">
-                    <input type="text" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-        </div>
+      <div class="layui-form-item">
+          <div class="layui-col-xs6">
+              <div class="layui-inline">
+                  <label class="layui-form-label">验证部门</label>
+                  <div class="layui-input-inline">
+                      <input type="text" name="ValidateOrg" autocomplete="off" class="layui-input">
+                  </div>
+              </div>
+          </div><div class="layui-col-xs6">
+              <div class="layui-inline">
+                  <label class="layui-form-label">验证人员</label>
+                  <div class="layui-input-inline">
+                      <input type="text" name="ValidateEmpName" autocomplete="off" class="layui-input">
+                  </div>
+              </div>
+          </div>
+      </div>
 
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">验证日期</label>
-                <div class="layui-input-inline">
-                    <input type="text" autocomplete="off" name="CheckDate" class="layui-input input-data">
-                </div>
-            </div>
-            <div class="layui-inline">
-            </div>
-        </div>
+      <div class="layui-form-item">
+          <div class="layui-col-xs6">
+              <div class="layui-inline">
+                  <label class="layui-form-label">验证日期</label>
+                  <div class="layui-input-inline">
+                      <input type="text" autocomplete="off" name="ValidateDate" class="layui-input laydate">
+                  </div>
+              </div>
+              <div class="layui-inline">
+              </div>
+          </div>
+      </div>
+
     </fieldset>
 
   <div class="layui-form-item text-center">
         <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="btnSub">保存</button>
 
-        <button class="layui-btn layui-btn-primary" lay-submit="" lay-filter="btnBack">返回</button>
+        <button class="layui-btn layui-btn-primary" id="btnBack">返回</button>
   </div>
 </form>
 </div>              
 
 <script>
-    var _RecordId = "";
-    layui.use(['form', 'laydate'], function (postData) {
-        var form = layui.form,
-            $ = layui.jquery,
-            layer = layui.layer,
-            laydate = layui.laydate,
-            Cm_editMode = $.Cm_Setting.editMode,
-            _self = parent.layer.getFrameIndex(window.name); //获取窗口索引
-        IsReadOnly = postData.editMode == Cm_editMode.view,
-        IsEdit = postData.editMode == Cm_editMode.edit,
-        saveMethed = IsEdit ? "putAsync" : "postAsync",
-        user = $.Cm_Auth.userInfo(),
-        _pageData = postData.pageData || {};
+    var _HiddenDangerId = "";
+    pageLoad = function (postData) {
+        layui.use(['form', 'laydate'], function () {
+            var form = layui.form,
+                $ = layui.jquery,
+                layer = layui.layer,
+                laydate = layui.laydate,
+                Cm_editMode = $.Cm_Setting.editMode,
+                _self = parent.layer.getFrameIndex(window.name); //获取窗口索引
+            IsReadOnly = postData.editMode == Cm_editMode.view,
+            IsEdit = postData.editMode == Cm_editMode.edit,
+            saveMethed = IsEdit ? "putAsync" : "postAsync",
+            user = $.Cm_Auth.userInfo(),
+            _pageData = postData.pageData || {};
 
-        _RecordId = _pageData.RecordId || $.Cm_Common.getGuid();
+            _HiddenDangerId = _pageData.HiddenDangerId || $.Cm_Common.getGuid();
 
-        //常规用法
-        lay('.input-data').each(function () {
-            laydate.render({
-                elem: this
-              , trigger: 'click'
+            //常规用法
+            lay('.laydate').each(function () {
+                laydate.render({
+                    elem: this
+                  , trigger: 'focus'
+                });
             });
-        });
 
-        $("[name='WorkTime']").val(_pageData.WorkTime && moment(_pageData.WorkTime).format("YYYY-MM-DD") || "");
-        $("[name='Detail']").val(_pageData.Detail || "");
+            switch (postData.editMode) {
+                case Cm_editMode.view:
+                case Cm_editMode.edit:
+                    if (IsReadOnly) {
+                        $(":input:not(#btnBack)").attr("disabled", true);
+                        $("[lay-filter='btnSub']").remove();
+                    }
+                    break;
+                case Cm_editMode.add:
+                    _HiddenDangerId = $.Cm_Common.getGuid();
+                    break;
+            }
 
-        switch (postData.editMode) {
-            case Cm_editMode.view:
-            case Cm_editMode.edit:
-                $("[name='WorkTime']").attr("disabled", true);
-                if (IsReadOnly) {
-                    $(":input").attr("disabled", true);
-                    $("[lay-filter='btnSub']").remove();
+            form = layui.form;
+            form.render();
+
+            //返回
+            $("#btnBack").click(function () {
+                TopWin.layer.close(_self);
+            });
+
+            //监听提交
+            form.on('submit(btnSub)', function (data) {
+                var saveData = {
+                },
+                    _url = baseConst.odata + "T_YH_HiddenDanger_Entity";
+
+                $.extend(saveData, data.field);
+                if (IsEdit) {
+                    _url += "('" + _HiddenDangerId + "')";
+                    $.extend(saveData, {
+                          ModifyEmpCode: '11'
+                        , ModifyEmpName: '11'
+                        , ModifyTime: new Date()
+                    });
+                    saveData.CreateTime = moment(saveData.CreateTime);
                 }
-                break;
-            case Cm_editMode.add:
-                _RecordId = $.Cm_Common.getGuid();
-                break;
-        }
+                else {
+                    $.extend(saveData, {
+                        HiddenDangerId: _HiddenDangerId
+                        , CreateByEmpCode: '11'
+                        , CreateByEmpName: '11'
+                        , CreateTime:new Date()
+                        , IsDeleted: false
+                    });
+                }
 
-        form.render();
-        //监听提交
-        form.on('submit(btnSub)', function (data) {
-            var saveData = {
-            },
-                _url = baseConst.odata + "T_YH_HiddenDanger_Entity";
+                saveData.CheckTime = moment(saveData.CheckTime);
+                saveData.ValidateDate = moment(saveData.ValidateDate);
+                saveData.TimeLimit = moment(saveData.TimeLimit);
+                saveData.CompleteTime = moment(saveData.CompleteTime);
 
-            $.extend(saveData, data.field);
-            if (IsEdit) {
-                _url += "('" + _RecordId + "')";
-                $.extend(saveData, {
-                    //ModifyEmpCode: user.EmpCode,
-                    //ModifyEmpName: user.EmpName,
-                    ModifyEmpCode: '11'
-                    , ModifyEmpName: '11'
-                    , ModifyTime: formatDate(new Date())
+
+                ($.Cm_Ajax)[saveMethed](_url, saveData).done(function () {
+                   TopWin.layer.alert("操作成功", function (index) {
+                        TopWin.layer.close(index);
+                        TopWin.layer.close(_self);
+                    });
+                }).fail(function (err) {
+                    console.log(err);
                 });
-            }
-            else {
-                $.extend(saveData, {
-                    RecordId: _RecordId
-                    //, EmpCode: user.EmpCode
-                    // , EmpName: user.EmpName
-                    // , CreateByEmpCode: user.EmpCode
-                    // , CreateByEmpName: user.EmpName
-                    , EmpCode: '11'
-                    , EmpName: '11'
-                    , CreateByEmpCode: '11'
-                    , CreateByEmpName: '11'
-                    , CreateTime: $.Cm_DateTime.Now()
-                    , IsDeleted: false
-                });
-            }
+                return false;
+            });
 
-            //($.Cm_Ajax)[saveMethed](_url, saveData).done(function () {
-            //   TopWin.layer.alert("操作成功", function (index) {
-            //        TopWin.layer.close(index);
-            //        TopWin.layer.close(_self);
-            //    });
-            //});
-            HiddenDangerAdd(saveData);
-            return false;
-        });
-
-    });
-
-
-    function HiddenDangerAdd(saveData) {
-        $.ajax({
-            type: 'POST',
-            url: "@Url.Content("~/YH/HiddenDangerAdd")",
-            data:  saveData,
-            success: function (data) {
-                layer.msg(data.Msg);
-                $("#HiddenDangerID").val(data.Data);
-            }
         });
     }
     

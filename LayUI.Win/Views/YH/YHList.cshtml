@@ -5,7 +5,7 @@
 
 <style>
     .layui-table-cell{height:auto;line-height:1;}
-    .layui-table-view .layui-table td{padding:3px 0;}
+    .layui-table-view .layui-table td{padding:5px 0;}
 </style>
 
 <script>
@@ -83,7 +83,7 @@
                 if (!datas.length) { TopWin.layer.msg("至少选择一行数据！"); return; }
                 var _index = TopWin.layer.load(), total = datas.length;
                 $.each(datas, function (_i, _t) {
-                    $.Cm_Ajax.putAsync(baseConst.odata + "T_YH_HiddenDanger_Entity('" + _t.RecordId + "')", { IsDeleted: true }).always(function () {
+                    $.Cm_Ajax.putAsync(baseConst.odata + "T_YH_HiddenDanger_Entity('" + _t.HiddenDangerId + "')", { IsDeleted: true }).always(function () {
                         total--;
                         if (!total)
                         {
