@@ -115,6 +115,21 @@ namespace LayUI.Win.Controllers
 
         #endregion
 
+        #region 文件上传
+        [HttpPost]
+        public JsonResult FileUpload()
+        {
+
+            return Json(null);
+        }
+
+        public ActionResult FileList() 
+        {
+            return View();
+        
+        }
+        #endregion
+
         #endregion
     }
 }
