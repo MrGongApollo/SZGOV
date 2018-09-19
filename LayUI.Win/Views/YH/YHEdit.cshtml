@@ -282,6 +282,37 @@
             switch (postData.editMode) {
                 case Cm_editMode.view:
                 case Cm_editMode.edit:
+                    var fileds = [
+                        "OrgName",
+                        "HiddenPart",
+                        "CheckTime",
+                        "CheckEmpName",
+                        "HiddenTypeL",
+                        "HiddenTypeS",
+                        "HiddenLevel",
+                        "HiddenContent",
+                        "ResponseOrgName",
+                        "TimeLimit",
+                        "ResponseEmpName",
+                        "ResponseNumer",
+                        "Measure",
+                        "Result",
+                        "CompleteTime",
+                        "ValidateOrg",
+                        "ValidateEmpName",
+                        "ValidateEmpName"
+                    ];
+
+                    $.each(fileds, function (_i, _t) {
+                        $("[name='" + _t + "']").val(_pageData[_t] || "");
+                    });
+
+                    $("[name='CheckTime']").val(_pageData.CheckTime && $.Cm_DateTime.dateFormat(_pageData.CheckTime, "yyyy-MM-dd") || "")
+                    $("[name='ValidateDate']").val(_pageData.ValidateDate && $.Cm_DateTime.dateFormat(_pageData.ValidateDate, "yyyy-MM-dd") || "")
+                    $("[name='TimeLimit']").val(_pageData.TimeLimit && $.Cm_DateTime.dateFormat(_pageData.TimeLimit, "yyyy-MM-dd") || "")
+                    $("[name='CompleteTime']").val(_pageData.CompleteTime && $.Cm_DateTime.dateFormat(_pageData.CompleteTime, "yyyy-MM-dd") || "")
+
+
                     if (IsReadOnly) {
                         $(":input:not(#btnBack)").attr("disabled", true);
                         $("[lay-filter='btnSub']").remove();

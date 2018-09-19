@@ -51,7 +51,7 @@ namespace LayUI.Win.Controllers
                 using (TeamWorkDbContext et = new TeamWorkDbContext())
                 {
 
-                    T_YH_HiddenDanger_Entity u = et.T_YH_HiddenDanger_Entity.Find(saveData.HiddenDangerID);
+                    T_YH_HiddenDanger_Entity u = et.T_YH_HiddenDanger_Entity.Find(saveData.HiddenDangerId);
                     if (u != null)
                     {
                         CommonHelper.RemoveHoldingEntityInContext<T_YH_HiddenDanger_Entity>(u, et);
@@ -60,11 +60,11 @@ namespace LayUI.Win.Controllers
                     }
                     else 
                     {
-                        saveData.HiddenDangerID = System.Guid.NewGuid().ToString("N");
+                        saveData.HiddenDangerId = System.Guid.NewGuid().ToString("N");
                         u = et.T_YH_HiddenDanger_Entity.Add(saveData);
                     }
                     et.SaveChanges();
-                    Ret.Data = saveData.HiddenDangerID;
+                    Ret.Data = saveData.HiddenDangerId;
                     Ret.Msg = "保存成功";
                     Ret.Ret = true;
                    
