@@ -79,6 +79,16 @@ namespace LayUI.Data.EntityModel
         public string ContactNumber { get; set; }
         
         /// <summary>
+        /// 从业人员是否变化
+        /// </summary>
+        public string IsPersonChange { get; set; }
+        
+        /// <summary>
+        /// 检查人
+        /// </summary>
+        public string CheckEmpName { get; set; }
+        
+        /// <summary>
         /// 创建人工号
         /// </summary>
         public string CreateByEmpCode { get; set; }

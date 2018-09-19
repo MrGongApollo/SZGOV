@@ -16,12 +16,11 @@ namespace LayUI.Data.EntityModel
         /// 隐患主键
         /// </summary>
 		[Key]
-        public string HiddenDangerID { get; set; }
+        public string HiddenDangerId { get; set; }
         
         /// <summary>
         /// 隐患编号
         /// </summary>
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public decimal SerialNo { get; set; }
         
         /// <summary>
@@ -118,6 +117,21 @@ namespace LayUI.Data.EntityModel
         /// 完成日期
         /// </summary>
         public DateTime? CompleteTime { get; set; }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public string ValidateEmpName { get; set; }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public string ValidateOrg { get; set; }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public DateTime? ValidateDate { get; set; }
         
         /// <summary>
         /// 创建人工号

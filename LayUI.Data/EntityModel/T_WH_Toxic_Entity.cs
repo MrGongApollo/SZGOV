@@ -49,19 +49,21 @@ namespace LayUI.Data.EntityModel
         public string Useage { get; set; }
         
         /// <summary>
-        /// 本月入库量
+        /// 当月进货量
+   
         /// </summary>
         public decimal? StorageCurMonth { get; set; }
         
         /// <summary>
-        /// 本月出库量
+        /// 当月使用量
+   
         /// </summary>
         public decimal? StorageOutCurMonth { get; set; }
         
         /// <summary>
-        /// 本月库存量
+        /// 现库存量
         /// </summary>
-        public decimal? StockCurMonth { get; set; }
+        public decimal? StockCur { get; set; }
         
         /// <summary>
         /// 存放点
@@ -102,6 +104,11 @@ namespace LayUI.Data.EntityModel
         /// 使用单位名称
         /// </summary>
         public string UseOrgName { get; set; }
+        
+        /// <summary>
+        /// 从业人员是否变化
+        /// </summary>
+        public string IsPersonChange { get; set; }
         
         /// <summary>
         /// 创建人工号
