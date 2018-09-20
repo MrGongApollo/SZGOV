@@ -41,45 +41,44 @@ namespace LayUI.Win.Controllers
         /// 新增隐患
         /// </summary>
         /// <returns></returns>
-        [HttpPost]
-        public JsonResult HiddenDangerAdd(T_YH_HiddenDanger_Entity saveData)
-        {
-            JsonRetModel Ret = new JsonRetModel { Ret = false };
-            #region 验证
-            try
-            {
-                using (TeamWorkDbContext et = new TeamWorkDbContext())
-                {
-
-                    T_YH_HiddenDanger_Entity u = et.T_YH_HiddenDanger_Entity.Find(saveData.HiddenDangerId);
-                    if (u != null)
-                    {
-                        CommonHelper.RemoveHoldingEntityInContext<T_YH_HiddenDanger_Entity>(u, et);
-                        u = saveData;
-                        et.Entry<T_YH_HiddenDanger_Entity>(u).State = System.Data.Entity.EntityState.Modified;
-                    }
-                    else 
-                    {
-                        saveData.HiddenDangerId = System.Guid.NewGuid().ToString("N");
-                        u = et.T_YH_HiddenDanger_Entity.Add(saveData);
-                    }
-                    et.SaveChanges();
-                    Ret.Data = saveData.HiddenDangerId;
-                    Ret.Msg = "保存成功";
-                    Ret.Ret = true;
+        //[HttpPost]
+        //public JsonResult HiddenDangerAdd(T_YH_HiddenDanger_Entity saveData)
+        //{
+        //    JsonRetModel Ret = new JsonRetModel { Ret = false };
+        //    #region 验证
+        //    try
+        //    {
+        //        using (TeamWorkDbContext et = new TeamWorkDbContext())
+        //        {
+        //            T_YH_HiddenDanger_Entity u = et.T_YH_HiddenDanger_Entity.Find(saveData.HiddenDangerID);
+        //            if (u != null)
+        //            {
+        //                CommonHelper.RemoveHoldingEntityInContext<T_YH_HiddenDanger_Entity>(u, et);
+        //                u = saveData;
+        //                et.Entry<T_YH_HiddenDanger_Entity>(u).State = System.Data.Entity.EntityState.Modified;
+        //            }
+        //            else 
+        //            {
+        //                saveData.HiddenDangerID = System.Guid.NewGuid().ToString("N");
+        //                u = et.T_YH_HiddenDanger_Entity.Add(saveData);
+        //            }
+        //            et.SaveChanges();
+        //            Ret.Data = saveData.HiddenDangerID;
+        //            Ret.Msg = "保存成功";
+        //            Ret.Ret = true;
                    
-                }
-            }
-            #endregion
-            #region 异常
-            catch (Exception ex)
-            {
-                Ret.Ret = false;
-                Ret.Msg = ex.Message;
-            }
-            #endregion
-            return Json(Ret, JsonRequestBehavior.AllowGet);
-        }
+        //        }
+        //    }
+        //    #endregion
+        //    #region 异常
+        //    catch (Exception ex)
+        //    {
+        //        Ret.Ret = false;
+        //        Ret.Msg = ex.Message;
+        //    }
+        //    #endregion
+        //    return Json(Ret, JsonRequestBehavior.AllowGet);
+        //}
         #endregion
 
         #region 查询列表
