@@ -192,7 +192,7 @@
                     }
                     break;
                 case Cm_editMode.add:
-                    _RecordId = $.Cm_Common.getGuid();
+                    _DossierId = $.Cm_Common.getGuid();
                     break;
             }
 
@@ -205,7 +205,7 @@
             });
 
 
-            $(".btnAddFiles").click(function () {
+            $(".btnAddFiles").click(function (postData) {
                 TopWin.layer.open({
                     type: 2,
                     title: "附件上传",
@@ -216,7 +216,11 @@
                     success: function (frm) {
                         var _frm = frm.find("iframe").get(0).contentWindow;
                         if (typeof _frm.pageLoad == "function") {
-                           // _frm.pageLoad(options);
+                            _pageData.RelevanceId = _DossierId;
+                            _pageData.DocType = '1';
+                            _pageData.FromModuleName = "ZDWX";
+                            postData.pageData = _pageData;
+                            _frm.pageLoad(postData);
                         }
                     },
                 close: function (index) {

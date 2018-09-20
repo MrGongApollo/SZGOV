@@ -6,6 +6,9 @@
 
 
 <script>
+    var _RelevanceId = "";
+    var _DocType = "";
+    var _FromModuleName = "";
     pageLoad = function (postData) {
         layui.use(['form', 'upload'], function () {
             var form = null,
@@ -19,7 +22,9 @@
                 saveMethed = IsEdit ? "putAsync" : "postAsync",
                 user = $.Cm_Auth.userInfo(),
                 _pageData = postData.pageData || {};
-
+                _RelevanceId = _pageData.RelevanceId || "";
+                _DocType = _pageData.DocType || "";
+                _FromModuleName = _pageData.FromModuleName || ""
             //多文件列表示例
             var $FileContainer = $("#FileContainer")
                 , uploadListIns = upload.render({
@@ -29,6 +34,15 @@
                   , multiple: true
                   , auto: false
                   , bindAction: '#btnUpload'
+                  , data: {
+                      RelevanceId: _RelevanceId
+                      , CreateByEmpCode: '11'
+                      , CreateByEmpName: '11'
+                      , DocType: _DocType
+                      , FromModuleName: _FromModuleName
+  
+
+                  }
                   , choose: function (obj) {
                       var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
                       //读取本地文件
@@ -59,7 +73,7 @@
                       });
                   }
                       , done: function (res, index, upload) {
-                          if (res.code == 0) { //上传成功
+                          if (res.Ret) { //上传成功
                               var tr = $FileContainer.find('tr#upload-' + index)
                               , tds = tr.children();
                               tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
@@ -75,6 +89,10 @@
                           tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
                       }
                 });
+            //返回
+            $("#btnBack").click(function () {
+                TopWin.layer.close(_self);
+            });
         });
     }
 
