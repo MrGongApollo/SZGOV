@@ -10,6 +10,7 @@ using LayUI.Win.Models;
 using LayUI.Utility.Helper;
 using System.Data;
 using System.Drawing;
+using System.IO;
 
 namespace LayUI.Win.Controllers
 {
@@ -120,8 +121,88 @@ namespace LayUI.Win.Controllers
         [HttpPost]
         public JsonResult FileUpload()
         {
+            string RelevanceIdS = Request["RelevanceId"];
+            string FromModuleNameS = Request["FromModuleName"];
+            string FromTableNameS = "";
+            string DocTypeS = Request["DocType"];
+            string CreateByEmpCodeS = Request["CreateByEmpCode"];
+            string CreateByEmpNameS = Request["CreateByEmpName"];
+            JsonRetModel Ret = new JsonRetModel { Ret = false };
+            HttpPostedFileBase files = Request.Files["file"];
+            try
+            {
+                TeamWorkDbContext et = new TeamWorkDbContext();
+                if (files == null)
+                {
+                    Ret.Ret = false;
+                    Ret.Msg = "请选择文件!!";
+                    return Json(Ret, JsonRequestBehavior.AllowGet);
+                }
+                if (RelevanceIdS == null)
+                {
+                    Ret.Ret = false;
+                    Ret.Msg = "请重新打开上传页面!!";
+                    return Json(Ret, JsonRequestBehavior.AllowGet);
+                }
+                if (FromModuleNameS == "ZDWX")
+                {
+                    FromTableNameS = "T_WH_MajorHazardDossier";
+                }
+                string filePath = string.Empty;
+                decimal size = files.ContentLength / 1024;
+                Guid gid = Guid.NewGuid();
+                string datePath = DateTime.Now.ToString("yyyy-MM") + "";
+                filePath = Path.Combine("D:/anbao/Uploads/" + datePath + "/");//地址换成常量
+                if (!Directory.Exists(filePath))
+                {
+                    Directory.CreateDirectory(filePath);
 
-            return Json(null);
+                }
+                filePath = Path.Combine(filePath + gid.ToString() + Path.GetExtension(files.FileName));
+                files.SaveAs(filePath);
+                et.T_XT_Doc_Entity.Add(new T_XT_Doc_Entity
+                {
+                    StoreDirectoryId = ""
+                    ,
+                    DocId = System.Guid.NewGuid().ToString("N")
+                    ,
+                    DocName = files.FileName
+                    ,
+                    DocType = DocTypeS
+                    ,
+                    DocSize = size
+                    ,
+                    SubDirectory = datePath
+                    ,
+                    InternalName = gid.ToString()
+                    ,
+                    DownloadCount = 0
+                    ,
+                    FromModuleName = FromModuleNameS
+                    ,
+                    FromTableName = FromTableNameS
+                    ,
+                    RelevanceId = RelevanceIdS
+                    ,
+                    CreateByEmpCode = CreateByEmpCodeS
+                    ,
+                    CreateByEmpName = CreateByEmpNameS
+                    ,
+                    CreateTime = DateTime.Now
+                    ,
+                    IsDeleted = false
+
+                });
+                et.SaveChanges();
+                Ret.Ret = true;
+                return Json(Ret, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Ret.Ret = false;
+                Ret.Msg = ex.Message;
+                return Json(Ret, JsonRequestBehavior.AllowGet);
+            }
         }
 
         public ActionResult FileList() 
