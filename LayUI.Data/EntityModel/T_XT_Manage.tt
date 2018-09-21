@@ -36,6 +36,9 @@ namespace <#=manager.DefaultProjectNamespace #>.EntityModel
 <# if(column.IsPrimaryKey){#>
 		[Key]
 <#}#>
+<# if(column.IsIdentity){#>
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
+<#}#>
         public <#= column.CSharpType#><# if(column.CommonType.IsValueType && column.IsNullable){#>?<#}#> <#=column.ColumnName#> { get; set; }
         <#}#> 
 		#endregion

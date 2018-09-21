@@ -8,7 +8,7 @@ namespace LayUI.Data.EntityModel
     /// 
     /// </summary>
 	[Table("T_XT_Data")]
-    public partial class T_XT_Data_Entity : IEntity
+    public partial class T_XT_Data_Entity : IEntity, ICreationAudited, IModificationAudited, IDeleteAudited
 	{
 		#region 数据库属性字段
 		
