@@ -84,6 +84,9 @@
     <Compile Include="EntityModel\T_XT_LogRecords_Entity.cs">
       <DependentUpon>T_XT_Manage.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntityModel\T_XT_StoreDirectory_Entity.cs">
+      <DependentUpon>T_XT_Manage.tt</DependentUpon>
+    </Compile>
     <Compile Include="EntityModel\T_XT_User_Entity.cs">
       <DependentUpon>T_XT_Manage.tt</DependentUpon>
     </Compile>
