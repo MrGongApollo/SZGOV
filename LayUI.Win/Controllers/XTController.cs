@@ -8,6 +8,7 @@ using LayUI.Data;
 using LayUI.Data.EntityModel;
 using LayUI.Win.Models;
 using LayUI.Utility.Helper;
+using LayUI.Utility.Models;
 using System.Data;
 using System.Drawing;
 using System.IO;
@@ -29,6 +30,7 @@ namespace LayUI.Win.Controllers
         public JsonResult getCurentUserInfo()
         {
             T_XT_User_Entity U = getCurUser();
+            if (U != null) { 
             return Json(new 
             {
                 EmpCode = U.EmpCode,
@@ -38,6 +40,11 @@ namespace LayUI.Win.Controllers
                 PhoneNum = U.PhoneNum,
                 TheLoginTime = U.TheLoginTime
             }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(null);
+            }
         }
         #endregion
 
@@ -118,98 +125,233 @@ namespace LayUI.Win.Controllers
         #endregion
 
         #region 文件上传
-        [HttpPost]
-        public JsonResult FileUpload()
-        {
-            string RelevanceIdS = Request["RelevanceId"];
-            string FromModuleNameS = Request["FromModuleName"];
-            string FromTableNameS = "";
-            string DocTypeS = Request["DocType"];
-            string CreateByEmpCodeS = Request["CreateByEmpCode"];
-            string CreateByEmpNameS = Request["CreateByEmpName"];
-            JsonRetModel Ret = new JsonRetModel { Ret = false };
-            HttpPostedFileBase files = Request.Files["file"];
-            try
-            {
-                TeamWorkDbContext et = new TeamWorkDbContext();
-                if (files == null)
-                {
-                    Ret.Ret = false;
-                    Ret.Msg = "请选择文件!!";
-                    return Json(Ret, JsonRequestBehavior.AllowGet);
-                }
-                if (RelevanceIdS == null)
-                {
-                    Ret.Ret = false;
-                    Ret.Msg = "请重新打开上传页面!!";
-                    return Json(Ret, JsonRequestBehavior.AllowGet);
-                }
-                if (FromModuleNameS == "ZDWX")
-                {
-                    FromTableNameS = "T_WH_MajorHazardDossier";
-                }
-                string filePath = string.Empty;
-                decimal size = files.ContentLength / 1024;
-                Guid gid = Guid.NewGuid();
-                string datePath = DateTime.Now.ToString("yyyy-MM") + "";
-                filePath = Path.Combine("D:/anbao/Uploads/" + datePath + "/");//地址换成常量
-                if (!Directory.Exists(filePath))
-                {
-                    Directory.CreateDirectory(filePath);
+        //[HttpPost]
+        //public JsonResult FileUpload()
+        //{
+           
+        //    string RelevanceIdS = Request["RelevanceId"];
+        //    string FromModuleNameS = Request["FromModuleName"];
+        //    string FromTableNameS = "";
+        //    string DocTypeS = Request["DocType"];
+        //    string CreateByEmpCodeS = Request["CreateByEmpCode"];
+        //    string CreateByEmpNameS = Request["CreateByEmpName"];
+        //    JsonRetModel Ret = new JsonRetModel { Ret = false };
+        //    HttpPostedFileBase files = Request.Files["file"];
+        //    try
+        //    {
+        //        TeamWorkDbContext et = new TeamWorkDbContext();
+        //        if (files == null)
+        //        {
+        //            Ret.Ret = false;
+        //            Ret.Msg = "请选择文件!!";
+        //            return Json(Ret, JsonRequestBehavior.AllowGet);
+        //        }
+        //        if (RelevanceIdS == null)
+        //        {
+        //            Ret.Ret = false;
+        //            Ret.Msg = "请重新打开上传页面!!";
+        //            return Json(Ret, JsonRequestBehavior.AllowGet);
+        //        }
+        //        if (FromModuleNameS == "ZDWX")
+        //        {
+        //            FromTableNameS = "T_WH_MajorHazardDossier";
+        //        }
+        //        string filePath = string.Empty;
+        //        decimal size = files.ContentLength / 1024;
+        //        Guid gid = Guid.NewGuid();
+        //        string datePath = DateTime.Now.ToString("yyyy-MM") + "";
+        //        filePath = Path.Combine("D:/anbao/Uploads/" + datePath + "/");//地址换成常量
+        //        if (!Directory.Exists(filePath))
+        //        {
+        //            Directory.CreateDirectory(filePath);
 
-                }
-                filePath = Path.Combine(filePath + gid.ToString() + Path.GetExtension(files.FileName));
-                files.SaveAs(filePath);
-                et.T_XT_Doc_Entity.Add(new T_XT_Doc_Entity
-                {
-                    StoreDirectoryId = ""
-                    ,
-                    DocId = System.Guid.NewGuid().ToString("N")
-                    ,
-                    DocName = files.FileName
-                    ,
-                    DocType = DocTypeS
-                    ,
-                    DocSize = size
-                    ,
-                    SubDirectory = datePath
-                    ,
-                    InternalName = gid.ToString()
-                    ,
-                    DownloadCount = 0
-                    ,
-                    FromModuleName = FromModuleNameS
-                    ,
-                    FromTableName = FromTableNameS
-                    ,
-                    RelevanceId = RelevanceIdS
-                    ,
-                    CreateByEmpCode = CreateByEmpCodeS
-                    ,
-                    CreateByEmpName = CreateByEmpNameS
-                    ,
-                    CreateTime = DateTime.Now
-                    ,
-                    IsDeleted = false
-
-                });
-                et.SaveChanges();
-                Ret.Ret = true;
-                return Json(Ret, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                Ret.Ret = false;
-                Ret.Msg = ex.Message;
-                return Json(Ret, JsonRequestBehavior.AllowGet);
-            }
-        }
+        //        }
+        //        filePath = Path.Combine(filePath + gid.ToString() + Path.GetExtension(files.FileName));
+        //        files.SaveAs(filePath);
+        //        et.T_XT_Doc_Entity.Add(new T_XT_Doc_Entity
+        //        {
+        //            StoreDirectoryId = "",
+        //            DocId = System.Guid.NewGuid().ToString("N"),
+        //            DocName = files.FileName,
+        //            DocType = DocTypeS,
+        //            DocSize = size,
+        //            SubDirectory = datePath,
+        //            InternalName = gid.ToString(),
+        //            DownloadCount = 0,
+        //            FromModuleName = FromModuleNameS,
+        //            FromTableName = FromTableNameS,
+        //            RelevanceId = RelevanceIdS,
+        //            CreateByEmpCode = CreateByEmpCodeS,
+        //            CreateByEmpName = CreateByEmpNameS,
+        //            CreateTime = DateTime.Now,
+        //            IsDeleted = false
+        //        });
+        //        et.SaveChanges();
+        //        Ret.Ret = true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Ret.Ret = false;
+        //        Ret.Msg = ex.Message;
+        //    }
+        //    return Json(Ret, JsonRequestBehavior.AllowGet);
+        //}
 
         public ActionResult FileList() 
         {
             return View();
         
         }
+        #endregion
+
+        #region 文件上传
+        /// <summary>
+        /// 文件上传
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult FileUpload()
+        {
+            JsonRetModel ret = new JsonRetModel();
+
+            try
+            {
+                Response.ContentType = "text/plain";
+                Response.ContentEncoding = System.Text.Encoding.GetEncoding("UTF-8");
+                Response.Charset = "utf-8";
+
+                string _RelevanceId = Request["RelevanceId"],
+                       _FromModuleName = Request["FromModuleName"],
+                       _FromTableName = Request["FromTableName"],
+                       _ExpandOne = Request["ExpandOne"],
+                       _ExpandTwo = Request["ExpandTwo"],
+                       _ExpandThree = Request["ExpandThree"],
+                       _ExpandFour = Request["ExpandFour"],
+                       _ExpandFive = Request["ExpandFive"];
+
+                HttpPostedFileBase file = Request.Files["file"];
+
+                KeyValModel kv = GetCurrentStoreDirectory();//获取存储物理路径
+                if (kv != null)
+                {
+                    using (TeamWorkDbContext et=new TeamWorkDbContext())
+                    {
+                        string storeDirectoryId = kv.Key,
+                           storeDirectory = kv.Val,
+                           subDirectory = DateTime.Now.ToString("yyyyMM"),
+                           uploadPath = storeDirectory + @"\" + subDirectory + @"\";
+
+                        if (file != null)
+                        {
+                            if (!Directory.Exists(uploadPath))
+                            {
+                                Directory.CreateDirectory(uploadPath);
+                            }
+                            string[] array = file.FileName.Split('.');
+                            string suffix = "." + array[array.Length - 1],
+                                   internalName = Guid.NewGuid().ToString("N"),
+                                   realPath = uploadPath + internalName,
+                                   fullPath = realPath + suffix;
+
+                            if (CheckImageExt(suffix))
+                            {
+                                MakeSmallImg(file.InputStream, realPath + "_s" + suffix, 100, 100);
+                                MakeSmallImg(file.InputStream, fullPath, 800, 800);
+                            }
+                            else
+                            {
+                                file.SaveAs(fullPath);
+                            }
+
+                            T_XT_Doc_Entity _doc = new T_XT_Doc_Entity
+                            {
+                                DocId=Guid.NewGuid().ToString("N"),
+                                StoreDirectoryId = storeDirectoryId,
+                                DocName = file.FileName,
+                                DocType = suffix,
+                                DocSize = file.ContentLength,
+                                SubDirectory = subDirectory,
+                                InternalName = internalName,
+                                DownloadCount = 0,
+                                FromModuleName = _FromModuleName,
+                                FromTableName = _FromTableName,
+                                RelevanceId = _RelevanceId,
+                                ExpandOne = _ExpandOne,
+                                ExpandTwo = _ExpandTwo,
+                                ExpandThree = _ExpandThree,
+                                ExpandFour = _ExpandFour,
+                                ExpandFive = _ExpandFive,
+                                //CreateByEmpCode = CreateByEmpCodeS,
+                                //CreateByEmpName = CreateByEmpNameS,
+                                CreateTime = DateTime.Now,
+                                IsDeleted = false
+                            };
+                            et.T_XT_Doc_Entity.Add(_doc);
+                            et.SaveChanges();
+
+                            ret.Ret = true;
+                            ret.Msg = "上次成功";
+
+                            ret.Data = new
+                            {
+                                StoreDirectoryId = storeDirectoryId,
+                                SubDirectory = subDirectory,
+                                InternalName = internalName,
+                                RealPath = fullPath
+                            };
+
+                        }
+                        else
+                        {
+                            ret.Ret = false;
+                            ret.Msg = "未检测到文件";
+                        }
+                    }
+
+                    
+
+                }
+            }
+            catch (Exception ex)
+            {
+                ret.Ret = false;
+                ret.Msg = ex.Message;
+            }
+
+            return Json(ret);
+        }
+
+        #endregion
+
+        #region 获取文件储存地址
+        /// <summary>
+        /// 获取文件储存地址
+        /// </summary>
+        /// <returns></returns>
+        protected KeyValModel GetCurrentStoreDirectory()
+        {
+            KeyValModel ret = null;
+            try
+            {
+                using (TeamWorkDbContext et=new TeamWorkDbContext())
+                {
+                    T_XT_StoreDirectory_Entity st = et.T_XT_StoreDirectory_Entity.FirstOrDefault(k=>k.IsDeleted==false);
+                    if (st != null) 
+                    {
+                        ret = new KeyValModel
+                        {
+                            Key = st.StoreDirectoryId,
+                            Val = st.StoreDirectoryPath
+                        };
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return ret;
+        } 
         #endregion
 
         #region 生成缩略图
@@ -303,6 +445,25 @@ namespace LayUI.Win.Controllers
         }
 
         #endregion
+
+        #region 检查是否为合法的上传图片
+                /// <summary>
+        /// 检查是否为合法的上传图片
+        /// </summary>
+        /// <param name="_fileExt"></param>
+        /// <returns></returns>
+        private bool CheckImageExt(string _ImageExt)
+        {
+            string[] allowExt = new string[] { ".gif", ".jpg", ".jpeg", ".bmp", ".png",".ico" };
+            for (int i = 0; i < allowExt.Length; i++)
+            {
+                if (allowExt[i] == _ImageExt.ToLower()) { return true; }
+            }
+            return false;
+
+        }
+        #endregion
+
         #endregion
     }
 }
