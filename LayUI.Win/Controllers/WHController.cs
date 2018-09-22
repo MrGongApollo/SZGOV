@@ -94,6 +94,20 @@ namespace LayUI.Win.Controllers
         }
         #endregion
 
+        #region 监测管理
+        public ActionResult WHJCList()
+        {
+            return View();
+        }
+        #endregion
+
+        #region 监测管理
+        public ActionResult SafeEvaluationList()
+        {
+            return View();
+        }
+        #endregion
+
         #region 新增剧毒品
         /// <summary>
         /// 新增剧毒品
