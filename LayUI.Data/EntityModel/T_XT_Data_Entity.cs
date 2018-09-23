@@ -86,12 +86,12 @@ namespace LayUI.Data.EntityModel
         /// <summary>
         /// 修改时间
         /// </summary>
-        public string ModifyByEmpCode { get; set; }
+        public string ModifyEmpCode { get; set; }
         
         /// <summary>
         /// 修改时间
         /// </summary>
-        public string ModifyByEmpName { get; set; }
+        public string ModifyEmpName { get; set; }
         
         /// <summary>
         /// 修改时间
