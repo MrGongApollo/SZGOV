@@ -4,13 +4,17 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    #uploadLoadingDiv{visibility:hidden;}
+</style>
 
 <script>
-    var _RelevanceId = "";
-    var _DocType = "";
-    var _FromModuleName = "";
-    pageLoad = function (postData) {
-        layui.use(['form', 'upload'], function () {
+    var postBackDatas = [];
+
+    pageLoad = function (postData)
+    {
+        console.log(postData)
+        layui.use(['form', 'upload', 'element', 'layer'], function () {
             var form = null,
                 $ = layui.jquery,
                 layer = layui.layer,
@@ -21,49 +25,51 @@
                 IsEdit = postData.editMode == Cm_editMode.edit,
                 saveMethed = IsEdit ? "putAsync" : "postAsync",
                 user = $.Cm_Auth.userInfo(),
-                _pageData = postData.pageData || {};
-                _RelevanceId = _pageData.RelevanceId || "";
-                _DocType = _pageData.DocType || "";
-                _FromModuleName = _pageData.FromModuleName || ""
+                element = layui.element;
+
+            var uploadCnt = 0,
+                cur = 0,
+                _loadIndex,
+                $uploadLoadingDiv = $("#uploadLoadingDiv");
+
             //多文件列表示例
-            var $FileContainer = $("#FileContainer")
-                , uploadListIns = upload.render({
+            var $FileContainer = $("#FileContainer"), 
+                defaults={
                     elem: '#addFiles'
                   , url: "@Url.Content("~/XT/FileUpload")"
-                  , accept: 'file'
-                  , multiple: true
-                  , auto: false
                   , bindAction: '#btnUpload'
-                  , data: {
-                      RelevanceId: _RelevanceId
-                      , CreateByEmpCode: '11'
-                      , CreateByEmpName: '11'
-                      , DocType: _DocType
-                      , FromModuleName: _FromModuleName
-  
-
-                  }
                   , choose: function (obj) {
                       var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
                       //读取本地文件
                       obj.preview(function (index, file, result) {
-                          var tr = $(['<tr id="upload-' + index + '">'
-                            , '<td>' + file.name + '</td>'
-                            , '<td>' + (file.size / 1014).toFixed(1) + 'kb</td>'
+                          var size = "";
+                          if (file.size / 1024 > 1024)
+                          {
+                              size = Math.round((file.size / 1048576) * Math.pow(10, 2)) / Math.pow(10, 2);
+                              size += " MB";
+                          }
+                          else {
+                              size = Math.round((file.size / 1024) * Math.pow(10, 2)) / Math.pow(10, 2);
+                              size += " KB";
+                          }
+
+                          var tr = $(['<tr id="upload-' + index + '" data-load="0">'
+                            , '<td><div title=\"' + file.name + '\">' + $.Cm_Common.Substr(file.name,30,"...") + '</div></td>'
+                            , '<td>' + size + '</td>'
                             , '<td>等待上传</td>'
                             , '<td>'
-                              , '<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>'
-                              , '<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
+                              , '<button class="layui-btn layui-btn-xs btn-reload layui-hide">重传</button>'
+                              , '<button class="layui-btn layui-btn-xs layui-btn-danger btn-delete">删除</button>'
                             , '</td>'
                           , '</tr>'].join(''));
 
                           //单个重传
-                          tr.find('.demo-reload').on('click', function () {
+                          tr.find('.btn-reload').on('click', function () {
                               obj.upload(index, file);
                           });
 
                           //删除
-                          tr.find('.demo-delete').on('click', function () {
+                          tr.find('.btn-delete').on('click', function () {
                               delete files[index]; //删除对应的文件
                               tr.remove();
                               uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
@@ -72,23 +78,47 @@
                           $FileContainer.append(tr);
                       });
                   }
-                      , done: function (res, index, upload) {
-                          if (res.Ret) { //上传成功
-                              var tr = $FileContainer.find('tr#upload-' + index)
-                              , tds = tr.children();
-                              tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
-                              tds.eq(3).html(''); //清空操作
-                              return delete this.files[index]; //删除文件队列已经上传成功的文件
-                          }
-                          this.error(index, upload);
+                  , before: function (obj) { //obj参数包含的信息，跟choose回调完全一致
+                      _loadIndex = layer.load(); //上传loading
+                      $uploadLoadingDiv.css("visibility", "visible");
+                      uploadCnt = $("tr[data-load='0']").length;
+                  }
+                  , done: function (res, index, upload) {
+                      cur++;
+                      element.progress('progress', ((cur * 100 / uploadCnt).toFixed(2)) + '%');
+                      if (cur == uploadCnt)
+                      {
+                          cur = 0;
+                          layer.close(_loadIndex);
+                          layer.msg("全部上传完毕！", { time: 500 },function () {
+                              $uploadLoadingDiv.css("visibility", "hidden");
+                              element.progress('progress', '0%');
+                          });
                       }
-                      , error: function (index, upload) {
+
+                      if (res.Ret) { //上传成功
                           var tr = $FileContainer.find('tr#upload-' + index)
                           , tds = tr.children();
-                          tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
-                          tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+                          tr.attr("data-load", "1");
+                          tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
+                          tds.eq(3).html(''); //清空操作
+                          return delete this.files[index]; //删除文件队列已经上传成功的文件
+
                       }
-                });
+                      this.error(index, upload);
+                  }
+                  , error: function (index, upload) {
+                      var tr = $FileContainer.find('tr#upload-' + index)
+                      , tds = tr.children();
+                      tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
+                      tds.eq(3).find('.btn-reload').removeClass('layui-hide'); //显示重传
+                  }
+                };
+
+                $.extend(defaults, postData);
+
+                uploadListIns = upload.render(defaults);
+
             //返回
             $("#btnBack").click(function () {
                 TopWin.layer.close(_self);
@@ -96,13 +126,26 @@
         });
     }
 
+    function postBack()
+    {
+        return postBackDatas;
+    }
+
 </script>
 
 <style type="text/css">
     .layui-upload-list{height:300px;overflow:auto;}
+    #uploadLoadingDiv{padding:20px 0;}
 </style>
 
 <div class="content-padding">
+    
+    <div id="uploadLoadingDiv">
+        <div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="progress">
+            <div class="layui-progress-bar layui-bg-blue" lay-percent="0%"></div>
+        </div>
+    </div>
+
     <div class="layui-upload">
         <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" id="addFiles">添加附件</button>
         <div class="layui-upload-list">
@@ -124,5 +167,5 @@
 
   <div class="text-center">
       <button type="button" class="layui-btn layui-btn-normal" id="btnUpload">开始上传</button>
-    <button class="layui-btn layui-btn-primary" id="btnBack">返回</button>
+      <button class="layui-btn layui-btn-primary" id="btnBack">返回</button>
 </div>
