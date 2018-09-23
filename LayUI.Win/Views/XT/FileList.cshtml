@@ -84,6 +84,7 @@
                       uploadCnt = $("tr[data-load='0']").length;
                   }
                   , done: function (res, index, upload) {
+                      console.log(res);
                       cur++;
                       element.progress('progress', ((cur * 100 / uploadCnt).toFixed(2)) + '%');
                       if (cur == uploadCnt)

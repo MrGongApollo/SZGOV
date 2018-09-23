@@ -290,7 +290,7 @@ namespace LayUI.Win.Controllers
                             et.SaveChanges();
 
                             ret.Ret = true;
-                            ret.Msg = "上次成功";
+                            ret.Msg = "上传成功";
 
                             ret.Data = new
                             {
