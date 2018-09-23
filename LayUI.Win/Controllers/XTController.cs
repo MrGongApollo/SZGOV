@@ -237,9 +237,9 @@ namespace LayUI.Win.Controllers
                     using (TeamWorkDbContext et=new TeamWorkDbContext())
                     {
                         string storeDirectoryId = kv.Key,
-                           storeDirectory = kv.Val,
-                           subDirectory = DateTime.Now.ToString("yyyyMM"),
-                           uploadPath = storeDirectory + @"\" + subDirectory + @"\";
+                               storeDirectory = kv.Val,
+                               subDirectory = DateTime.Now.ToString("yyyyMM"),
+                               uploadPath = storeDirectory + @"\" + subDirectory + @"\";
 
                         if (file != null)
                         {
