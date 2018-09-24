@@ -13,8 +13,8 @@ namespace LayUI.Win.Help
         {
             try
             {
+                 return true;
                 string empCode = HttpContext.Current.Session["User"] + "";
-                return true;
                 if(string.IsNullOrEmpty(empCode)) 
                 {
                     httpContext.Response.Redirect("~/Home/Login");
