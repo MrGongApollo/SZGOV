@@ -299,7 +299,7 @@ namespace LayUI.Win.Controllers
                                 DocName = _doc.DocName,
                                 Size = _doc.DocSize,
                                 CreateTime=_doc.CreateTime,
-                                Path = string.Format("/DocLib/{0}/{1}", subDirectory, _doc.InternalName)
+                                Path = string.Format("DocLib/{0}/{1}", subDirectory, _doc.InternalName)
                             };
 
                         }
