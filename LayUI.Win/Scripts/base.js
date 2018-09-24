@@ -545,12 +545,392 @@ var TopWin = window.top,
     };
     /*******其他公共调用 结束**********/
 
+    /*******窗口调用 开始**********/
+    $.Cm_Dialog =
+    {
+        //上传文件列表封装
+        UploadFileList: function (options)
+        {
+            var defaults =
+            {
+                title: "附件上传",
+                area: ['800px', '520px'],
+                IsReadOnly:true,
+                RootUrl:"/",
+                container: null,
+                maxmin: false,
+                callBack: function () { },
+                setting: {
+                    accept: 'file', //允许上传的文件类型：images/file/video/audio
+                    multiple: true,//是否允许多文件上传，不支持ie8-9
+                    auto: false,//是否选完文件后自动上传
+                    exts: '',//允许上传的文件后缀名
+                    size: 51200,//文件限制大小，默认不限制（单位 kb）限制 50M
+                    data: {}
+                }
+            };
+
+            $.extend(true,defaults, options);
+            if (!(TopWin.layer)) { console.log("TopWin.layer为空"); return; }
+            if (!defaults.container) { console.log("container为空，请传入参数！"); return; }
+            try
+            {
+                var $btn = $("<button>",
+                    {
+                        "class": "layui-btn layui-btn-sm layui-btn-normal",
+                        "type": "button"
+                    }).text("添加附件").click(function() {
+                        var _frm;
+                        TopWin.layer.open({
+                            type: 2,
+                            title: defaults.title,
+                            area: defaults.area,
+                            fixed: true, //不固定
+                            maxmin: defaults.maxmin,
+                            content: defaults.RootUrl + "XT/FileList",
+                            success: function (frm) {
+                                _frm = frm.find("iframe").get(0).contentWindow;
+                                if (typeof _frm.pageLoad == "function") {
+                                    _frm.pageLoad(defaults.setting);
+                                }
+                            },
+                            close: function (index) {
+                                
+                            },
+                            end: function (index) {
+                                if (_frm) {
+                                    if (typeof _frm.postBack == "function" && defaults.callBack)
+                                    {
+                                        var callBackData = _frm.postBack();
+
+                                        if (callBackData && callBackData.length > 0)
+                                        {
+
+                                            $.each(callBackData, function (_i, _t) {
+
+                                                var size = "";
+                                                if (_t.Size / 1024 > 1024) {
+                                                    size = Math.round((_t.Size / 1048576) * Math.pow(10, 2)) / Math.pow(10, 2);
+                                                    size += " MB";
+                                                }
+                                                else {
+                                                    size = Math.round((_t.Size / 1024) * Math.pow(10, 2)) / Math.pow(10, 2);
+                                                    size += " KB";
+                                                }
+                                                var $op_td = $("<td>").append($("<a>", { "href": "javascript:;", "title": "下载", "class": "layui-btn layui-btn-xs layui-btn-normal" }).click(function () {
+
+                                                }).append($("<i>", { "class": "fa fa-download" }))).append($("<a>", { "href": "javascript:;", "title": "删除", "class": "layui-btn layui-btn-xs layui-btn-danger" }).click(function () {
+                                                    var $that = $(this);
+                                                    TopWin.layer.confirm('确认删除选择文件？', {
+                                                        btn: ['是', '否'] //按钮
+                                                    }, function () {
+                                                        var _index = TopWin.layer.load(0, { shade: false });
+                                                        $.Cm_Ajax.postAsync(defaults.RootUrl + "XT/FilesDelete", { docIds: [_t.DocId] }).done(function (xhr) {
+                                                            if (xhr.Ret) {
+                                                                TopWin.layer.msg("删除成功");
+                                                                $that.closest("tr").remove();
+                                                            }
+                                                            else {
+                                                                TopWin.layer.alert(xhr.Msg, {
+                                                                    icon: 2,
+                                                                    skin: 'layer-ext-moon'
+                                                                });
+                                                            }
+                                                        }).always(function () {
+                                                            TopWin.layer.close(_index);
+                                                        });
+                                                    }, function () { });
+                                                }).append($("<i>", {"class":"fa fa-remove"})));
+
+                                                $tbody.append($(['<tr>'
+                                                , '<td><div title=\"' + _t.DocName + '\">' + $.Cm_Common.Substr(_t.DocName, 30, "...") + '</div></td>'
+                                                , '<td class=\"text-center\">' + size + '</td>'
+                                                , '<td class=\"text-center\">' + $.Cm_DateTime.dateFormat(_t.CreateTime, "yyyy-MM-dd HH:mm:ss") + '</td>'
+                                              , '</tr>'].join('')).append($op_td));
+                                            });
+                                        }
+
+                                        defaults.callBack(callBackData);
+                                    }
+                                }
+                            
+                        }
+                    });
+                    }),
+                    $list = $("<div>", {
+                        "class": "layui-upload-list"
+                    }),
+                    $tb = $("<table>", { "class": "layui-table layui-table-fileList" }).append("<thead><tr><th>文件名</th><th>大小</th><th>上传时间</th><th>操作</th></tr></thead>"),
+                    $tbody = $("<tbody>");
+
+                $(defaults.container).append(defaults.IsReadOnly ? "" : $btn)
+                                     .append($list)
+                                     .append($tb.append($tbody));
+
+
+                //加载附件
+                var filters = [], _docInfo = defaults.setting.data;
+                filters.push("(IsDeleted eq false)");
+                _docInfo.RelevanceId ? filters.push("(RelevanceId eq '" + _docInfo.RelevanceId + "')"):"";
+                _docInfo.FromModuleName ? filters.push("(FromModuleName eq '" + _docInfo.FromModuleName + "')") : "";
+                _docInfo.FromTableName ? filters.push("(FromTableName eq '" + _docInfo.FromTableName + "')") : "";
+                _docInfo.ExpandOne ? filters.push("(ExpandOne eq '" + _docInfo.ExpandOne + "')") : "";
+                _docInfo.ExpandTwo ? filters.push("(ExpandTwo eq '" + _docInfo.ExpandTwo + "')") : "";
+                _docInfo.ExpandThree ? filters.push("(ExpandThree eq '" + _docInfo.ExpandThree + "')") : "";
+                _docInfo.ExpandFour ? filters.push("(ExpandFour eq '" + _docInfo.ExpandFour + "')") : "";
+                _docInfo.ExpandFive ? filters.push("(ExpandFive eq '" + _docInfo.ExpandFive + "')") : "";
+
+                $.Cm_Ajax.getAsync(baseConst.odata + "T_XT_Doc_Entity?$filter=" + filters.join(" and ")+"&$orderby=CreateTime").done(function (xhr) {
+                    $.each(xhr.value, function (_i, _t) {
+
+                        var size = "";
+                        if (_t.DocSize / 1024 > 1024) {
+                            size = Math.round((_t.DocSize / 1048576) * Math.pow(10, 2)) / Math.pow(10, 2);
+                            size += " MB";
+                        }
+                        else {
+                            size = Math.round((_t.DocSize / 1024) * Math.pow(10, 2)) / Math.pow(10, 2);
+                            size += " KB";
+                        }
+
+                        var $op_td = $("<td>", {"class":"text-center"}).append($("<a>", { "href": "javascript:;", "title": "下载", "class": "layui-btn layui-btn-xs layui-btn-normal","style":"margin-right:3px;" }).click(function () {
+
+                        }).append($("<i>", { "class": "fa fa-download" }))).append(defaults.IsReadOnly?"":($("<a>", { "href": "javascript:;", "title": "删除", "class": "layui-btn layui-btn-xs layui-btn-danger" }).click(function () {
+                            var $that = $(this);
+  
+                            TopWin.layer.confirm('确认删除选择文件？', {
+                                btn: ['是', '否'] //按钮
+                            }, function () {
+                                var _index = TopWin.layer.load(0, { shade: false });
+                                $.Cm_Ajax.postAsync(defaults.RootUrl + "XT/FilesDelete", { docIds: [_t.DocId] }).done(function (xhr) {
+                                    if (xhr.Ret) {
+                                        TopWin.layer.msg("删除成功");
+                                        $that.closest("tr").remove();
+                                    }
+                                    else {
+                                        TopWin.layer.alert(xhr.Msg, {
+                                            icon: 2,
+                                            skin: 'layer-ext-moon'
+                                        });
+                                    }
+                                }).always(function () {
+                                    TopWin.layer.close(_index);
+                                });
+                            }, function () { });
+
+                        }).append($("<i>", { "class": "fa fa-remove" }))));
+
+                        $tbody.append($(['<tr>'
+                        , '<td><div title=\"' + _t.DocName + '\">' + $.Cm_Common.Substr(_t.DocName, 30, "...") + '</div></td>'
+                        , '<td class=\"text-center\">' + size + '</td>'
+                        , '<td class=\"text-center\">' + $.Cm_DateTime.dateFormat(_t.CreateTime, "yyyy-MM-dd HH:mm:ss") + '</td>'
+                        , '</tr>'].join('')).append($op_td));
+
+                    });
+
+                });
+
+            }
+            catch (e)
+            {
+                console.error(e);
+            }
+
+        },
+        UploadFiles: function (options)
+        {
+            var defaults =
+            {
+                title: "附件上传",
+                Toplayer: null,
+                callBack:function(){},
+                setting: {
+                    accept: 'file', //允许上传的文件类型：images/file/video/audio
+                    multiple: false,//是否允许多文件上传，不支持ie8-9
+                    auto: false,//是否选完文件后自动上传
+                    exts: '',//允许上传的文件后缀名
+                    size: 0,//文件限制大小，默认不限制
+                    data: {}
+                },
+                
+            };
+            $.extend(defaults, options);
+
+            if (defaults.Toplayer)
+            {
+
+            }
+        },
+        showImgScan: function (options)
+        {
+            var defaults =
+            {
+                title: "图片上传",
+                area: ['800px', '520px'],
+                IsReadOnly: true,
+                RootUrl: "/",
+                container: null,
+                maxmin: false,
+                callBack: function () { },
+                setting: {
+                    accept: 'images', //允许上传的文件类型：images/file/video/audio
+                    multiple: true,//是否允许多文件上传，不支持ie8-9
+                    auto: false,//是否选完文件后自动上传
+                    exts: '',//允许上传的文件后缀名
+                    size: 10240,//文件限制大小，默认不限制(单位 kb) 限制 10M
+                    data: {}
+                }
+            };
+
+            $.extend(true,defaults, options);
+            if (!(TopWin.layer)) { console.log("TopWin.layer为空"); return; }
+            if (!defaults.container) { console.log("container为空，请传入参数！"); return; }
+            try
+            {
+                var $btn = $("<button>",
+                    {
+                        "class": "layui-btn layui-btn-sm layui-btn-normal",
+                        "type": "button"
+                    }).text("添加图片").click(function() {
+                        var _frm;
+                        TopWin.layer.open({
+                            type: 2,
+                            title: defaults.title,
+                            area: defaults.area,
+                            fixed: true, //不固定
+                            maxmin: defaults.maxmin,
+                            content: defaults.RootUrl + "XT/FileList",
+                            success: function (frm) {
+                                _frm = frm.find("iframe").get(0).contentWindow;
+                                if (typeof _frm.pageLoad == "function") {
+                                    _frm.pageLoad(defaults.setting);
+                                }
+                            },
+                            close: function (index) {
+                                
+                            },
+                            end: function (index) {
+                                if (_frm)
+                                {
+                                    if (typeof _frm.postBack == "function" && defaults.callBack)
+                                    {
+                                        var callBackData = _frm.postBack();
+
+                                        if (callBackData && callBackData.length > 0)
+                                        {
+                                            $.each(callBackData, function (_i, _t) {
+                                                $Imglist.append('<img src="' + _t.Path + '" alt="' + _t.DocName + '" class="layui-upload-img">');
+                                            });
+
+                                            TopWin.layer.photos({
+                                                photos: $Imglist, //格式见API文档手册页
+                                                shadeClose: false,
+                                                closeBtn: true,
+                                                moveOut: false,
+                                                anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机
+                                            });
+
+                                        }
+
+                                        defaults.callBack(callBackData);
+                                    }
+                                }
+                            
+                            }
+                        });
+                    }),
+                    $blockquote = $("<blockquote>", {
+                        "class": "layui-elem-quote layui-quote-nm margin_tb_5"
+                    }).text("预览图：(点击图片放大)"),
+                    $Imglist = $("<div>", { "class": "layui-upload-list layui-img-scan" });
+
+                $(defaults.container).append(defaults.IsReadOnly ? "" : $btn)
+                                     .append($blockquote.append($Imglist));
+
+
+                //加载附件
+                var filters = [], _docInfo = defaults.setting.data;
+                filters.push("(IsDeleted eq false)");
+                _docInfo.RelevanceId ? filters.push("(RelevanceId eq '" + _docInfo.RelevanceId + "')"):"";
+                _docInfo.FromModuleName ? filters.push("(FromModuleName eq '" + _docInfo.FromModuleName + "')") : "";
+                _docInfo.FromTableName ? filters.push("(FromTableName eq '" + _docInfo.FromTableName + "')") : "";
+                _docInfo.ExpandOne ? filters.push("(ExpandOne eq '" + _docInfo.ExpandOne + "')") : "";
+                _docInfo.ExpandTwo ? filters.push("(ExpandTwo eq '" + _docInfo.ExpandTwo + "')") : "";
+                _docInfo.ExpandThree ? filters.push("(ExpandThree eq '" + _docInfo.ExpandThree + "')") : "";
+                _docInfo.ExpandFour ? filters.push("(ExpandFour eq '" + _docInfo.ExpandFour + "')") : "";
+                _docInfo.ExpandFive ? filters.push("(ExpandFive eq '" + _docInfo.ExpandFive + "')") : "";
+
+                $.Cm_Ajax.getAsync(baseConst.odata + "T_XT_Doc_Entity?$filter=" + filters.join(" and ")+"&$orderby=CreateTime").done(function (xhr) {
+                    var photos = [];
+                    $.each(xhr.value, function (_i, _t) {
+                        var _imgsrc="/DocLib/" + _t.SubDirectory + "/" + _t.InternalName;
+                        photos.push(_imgsrc);
+                        $Imglist.append(
+                            $("<img>", { "src": _imgsrc, "alt": _t.DocName, "class": "layui-upload-img" }).click(function () {
+                                return;
+                                var $that = $(this);
+
+                                TopWin.layer.photos({
+                                    photos: [].push($that.attr("src")), // 选择器,
+                                    tab: function (pic, layero) {
+                                        console.log(pic) //当前图片的一些信息
+                                    }
+                               });
+
+                                return;
+                                var $that = $(this),
+                                Img_W = $that.width(),
+                                Img_H = $that.height(),
+                                scaleWH = Img_W/Img_H,
+                                bigH = 600,
+                                bigW = scaleWH * bigH;
+
+                            if(bigW>900){
+                                bigW = 900;
+                                bigH = bigW/scaleWH;
+                            }
+
+                                layui.viewer
+
+                            // 放大预览图片
+                            TopWin.layer.open({
+                                type: 1,
+                                title: false,
+                                closeBtn: 1,
+                                shadeClose: true,
+                                area: [bigW + 'px', bigH + 'px'], //宽高
+                                content: "<img width='" + bigW + "' height='" + bigH + "' src=" + $that.attr("src") + " />"
+                            });
+                        })
+                        );
+                    });
+
+                    TopWin.layer.photos({
+                        photos: $Imglist, //格式见API文档手册页
+                        shadeClose: false,
+                        closeBtn:true,
+                        moveOut:false,
+                        anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机
+                    });
+
+                });
+
+            }
+            catch (e)
+            {
+                console.error(e);
+            }
+
+        }
+    };
+    /*******窗口调用 结束**********/
+
     /*******用户权限 开始**********/
     $.Cm_Auth = {
         //当前用户个人信息
         userInfo: function ()
         {
-            return window.top.userInfo||null;
+            return window.top.userInfo || {};
         },
         //授权机构
         PowerOrgs: function () {
@@ -598,3 +978,11 @@ var TopWin = window.top,
     /*******用户权限 结束**********/
 
 })(jQuery)
+
+
+//兼容写法，防止ie版本过低console报错
+window.console = window.console || (function () {
+    var c = {}; c.log = c.warn = c.debug = c.info = c.error = c.time = c.dir = c.profile
+    = c.clear = c.exception = c.trace = c.assert = function () { };
+    return c;
+})();
