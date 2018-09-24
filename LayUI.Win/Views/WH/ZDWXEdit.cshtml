@@ -89,22 +89,7 @@
                 <legend>附件（基本特征）</legend>
             </fieldset>
 
-            <div class="layui-upload">
-                <button type="button" class="layui-btn layui-btn-sm layui-btn-normal btnAddFiles">添加附件</button>
-                <div class="layui-upload-list">
-                    <table class="layui-table">
-                        <thead>
-                            <tr>
-                                <th>文件名</th>
-                                <th>大小</th>
-                                <th>状态</th>
-                                <th>操作</th>
-                            </tr>
-                        </thead>
-                        <tbody id="BasicFeatureList"></tbody>
-                    </table>
-                </div>
-            </div>
+            <div class="layui-upload" data-mdname="BasicFeature"></div>
         </div>
 
         <div class="layui-form-item">
@@ -113,23 +98,8 @@
                 <legend>附件（备案登记）</legend>
             </fieldset>
 
-            <div class="layui-upload">
-                <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" id="btnRegister">添加附件</button>
-                <div class="layui-upload-list">
-                    <table class="layui-table">
-                        <thead>
-                            <tr>
-                                <th>文件名</th>
-                                <th>大小</th>
-                                <th>状态</th>
-                                <th>操作</th>
-                            </tr>
-                        </thead>
-                        <tbody id="RegisterList"></tbody>
-                    </table>
-                </div>
-                @*<button type="button" class="layui-btn" id="testListAction">开始上传</button>*@
-            </div>
+            <div class="layui-upload" data-mdname="RegisterInfo"></div>
+
         </div>
 
         <div class="layui-form-item text-center">
@@ -142,9 +112,8 @@
 
 <script>
     var _DossierId = "";
-    pageLoad = function (postData)
-    {
-    layui.use(['form', 'laydate', 'upload'], function () {
+    pageLoad = function (postData) {
+        layui.use(['form', 'laydate'], function () {
             var form = null,
                 $ = layui.jquery,
                 layer = layui.layer,
@@ -156,14 +125,12 @@
                 saveMethed = IsEdit ? "putAsync" : "postAsync",
                 user = $.Cm_Auth.userInfo(),
                 _pageData = postData.pageData || {},
-                upload = layui.upload,
                 _DossierId = _pageData.DossierId || $.Cm_Common.getGuid();
 
             //常规用法
             laydate.render({
                 elem: ".laydate"
             });
-
 
             switch (postData.editMode) {
                 case Cm_editMode.view:
@@ -196,40 +163,28 @@
                     break;
             }
 
+
+            $(".layui-upload").each(function (_i, _t) {
+                $.Cm_Dialog.UploadFileList({
+                    container: _t,
+                    IsReadOnly:IsReadOnly,
+                    RootUrl: "@Url.Content("~/")",
+                    setting: {
+                        data: {
+                            RelevanceId: _DossierId,
+                            FromTableName: "T_WH_MajorHazardDossier",
+                            FromModuleName: $(_t).attr("data-mdname")
+                        }
+                    }
+                });
+            });
+
             form = layui.form;
             form.render();
 
-        //返回
+            //返回
             $("#btnBack").click(function () {
                 TopWin.layer.close(_self);
-            });
-
-
-            $(".btnAddFiles").click(function (postData) {
-                TopWin.layer.open({
-                    type: 2,
-                    title: "附件上传",
-                    area: ['800px', '520px'],
-                    fixed: true, //不固定
-                    maxmin: false,
-                    content: "@Url.Content("~/XT/FileList")",
-                    success: function (frm) {
-                        var _frm = frm.find("iframe").get(0).contentWindow;
-                        if (typeof _frm.pageLoad == "function") {
-                            _pageData.RelevanceId = _DossierId;
-                            _pageData.DocType = '1';
-                            _pageData.FromModuleName = "ZDWX";
-                            postData.pageData = _pageData;
-                            _frm.pageLoad(postData);
-                        }
-                    },
-                close: function (index) {
-
-                },
-                end: function (index) {
-                   // reloadTable();
-                }
-            });
             });
 
             //监听提交
@@ -241,7 +196,7 @@
                 if (IsEdit) {
                     _url += "('" + _DossierId + "')";
                     $.extend(saveData, {
-                      ModifyEmpCode: '11'
+                        ModifyEmpCode: '11'
                     , ModifyEmpName: '11'
                     , ModifyTime: new Date()
                     });
@@ -250,7 +205,7 @@
                 }
                 else {
                     $.extend(saveData, {
-                      DossierId: _DossierId
+                        DossierId: _DossierId
                     , CreateByEmpCode: '11'
                     , CreateByEmpName: '11'
                     , CreateTime: new Date()
@@ -266,7 +221,7 @@
                 });
                 return false;
             });
-    });
+        });
 
     }
 </script>

@@ -124,11 +124,12 @@ namespace LayUI.Win.Controllers
 
         #endregion
 
+        #region 文件操作
         #region 文件上传
         //[HttpPost]
         //public JsonResult FileUpload()
         //{
-           
+
         //    string RelevanceIdS = Request["RelevanceId"];
         //    string FromModuleNameS = Request["FromModuleName"];
         //    string FromTableNameS = "";
@@ -197,10 +198,10 @@ namespace LayUI.Win.Controllers
         //    return Json(Ret, JsonRequestBehavior.AllowGet);
         //}
 
-        public ActionResult FileList() 
+        public ActionResult FileList()
         {
             return View();
-        
+
         }
         #endregion
 
@@ -271,7 +272,7 @@ namespace LayUI.Win.Controllers
                                 DocType = suffix,
                                 DocSize = file.ContentLength,
                                 SubDirectory = subDirectory,
-                                InternalName = internalName,
+                                InternalName = internalName + suffix,
                                 DownloadCount = 0,
                                 FromModuleName = _FromModuleName,
                                 FromTableName = _FromTableName,
@@ -294,10 +295,11 @@ namespace LayUI.Win.Controllers
 
                             ret.Data = new
                             {
-                                StoreDirectoryId = storeDirectoryId,
-                                SubDirectory = subDirectory,
-                                InternalName = internalName,
-                                RealPath = fullPath
+                                DocId = _doc.DocId,
+                                DocName = _doc.DocName,
+                                Size = _doc.DocSize,
+                                CreateTime=_doc.CreateTime,
+                                Path = string.Format("/DocLib/{0}/{1}", subDirectory, internalName)
                             };
 
                         }
@@ -321,6 +323,79 @@ namespace LayUI.Win.Controllers
             return Json(ret);
         }
 
+        #endregion
+
+        #region 文件删除
+        /// <summary>
+        /// 文件删除
+        /// </summary>
+        /// <param name="docId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult FilesDelete(string[] docIds)
+        {
+
+            JsonRetModel ret = new JsonRetModel { Ret = false };
+            try
+            {
+                KeyValModel kv = GetCurrentStoreDirectory();
+                if (!docIds.Any())
+                {
+                    ret.Msg = "未检测到需要删除的文件！";
+                    return Json(ret);
+                }
+                if (kv == null)
+                {
+                    ret.Msg = "未能获取到文件储存目录！";
+                    return Json(ret);
+                }
+
+                using (TeamWorkDbContext et = new TeamWorkDbContext())
+                {
+                    foreach (string _docId in docIds)
+                    {
+                        T_XT_Doc_Entity _doc = et.T_XT_Doc_Entity.FirstOrDefault(k => k.DocId == _docId);
+                        if (_doc != null)
+                        {
+                            #region 删除文件
+                            string path = string.Format("{0}\\{1}\\{2}", kv.Val, _doc.SubDirectory, _doc.InternalName);
+                            FileInfo info = new FileInfo(path);
+                            if (info.Exists)
+                            {
+                                info.Delete();
+                            }
+                            #endregion
+
+                            #region 如果是图片类型的连带删除缩略图
+                            if (CheckImageExt(_doc.DocType))
+                            {
+                                string img_sp = string.Format("{0}\\{1}\\{2}_s{3}", kv.Val, _doc.SubDirectory, _doc.InternalName.Replace(_doc.DocType, ""), _doc.DocType);
+                                FileInfo img_s = new FileInfo(img_sp);
+                                if (img_s.Exists)
+                                {
+                                    img_s.Delete();
+                                }
+                            }
+                            #endregion
+
+                            #region 删除表数据
+                            et.T_XT_Doc_Entity.Remove(_doc);
+                            et.SaveChanges();
+                            #endregion
+
+                        }
+                    }
+                    ret.Msg ="操作成功";
+                    ret.Ret = true;
+                }
+            }
+            catch (Exception e)
+            {
+                ret.Msg = e.Message;
+                ret.Ret = false;
+            }
+            return Json(ret);
+        }
         #endregion
 
         #region 获取文件储存地址
@@ -354,6 +429,7 @@ namespace LayUI.Win.Controllers
         } 
         #endregion
 
+        #region 图片处理
         #region 生成缩略图
         // 按模版比例生成缩略图（以流的方式获取源文件）
         //生成缩略图函数
@@ -447,14 +523,14 @@ namespace LayUI.Win.Controllers
         #endregion
 
         #region 检查是否为合法的上传图片
-                /// <summary>
+        /// <summary>
         /// 检查是否为合法的上传图片
         /// </summary>
         /// <param name="_fileExt"></param>
         /// <returns></returns>
         private bool CheckImageExt(string _ImageExt)
         {
-            string[] allowExt = new string[] { ".gif", ".jpg", ".jpeg", ".bmp", ".png",".ico" };
+            string[] allowExt = new string[] { ".gif", ".jpg", ".jpeg", ".bmp", ".png", ".ico" };
             for (int i = 0; i < allowExt.Length; i++)
             {
                 if (allowExt[i] == _ImageExt.ToLower()) { return true; }
@@ -463,6 +539,10 @@ namespace LayUI.Win.Controllers
 
         }
         #endregion
+        #endregion
+
+        #endregion
+
 
         #endregion
     }

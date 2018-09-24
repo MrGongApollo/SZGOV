@@ -82,3 +82,6 @@
 .color-black{color:black;}
 .color-gray{color:gray;}
 
+/*************layui 局部样式*******************/
+.layui-table.layui-table-fileList td,.layui-table.layui-table-fileList th{padding: 5px 10px;}
+.layui-table.layui-table-fileList th{text-align:center;}

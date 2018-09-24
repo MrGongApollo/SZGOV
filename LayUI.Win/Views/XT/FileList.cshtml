@@ -31,13 +31,25 @@
                 _loadIndex,
                 $uploadLoadingDiv = $("#uploadLoadingDiv");
 
+            var processBack = function () {
+                cur++;
+                element.progress('progress', ((cur * 100 / uploadCnt).toFixed(2)) + '%');
+                if (cur == uploadCnt) {
+                    cur = 0;
+                    layer.close(_loadIndex);
+                    layer.msg("全部上传完毕！", { time: 500 }, function () {
+                        $uploadLoadingDiv.css("visibility", "hidden");
+                        element.progress('progress', '0%');
+                    });
+                }
+            };
+
             //多文件列表示例
             var $FileContainer = $("#FileContainer"), 
                 defaults={
                     elem: '#addFiles'
                   , url: "@Url.Content("~/XT/FileUpload")"
                   , bindAction: '#btnUpload'
-                  , data: postData.data
                   , choose: function (obj) {
                       var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
                       //读取本地文件
@@ -85,18 +97,7 @@
                       uploadCnt = $("tr[data-load='0']").length;
                   }
                   , done: function (res, index, upload) {
-                      //console.log(res);
-                      cur++;
-                      element.progress('progress', ((cur * 100 / uploadCnt).toFixed(2)) + '%');
-                      if (cur == uploadCnt)
-                      {
-                          cur = 0;
-                          layer.close(_loadIndex);
-                          layer.msg("全部上传完毕！", { time: 500 },function () {
-                              $uploadLoadingDiv.css("visibility", "hidden");
-                              element.progress('progress', '0%');
-                          });
-                      }
+                      processBack();
 
                       if (res.Ret) { //上传成功
                           postBackDatas.push(res.Data);
@@ -111,11 +112,14 @@
                       this.error(index, upload);
                   }
                   , error: function (index, upload) {
+                      processBack();
+
                       var tr = $FileContainer.find('tr#upload-' + index)
                       , tds = tr.children();
                       tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
                       tds.eq(3).find('.btn-reload').removeClass('layui-hide'); //显示重传
                   }
+                  
                 };
 
                 $.extend(true,defaults, postData);
