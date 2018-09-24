@@ -85,3 +85,6 @@
 /*************layui 局部样式*******************/
 .layui-table.layui-table-fileList td,.layui-table.layui-table-fileList th{padding: 5px 10px;}
 .layui-table.layui-table-fileList th{text-align:center;}
+
+.layui-upload-list.layui-img-scan>img{border:2px solid white;width: 92px;height: 92px;margin: 0 10px 10px 0;cursor:pointer;}
+.layui-upload-list.layui-img-scan>img:hover{border-color:#1E9FFF;}
