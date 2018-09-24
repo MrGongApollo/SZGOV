@@ -4,8 +4,7 @@
 }
 
 <style>
-    .layui-table-cell{height:auto;line-height:1;}
-    .layui-table-view .layui-table td{padding:5px 0;}
+    .layui-table-cell{height:auto;line-height:1.5;}
 </style>
 
 <script>
@@ -35,19 +34,29 @@
             , { field: 'SerialNo', width: 90, align: "center", title: '隐患编号' }
             , { field: 'Result', align: "center", width: 90, title: '整改状态' }
             , { field: 'MajorCnt', align: "center", width: 90, title: '填报单位' }
-            , { field: 'CheckTime', width: 90, align: "center", title: '检查时间' }
+            , {
+                field: 'CheckTime', width: 90, align: "center", title: '检查时间', templet: function (data) {
+                    return data.CheckTime && moment(data.CheckTime).format("YYYY-MM-DD") || "";
+                }
+            }
             , { field: 'HiddenPart', title: '隐患部位', align: "center" }
             , { field: 'HiddenTypeL', width: 90, align: "center", title: '隐患大类' }
             , { field: 'HiddenTypeS', width: 90, align: "center", title: '隐患小类' }
             , { field: 'HiddenContent', align: "center", title: '隐患内容' }
-            , { field: 'TimeLimit', width: 90, align: "center", title: '整改期限' }
-            , { field: 'CompleteTime', width: 90, align: "center", title: '完成日期' }
-            , { field: '', width: 90, align: "center", title: '验证日期' }
-            //, {
-            //    field: 'WorkTime', width: 160, title: '工作日期',  templet: function (data) {
-            //        return data.WorkTime && moment(data.WorkTime).format("YYYY-MM-DD") || "";
-            //    }
-            //}
+            , {
+                field: 'TimeLimit', width: 90, align: "center", title: '整改期限', templet: function (data) {
+                    return data.TimeLimit && moment(data.TimeLimit).format("YYYY-MM-DD") || "";
+                }
+            }
+            , {
+                field: 'CompleteTime', width: 90, align: "center", title: '完成日期', templet: function (data) {
+                    return data.CompleteTime && moment(data.CompleteTime).format("YYYY-MM-DD") || "";
+                }
+            }
+            , { field: 'ValidateDate', width: 90, align: "center", title: '验证日期',  templet: function (data) {
+                return data.ValidateDate && moment(data.ValidateDate).format("YYYY-MM-DD") || "";
+            }
+            }
           ]],
             page: true
         });
@@ -112,9 +121,9 @@
                 TopWin.layer.open({
                     type: 2,
                     title: "隐患详情",
-                    area: ['100%', '90%'],
+                    area: ['716px', '90%'],
                     fixed: true, //不固定
-                    maxmin: true,
+                    maxmin: false,
                     content: "@Url.Content("~/YH/YHEdit")",
                     success: function (frm) {
                         var _frm = frm.find("iframe").get(0).contentWindow;
