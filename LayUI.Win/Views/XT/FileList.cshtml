@@ -13,7 +13,6 @@
 
     pageLoad = function (postData)
     {
-        console.log(postData)
         layui.use(['form', 'upload', 'element', 'layer'], function () {
             var form = null,
                 $ = layui.jquery,
@@ -38,6 +37,7 @@
                     elem: '#addFiles'
                   , url: "@Url.Content("~/XT/FileUpload")"
                   , bindAction: '#btnUpload'
+                  , data: postData.data
                   , choose: function (obj) {
                       var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
                       //读取本地文件
@@ -48,7 +48,8 @@
                               size = Math.round((file.size / 1048576) * Math.pow(10, 2)) / Math.pow(10, 2);
                               size += " MB";
                           }
-                          else {
+                          else
+                          {
                               size = Math.round((file.size / 1024) * Math.pow(10, 2)) / Math.pow(10, 2);
                               size += " KB";
                           }
@@ -84,7 +85,7 @@
                       uploadCnt = $("tr[data-load='0']").length;
                   }
                   , done: function (res, index, upload) {
-                      console.log(res);
+                      //console.log(res);
                       cur++;
                       element.progress('progress', ((cur * 100 / uploadCnt).toFixed(2)) + '%');
                       if (cur == uploadCnt)
@@ -98,6 +99,7 @@
                       }
 
                       if (res.Ret) { //上传成功
+                          postBackDatas.push(res.Data);
                           var tr = $FileContainer.find('tr#upload-' + index)
                           , tds = tr.children();
                           tr.attr("data-load", "1");
@@ -116,7 +118,7 @@
                   }
                 };
 
-                $.extend(defaults, postData);
+                $.extend(true,defaults, postData);
 
                 uploadListIns = upload.render(defaults);
 
