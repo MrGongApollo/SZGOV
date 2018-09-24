@@ -117,13 +117,7 @@
       <div class="layui-form-item layui-form-text">
           <label class="layui-form-label">整改前照片</label>
           <div class="layui-input-block padding_lr_5 padding_tb_5">
-              <div class="layui-upload">
-                  <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" id="test2">添加图片</button>
-                  <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
-                      预览图：
-                      <div class="layui-upload-list" id="demo2"></div>
-                  </blockquote>
-              </div>
+              <div class="layui-upload" data-mdname="imgBefore" data-title="整改前照片"></div>
           </div>
       </div>  
   </fieldset>
@@ -198,13 +192,7 @@
       <div class="layui-form-item layui-form-text">
           <label class="layui-form-label">整改后照片</label>
           <div class="layui-input-block padding_lr_5 padding_tb_5">
-              <div class="layui-upload">
-                  <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" id="test2">添加图片</button>
-                  <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
-                      预览图：
-                      <div class="layui-upload-list" id="demo2"></div>
-                  </blockquote>
-              </div>
+              <div class="layui-upload" data-mdname="imgAfter" data-title="整改后照片"></div>
           </div>
       </div>  
 
@@ -322,6 +310,22 @@
                     _HiddenDangerId = $.Cm_Common.getGuid();
                     break;
             }
+
+            $(".layui-upload").each(function (_i, _t) {
+                $.Cm_Dialog.showImgScan({
+                    title:$(_t).attr("data-title"),
+                    container: _t,
+                    IsReadOnly:IsReadOnly,
+                    RootUrl: "@Url.Content("~/")",
+                    setting: {
+                        data: {
+                            RelevanceId: _HiddenDangerId,
+                            FromTableName: "T_WH_MajorHazardDossier",
+                            FromModuleName: $(_t).attr("data-mdname")
+                        }
+                 }
+            });
+        });
 
             form = layui.form;
             form.render();
