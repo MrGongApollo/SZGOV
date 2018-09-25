@@ -93,9 +93,12 @@
                       });
                   }
                   , before: function (obj) { //obj参数包含的信息，跟choose回调完全一致
-                      _loadIndex = layer.load(); //上传loading
-                      $uploadLoadingDiv.css("visibility", "visible");
                       uploadCnt = $("tr[data-load='0']").length;
+                      if (uploadCnt)
+                      {
+                          _loadIndex = layer.load(); //上传loading
+                          $uploadLoadingDiv.css("visibility", "visible");
+                      }
                   }
                   , done: function (res, index, upload) {
                       processBack();
