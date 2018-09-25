@@ -423,15 +423,17 @@ layui.define(['layer'], function (exports) {
                     var mins = myDate.getMinutes(); if (mins < 10) { mins = '0' + mins }
                     $("#win10_btn_time").html(hours + ':' + mins + '<br/>' + year + '/' + month + '/' + date);
                 }, 1000);
+
                 //离开前警告
-                document.body.onbeforeunload = function (event) {
-                    var rel = Win10.lang('系统可能不会保存您所做的更改', 'The system may not save the changes you have made.');
-                    if (!window.event) {
-                        event.returnValue = rel;
-                    } else {
-                        window.event.returnValue = rel;
-                    }
-                };
+                //document.body.onbeforeunload = function (event) {
+                //    var rel = Win10.lang('系统可能不会保存您所做的更改', 'The system may not save the changes you have made.');
+                //    if (!window.event) {
+                //        event.returnValue = rel;
+                //    } else {
+                //        window.event.returnValue = rel;
+                //    }
+                //};
+
                 Win10.buildList();//预处理左侧菜单
                 Win10._startAnimate();//动画处理
                 Win10.renderShortcuts();//渲染图标
@@ -845,17 +847,17 @@ layui.define(['layer'], function (exports) {
                 Win10._animated_liveness = animated_liveness;
             },
             exit: function () {
-                layer.confirm(Win10.lang('确认要关闭本页吗?', 'Are you sure you want to close this page?'), { icon: 3, title: Win10.lang('提示', 'Prompt') }, function (index) {
-                    document.body.onbeforeunload = function () { };
-                    window.location.href = "about:blank";
-                    window.close();
-                    layer.close(index);
-                    layer.alert(Win10.lang('哎呀,好像失败了呢。', 'Ops...There seems to be a little problem.'), {
-                        skin: 'layui-layer-lan'
-                        , closeBtn: 0
-                    });
-                });
-
+                //离开前警告
+                //layer.confirm(Win10.lang('确认要关闭本页吗?', 'Are you sure you want to close this page?'), { icon: 3, title: Win10.lang('提示', 'Prompt') }, function (index) {
+                //    document.body.onbeforeunload = function () { };
+                //    window.location.href = "about:blank";
+                //    window.close();
+                //    layer.close(index);
+                //    layer.alert(Win10.lang('哎呀,好像失败了呢。', 'Ops...There seems to be a little problem.'), {
+                //        skin: 'layui-layer-lan'
+                //        , closeBtn: 0
+                //    });
+                //});
             },
             lang: function (cn, en) {
                 return Win10._lang === 'zh-cn' || Win10._lang === 'zh-tw' ? cn : en;
