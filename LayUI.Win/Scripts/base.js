@@ -829,7 +829,7 @@ var TopWin = window.top,
                     }),
                     $blockquote = $("<blockquote>", {
                         "class": "layui-elem-quote layui-quote-nm margin_tb_5"
-                    }).text("预览图：(点击图片放大)"),
+                    }).html("预览图：(<span class='color-red'>点击图片放大</span>)"),
                     $Imglist;
 
                 $(defaults.container).append(defaults.IsReadOnly ? "" : $btn)
