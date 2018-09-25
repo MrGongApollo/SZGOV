@@ -241,6 +241,7 @@ namespace LayUI.Win.Controllers
                                storeDirectory = kv.Val,
                                subDirectory = DateTime.Now.ToString("yyyyMM"),
                                uploadPath = storeDirectory + @"\" + subDirectory + @"\";
+                        bool IsImg = false;
 
                         if (file != null)
                         {
@@ -256,6 +257,7 @@ namespace LayUI.Win.Controllers
 
                             if (CheckImageExt(suffix))
                             {
+                                IsImg = true;
                                 MakeSmallImg(file.InputStream, realPath + "_s" + suffix, 100, 100);
                                 MakeSmallImg(file.InputStream, fullPath, 800, 800);
                             }
@@ -282,8 +284,6 @@ namespace LayUI.Win.Controllers
                                 ExpandThree = _ExpandThree,
                                 ExpandFour = _ExpandFour,
                                 ExpandFive = _ExpandFive,
-                                //CreateByEmpCode = CreateByEmpCodeS,
-                                //CreateByEmpName = CreateByEmpNameS,
                                 CreateTime = DateTime.Now,
                                 IsDeleted = false
                             };
@@ -300,6 +300,7 @@ namespace LayUI.Win.Controllers
                                 Size = _doc.DocSize,
                                 CreateTime=_doc.CreateTime,
                                 Path = string.Format("DocLib/{0}/{1}", subDirectory, _doc.InternalName)
+                                //,Path_s = IsImg?string.Format("DocLib/{0}/{1}_s{2}", subDirectory, realPath, suffix):null
                             };
 
                         }
@@ -323,6 +324,46 @@ namespace LayUI.Win.Controllers
             return Json(ret);
         }
 
+        #endregion
+
+        #region 文件下载
+        /// <summary>
+        /// 文件下载
+        /// </summary>
+        /// <param name="docId"></param>
+        /// <returns></returns>
+        public FileStreamResult FileDownload(string docId)
+        {
+            FileStreamResult Ret = null;
+            try
+            {
+                #region 判断是否为空
+                if (!string.IsNullOrEmpty(docId))
+                {
+                    using (TeamWorkDbContext et = new TeamWorkDbContext())
+                    {
+                        KeyValModel kv = GetCurrentStoreDirectory();
+                        T_XT_Doc_Entity _doc = et.T_XT_Doc_Entity.FirstOrDefault(d => d.IsDeleted == false && d.DocId == docId);
+                        if (kv != null && _doc != null)
+                        {
+                            string filePath = Server.MapPath(string.Format("~/DocLib/{0}/{1}", _doc.SubDirectory, _doc.InternalName));//路径
+                            Ret = File(new FileStream(filePath, FileMode.Open), "text/plain", _doc.DocName);
+
+                            _doc.DownloadCount = _doc.DownloadCount ?? 0;
+                            _doc.DownloadCount++;
+                            et.SaveChanges();
+                        }
+                    }
+
+                }
+                #endregion
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return Ret;
+        }
         #endregion
 
         #region 文件删除
@@ -378,8 +419,8 @@ namespace LayUI.Win.Controllers
                             }
                             #endregion
 
-                            #region 删除表数据
-                            et.T_XT_Doc_Entity.Remove(_doc);
+                            #region 删除表数据（伪删除）
+                            _doc.IsDeleted = true;
                             et.SaveChanges();
                             #endregion
 
