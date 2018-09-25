@@ -887,7 +887,7 @@ var TopWin = window.top,
 
                         TopWin.layer.photos({
                             photos: $Imglist, //格式见API文档手册页
-                            //shadeClose: true,
+                            shadeClose: false,
                             img:"li>img",
                             closeBtn: true,
                             moveOut: false,
