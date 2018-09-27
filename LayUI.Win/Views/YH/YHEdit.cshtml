@@ -242,7 +242,8 @@
 </div>              
 
 <script>
-    var _HiddenDangerId = "";
+    var _HiddenDangerId = "",
+        _rootUrl = "@Url.Content("~/")";
     pageLoad = function (postData) {
         layui.use(['form', 'laydate'], function () {
             var form = layui.form,
@@ -257,7 +258,7 @@
             user = $.Cm_Auth.userInfo(),
             _pageData = postData.pageData || {};
 
-            _HiddenDangerId = _pageData.HiddenDangerId || $.Cm_Common.getGuid();
+            _HiddenDangerId = _pageData.HiddenDangerId || $.Cm_Common.getGuid(_rootUrl);
 
             //常规用法
             lay('.laydate').each(function () {
@@ -307,7 +308,7 @@
                     }
                     break;
                 case Cm_editMode.add:
-                    _HiddenDangerId = $.Cm_Common.getGuid();
+                    _HiddenDangerId = $.Cm_Common.getGuid(_rootUrl);
                     break;
             }
 
@@ -316,7 +317,7 @@
                     title:$(_t).attr("data-title"),
                     container: _t,
                     IsReadOnly:IsReadOnly,
-                    RootUrl: "@Url.Content("~/")",
+                    RootUrl: _rootUrl,
                     setting: {
                         data: {
                             RelevanceId: _HiddenDangerId,
@@ -380,6 +381,6 @@
 
         });
     }
-    
+
 </script>
 

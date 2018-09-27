@@ -154,7 +154,7 @@
 </div>              
 
 <script>
-    var _DangerChemId = "";
+    var _DangerChemId = "",_rootUrl = "@Url.Content("~/")";
 
     pageLoad = function (postData) {
         layui.use(['form', 'laydate'], function () {
@@ -170,7 +170,7 @@
                 user = $.Cm_Auth.userInfo(),
                 _pageData = postData.pageData || {};
 
-            _DangerChemId = _pageData.DangerChemId || $.Cm_Common.getGuid();
+            _DangerChemId = _pageData.DangerChemId || $.Cm_Common.getGuid(_rootUrl);
 
             switch (postData.editMode) {
                 case Cm_editMode.view:
@@ -200,7 +200,7 @@
                     }
                     break;
                 case Cm_editMode.add:
-                    _DangerChemId = $.Cm_Common.getGuid();
+                    _DangerChemId = $.Cm_Common.getGuid(_rootUrl);
                     break;
             }
 

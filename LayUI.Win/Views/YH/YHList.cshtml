@@ -19,7 +19,7 @@
 
         datatable.render({
             elem: '#datagrid'
-          , url: baseConst.odata + "T_YH_HiddenDanger_Entity"
+          , url:"@Url.Content("~/odata/")" + "T_YH_HiddenDanger_Entity"
           , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
           , height: 'full-100'
           , id: tableId
@@ -35,7 +35,7 @@
             , { field: 'Result', align: "center", width: 90, title: '整改状态' }
             , { field: 'MajorCnt', align: "center", width: 90, title: '填报单位' }
             , {
-                field: 'CheckTime', width: 90, align: "center", title: '检查时间', templet: function (data) {
+                field: 'CheckTime', width: 120, align: "center", title: '检查时间', templet: function (data) {
                     return data.CheckTime && moment(data.CheckTime).format("YYYY-MM-DD") || "";
                 }
             }
@@ -44,16 +44,17 @@
             , { field: 'HiddenTypeS', width: 90, align: "center", title: '隐患小类' }
             , { field: 'HiddenContent', align: "center", title: '隐患内容' }
             , {
-                field: 'TimeLimit', width: 90, align: "center", title: '整改期限', templet: function (data) {
+                field: 'TimeLimit', width: 120, align: "center", title: '整改期限', templet: function (data) {
                     return data.TimeLimit && moment(data.TimeLimit).format("YYYY-MM-DD") || "";
                 }
             }
             , {
-                field: 'CompleteTime', width: 90, align: "center", title: '完成日期', templet: function (data) {
+                field: 'CompleteTime', width: 120, align: "center", title: '完成日期', templet: function (data) {
                     return data.CompleteTime && moment(data.CompleteTime).format("YYYY-MM-DD") || "";
                 }
             }
-            , { field: 'ValidateDate', width: 90, align: "center", title: '验证日期',  templet: function (data) {
+            , {
+                field: 'ValidateDate', width: 120, align: "center", title: '验证日期', templet: function (data) {
                 return data.ValidateDate && moment(data.ValidateDate).format("YYYY-MM-DD") || "";
             }
             }
@@ -66,9 +67,7 @@
             fnadd: function () {
                 fncontrolMenus.open({
                     editMode: "add",
-                    pageData: {
-                        WorkTime:new Date()
-                    }
+                    pageData: null
                 });
             },
             fncopy: function () {
@@ -149,11 +148,12 @@
     });
 </script>
 
+
+
 <div class="content-padding">
-    @*<div class="layui-btn-group" id="controlMenus">
-        <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnadd"><i class="fa fa-paint-brush"></i> 我要填报</button>
-        <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnmodify"><i class="fa fa-circle-o"></i> 零隐患上报</button>
-    </div>*@
+    <div>
+
+    </div>
     <div class="layui-btn-group" id="controlMenus">
         <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnadd"><i class="fa fa-plus"></i> 新增</button>
         <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnmodify"><i class="fa fa-edit"></i> 修改</button>

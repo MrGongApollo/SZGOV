@@ -165,7 +165,7 @@
 </div>              
 
 <script>
-    var _IsotopeId = "";
+    var _IsotopeId = "",_rootUrl = "@Url.Content("~/")";
     pageLoad = function (postData) {
         layui.use(['form', 'laydate'], function () {
             var form = null,
@@ -180,7 +180,7 @@
                 user = $.Cm_Auth.userInfo(),
                 _pageData = postData.pageData || {};
 
-            _IsotopeId = _pageData.IsotopeId || $.Cm_Common.getGuid();
+            _IsotopeId = _pageData.IsotopeId || $.Cm_Common.getGuid(_rootUrl);
 
             switch (postData.editMode) {
                 case Cm_editMode.view:
@@ -212,7 +212,7 @@
                     }
                     break;
                 case Cm_editMode.add:
-                    _IsotopeId = $.Cm_Common.getGuid();
+                    _IsotopeId = $.Cm_Common.getGuid(_rootUrl);
                     break;
             }
 

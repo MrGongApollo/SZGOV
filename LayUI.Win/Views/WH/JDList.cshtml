@@ -19,7 +19,7 @@
 
         datatable.render({
             elem: '#datagrid'
-          , url: baseConst.odata + "T_WH_Toxic_Entity"
+          , url: "@Url.Content("~/odata/")"+ "T_WH_Toxic_Entity"
           , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
           , height: 'full-100'
           , id: tableId
@@ -53,9 +53,7 @@
             fnadd: function () {
                 fncontrolMenus.open({
                     editMode: "add",
-                    pageData: {
-                        WorkTime:new Date()
-                    }
+                    pageData: null
                 });
             },
             fncopy: function () {
