@@ -487,9 +487,10 @@ var TopWin = window.top,
             return "";
         },
         //获取guid
-        getGuid: function () {
+        getGuid: function (RootUrl) {
             var ret = null;
-            $.Cm_Ajax.get("/XT/GetGUID").done(function (xhr) {
+            if (!RootUrl) { console.warn("getGuid请传入参数！") }
+            $.Cm_Ajax.get(RootUrl+"XT/GetGUID").done(function (xhr) {
                 ret = xhr;
             });
             return ret;
