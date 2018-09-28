@@ -8,15 +8,41 @@
 </style>
 
 <script>
-    layui.use(['datatable', 'win10'], function () {
+    layui.use(['datatable', 'win10', "form", "laydate"], function () {
         var datatable = layui.datatable,
            Win10 = layui.win10,
            $ = layui.jquery,
+           laydate = layui.laydate,
+           form = layui.form,
            tableId = "datagrid",
            reloadTable = function () {
-               datatable.reload(tableId, { page: { curr: 1 } });
+               datatable.reload(tableId, {
+                   page: { curr: 1 }
+                   , getFilters: function () {
+                       var Result = $("#Result").val();
+                       var SerialNo = $("#SerialNo").val();
+                       var TimeLimitS = $("#TimeLimitS").val();
+                       var TimeLimitE = $("#TimeLimitE").val();
+                       var filters = [];
+                       filters.push("(IsDeleted eq false)");
+                       if (Result != '')
+                           filters.push("(Result eq '" + Result + "')");
+                       if (SerialNo != '')
+                           filters.push("(SerialNo eq " + SerialNo + ")");
+                       if (TimeLimitS != '')
+                           filters.push("(TimeLimit ge datetime'" + TimeLimitS + "')");
+                       if (TimeLimitE != '')
+                           filters.push("(TimeLimit le datetime'" + TimeLimitE + "')");
+                       return filters.join(" and ");
+                   }
+               });
            };
-
+        laydate.render({
+            elem: '#TimeLimitS'
+        });
+        laydate.render({
+            elem: '#TimeLimitE'
+        });
         datatable.render({
             elem: '#datagrid'
           , url:"@Url.Content("~/odata/")" + "T_YH_HiddenDanger_Entity"
@@ -139,7 +165,9 @@
                 });
             }
         };
-
+        $('.layui-form-item .layui-btn').on('click', function () {
+            reloadTable();
+        });
 
         $("#controlMenus>.layui-btn").click(function () {
             var type = $(this).attr("data-type");
@@ -151,14 +179,46 @@
 
 
 <div class="content-padding">
-    <div>
-
-    </div>
-    <div class="layui-btn-group" id="controlMenus">
-        <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnadd"><i class="fa fa-plus"></i> 新增</button>
-        <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnmodify"><i class="fa fa-edit"></i> 修改</button>
-        <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fndelete"><i class="fa fa-remove"></i> 删除</button>
-        <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnview"><i class="fa fa-eye"></i> 查看</button>
-    </div>
-    <table class="layui-hide" id="datagrid"></table>
+    <form class="layui-form lb-p-m layui-panel" action="">
+        <div class="layui-form-item" style="margin-top: 20px;">
+            <div class="layui-inline">
+                <label class=" layui-form-label">
+                    检查时间
+                </label>
+                <div class="layui-input-inline" style="width:340px">
+                    <div class="layui-input-inline" style="width:140px">
+                        <input type="text" name="TimeLimitS" id="TimeLimitS" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid">-</div>
+                    <div class="layui-input-inline" style="width:140px">
+                        <input type="text" name="TimeLimitE" id="TimeLimitE" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">隐患编号</label>
+                    <div class="layui-input-inline">
+                        <input id="SerialNo" type="text" name="SerialNo" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <label class="layui-form-label">整改状态</label>
+                <div class="layui-input-inline">
+                    <select name="Result" lay-filter="Result" id="Result">
+                        <option value="">请选择</option>
+                        <option value="未整改">未整改</option>
+                        <option value="已整改">已整改</option>
+                    </select>
+                </div>
+                <div class="layui-inline" style="margin-right: 10px">
+                    <a class="layui-btn layui-btn-normal" data-type="reload">查询</a>
+                </div>
+            </div>
+        </div>
+    </form>
+        <div class="layui-btn-group" id="controlMenus">
+            <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnadd"><i class="fa fa-plus"></i> 新增</button>
+            <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnmodify"><i class="fa fa-edit"></i> 修改</button>
+            <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fndelete"><i class="fa fa-remove"></i> 删除</button>
+            <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnview"><i class="fa fa-eye"></i> 查看</button>
+        </div>
+        <table class="layui-hide" id="datagrid"></table>
 </div>
