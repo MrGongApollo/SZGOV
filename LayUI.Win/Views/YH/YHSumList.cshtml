@@ -28,8 +28,9 @@
           , getFilters: function ()
           {
               var filters = [];
-              filters.push("IsDeleted eq false");
-              return filters;
+              filters.push("(IsDeleted eq false)");
+              filters.push("(startswith(MonthDate , '" + $("#YaerDate").val() + "' ))");
+              return filters.join(" and ");
           }
           , cols: [[
               { type: 'checkbox' }
@@ -83,7 +84,7 @@
             //    }
             //}
           ]],
-            page: false
+            page: true
         });
 
         //监听行工具事件
@@ -91,7 +92,20 @@
             var data = obj.data;
             fncontrolMenus[obj.event]();
         });
+        form.on('select(YaerDate)', function (data) {
+            datatable.reload('datagrid', {
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+                , getFilters: function () {
+                    var filters = [];
+                    filters.push("(IsDeleted eq false)");
+                    filters.push("(startswith(MonthDate , '" + $("#YaerDate").val() + "' ))");
+                    return filters.join(" and ");
+                }
+            });
 
+        });
         function YHOpera()
         {
             var type = $(this).attr("data-type");
@@ -161,7 +175,7 @@
                     maxmin: false,
                     content: "@Url.Content("~/YH/YHEdit")",
                     success: function (frm) {
-                        var _frm = frm.find("iframe").get(0).contentWindow;
+                        var _frm = frm.find("iframe").get(0).contentWindow;  
                         if (typeof _frm.pageLoad == "function") {
                             _frm.pageLoad(options);
                         }
@@ -197,7 +211,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">年度</label>
                 <div class="layui-input-inline">
-                    <select name="quiz1">
+                    <select id="YaerDate" name="YaerDate" lay-filter="YaerDate">
                         <option value="2018">2018</option>
                         <option value="2017">2017</option>
                         <option value="2016">2016</option>
