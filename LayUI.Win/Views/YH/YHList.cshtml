@@ -29,10 +29,18 @@
                            filters.push("(Result eq '" + Result + "')");
                        if (SerialNo != '')
                            filters.push("(SerialNo eq " + SerialNo + ")");
-                       if (TimeLimitS != '')
-                           filters.push("(TimeLimit ge datetime'" + TimeLimitS + "')");
+                       if (TimeLimitS != '') {
+                           var ymd = TimeLimitS.split('-');
+                           var strf="(";
+                           strf += "(year(CheckTime) lt " + ymd[0] + ") or";
+                           strf += "(year(CheckTime) eq " + ymd[0] + " and month(CheckTime) lt " + ymd[1] + " ) or ";
+                           strf += "(year(CheckTime) eq " + ymd[0] + " and month(CheckTime) eq " + ymd[1] + " and day(CheckTime) le " + ymd[2] + ") ";
+                           strf += ")";
+                           filters.push(strf);
+                       }
+                          
                        if (TimeLimitE != '')
-                           filters.push("(TimeLimit le datetime'" + TimeLimitE + "')");
+                           filters.push("(CheckTime le datetime'" + TimeLimitE + "')");
                        return filters.join(" and ");
                    }
                });
