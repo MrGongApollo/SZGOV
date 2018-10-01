@@ -92,7 +92,7 @@
 </div>              
 
 <script>
-    var _RecordId = "",_rootUrl = "@Url.Content("~/")";
+    var _RecordId = "";
     pageLoad = function (postData) {
     layui.use(['form', 'laydate'], function () {
             var form = null,
@@ -107,7 +107,7 @@
                 user=$.Cm_Auth.userInfo(),
                 _pageData = postData.pageData || {};
 
-            _RecordId = _pageData.RecordId || $.Cm_Common.getGuid(_rootUrl);
+            _RecordId = _pageData.RecordId || $.Cm_Common.getGuid();
 
             switch (postData.editMode) {
                 case Cm_editMode.view:
@@ -132,7 +132,7 @@
                     }
                     break;
                 case Cm_editMode.add:
-                    _RecordId = $.Cm_Common.getGuid(_rootUrl);
+                    _RecordId = $.Cm_Common.getGuid();
                     break;
             }
 

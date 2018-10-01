@@ -179,7 +179,8 @@
                       </select>
                   </div>
               </div>
-          </div><div class="layui-col-xs6">
+          </div>
+          <div class="layui-col-xs6">
               <div class="layui-inline">
                   <label class="layui-form-label">完成日期</label>
                   <div class="layui-input-inline">
@@ -242,8 +243,7 @@
 </div>              
 
 <script>
-    var _HiddenDangerId = "",
-        _rootUrl = "@Url.Content("~/")";
+    var _HiddenDangerId = "";
     pageLoad = function (postData) {
         layui.use(['form', 'laydate'], function () {
             var form = layui.form,
@@ -251,14 +251,14 @@
                 layer = layui.layer,
                 laydate = layui.laydate,
                 Cm_editMode = $.Cm_Setting.editMode,
-                _self = parent.layer.getFrameIndex(window.name); //获取窗口索引
-            IsReadOnly = postData.editMode == Cm_editMode.view,
-            IsEdit = postData.editMode == Cm_editMode.edit,
-            saveMethed = IsEdit ? "putAsync" : "postAsync",
-            user = $.Cm_Auth.userInfo(),
-            _pageData = postData.pageData || {};
+                _self = parent.layer.getFrameIndex(window.name), //获取窗口索引
+                IsReadOnly = postData.editMode == Cm_editMode.view,
+                IsEdit = postData.editMode == Cm_editMode.edit,
+                saveMethed = IsEdit ? "putAsync" : "postAsync",
+                user = $.Cm_Auth.userInfo(),
+                _pageData = postData.pageData || {};
 
-            _HiddenDangerId = _pageData.HiddenDangerId || $.Cm_Common.getGuid(_rootUrl);
+            _HiddenDangerId = _pageData.HiddenDangerId || $.Cm_Common.getGuid();
 
             //常规用法
             lay('.laydate').each(function () {
@@ -308,7 +308,7 @@
                     }
                     break;
                 case Cm_editMode.add:
-                    _HiddenDangerId = $.Cm_Common.getGuid(_rootUrl);
+                    _HiddenDangerId = $.Cm_Common.getGuid();
                     break;
             }
 
@@ -317,7 +317,6 @@
                     title:$(_t).attr("data-title"),
                     container: _t,
                     IsReadOnly:IsReadOnly,
-                    RootUrl: _rootUrl,
                     setting: {
                         data: {
                             RelevanceId: _HiddenDangerId,
@@ -346,17 +345,13 @@
                 if (IsEdit) {
                     _url += "('" + _HiddenDangerId + "')";
                     $.extend(saveData, {
-                          ModifyEmpCode: '11'
-                        , ModifyEmpName: '11'
-                        , ModifyTime: new Date()
+                        ModifyTime: new Date()
                     });
                     saveData.CreateTime = moment(saveData.CreateTime);
                 }
                 else {
                     $.extend(saveData, {
                         HiddenDangerId: _HiddenDangerId
-                        , CreateByEmpCode: '11'
-                        , CreateByEmpName: '11'
                         , CreateTime:new Date()
                         , IsDeleted: false
                     });

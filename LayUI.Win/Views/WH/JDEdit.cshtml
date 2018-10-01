@@ -180,7 +180,7 @@
 </div>              
 
 <script>
-    var _ToxicId = "",_rootUrl = "@Url.Content("~/")";
+    var _ToxicId = "";
 
     pageLoad = function (postData) {
         layui.use(['form', 'laydate'], function () {
@@ -196,7 +196,7 @@
                 user = $.Cm_Auth.userInfo(),
                 _pageData = postData.pageData || {};
 
-            _ToxicId = _pageData.ToxicId || $.Cm_Common.getGuid(_rootUrl);
+            _ToxicId = _pageData.ToxicId || $.Cm_Common.getGuid();
 
 
             switch (postData.editMode) {
@@ -231,7 +231,7 @@
                     }
                     break;
                 case Cm_editMode.add:
-                    _ToxicId = $.Cm_Common.getGuid(_rootUrl);
+                    _ToxicId = $.Cm_Common.getGuid();
                     break;
             }
 

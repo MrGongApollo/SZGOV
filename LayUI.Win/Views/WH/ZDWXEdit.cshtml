@@ -111,7 +111,7 @@
 </div>
 
 <script>
-    var _DossierId = "", _rootUrl = "@Url.Content("~/")";
+    var _DossierId = "";
     pageLoad = function (postData) {
         layui.use(['form', 'laydate'], function () {
             var form = null,
@@ -125,7 +125,7 @@
                 saveMethed = IsEdit ? "putAsync" : "postAsync",
                 user = $.Cm_Auth.userInfo(),
                 _pageData = postData.pageData || {},
-                _DossierId = _pageData.DossierId || $.Cm_Common.getGuid(_rootUrl);
+                _DossierId = _pageData.DossierId || $.Cm_Common.getGuid();
 
             //常规用法
             laydate.render({
@@ -159,7 +159,7 @@
                     }
                     break;
                 case Cm_editMode.add:
-                    _DossierId = $.Cm_Common.getGuid(_rootUrl);
+                    _DossierId = $.Cm_Common.getGuid();
                     break;
             }
 
@@ -168,7 +168,6 @@
                 $.Cm_Dialog.UploadFileList({
                     container: _t,
                     IsReadOnly:IsReadOnly,
-                    RootUrl: _rootUrl,
                     setting: {
                         data: {
                             RelevanceId: _DossierId,
