@@ -4,8 +4,15 @@
 //}
 
 var TopWin = window.top,
-    baseConst = {
-        odata:"/odata/"
+    baseConst =
+    {
+        RootUrl:null,
+        odata:"odata/",
+        InitUrl: function (url)
+        {
+            baseConst.RootUrl = url;
+            baseConst.odata = url + baseConst.odata;
+        }
     };
 
 (function ($) {
@@ -487,10 +494,9 @@ var TopWin = window.top,
             return "";
         },
         //获取guid
-        getGuid: function (RootUrl) {
+        getGuid: function () {
             var ret = null;
-            if (!RootUrl) { console.warn("getGuid请传入参数！") }
-            $.Cm_Ajax.get(RootUrl+"XT/GetGUID").done(function (xhr) {
+            $.Cm_Ajax.get(baseConst.RootUrl+"XT/GetGUID").done(function (xhr) {
                 ret = xhr;
             });
             return ret;
@@ -557,7 +563,7 @@ var TopWin = window.top,
                 title: "附件上传",
                 area: ['800px', '520px'],
                 IsReadOnly:true,
-                RootUrl:"/",
+                RootUrl: baseConst.RootUrl,
                 container: null,
                 maxmin: false,
                 callBack: function () { },
@@ -769,7 +775,7 @@ var TopWin = window.top,
                 title: "图片上传",
                 area: ['800px', '520px'],
                 IsReadOnly: true,
-                RootUrl: "/",
+                RootUrl: baseConst.RootUrl,
                 container: null,
                 maxmin: false,
                 callBack: function () { },
@@ -962,7 +968,146 @@ var TopWin = window.top,
     };
     /*******用户权限 结束**********/
 
+
+
+    //Jquery 拓展方法
+    $.fn.extend({
+        ///<summary>
+        ///拼接odata协议的$filter查询字符串, 建立操作符== < ...对应关系，简化操作避免出错
+        //notStr 是否是字符串类型，默认为字符串
+        odataLet: function (property, value, notStr) {
+            var result = $(this).data("result");
+            if (result == null) {
+                TopWin.layer.alert('filter未初始化!', {
+                    icon: 1,
+                    skin: 'layer-ext-moon' //该皮肤由layer.seaning.com友情扩展。关于皮肤的扩展规则，去这里查阅
+                });
+                return;
+            }
+            if (value == undefined) {
+                TopWin.layer.alert('value不可为空!', {
+                    icon: 1,
+                    skin: 'layer-ext-moon' //该皮肤由layer.seaning.com友情扩展。关于皮肤的扩展规则，去这里查阅
+                });
+                return;
+            }
+            notStr ? "" : value = ("'" + value + "'");
+            result += result == "" ? "(" + property + " eq " + value + ")" : " and " + "(" + property + " eq " + value + ")";
+            $(this).data("result", result);
+            return this;
+        },
+        //str1的开头部分与str2   str1 like str2%
+        odataStartswith: function (str1, str2) {
+            var result = $(this).data("result");
+            if (result == null) {
+                TopWin.layer.alert('filter未初始化!', {
+                    icon: 1,
+                    skin: 'layer-ext-moon' //该皮肤由layer.seaning.com友情扩展。关于皮肤的扩展规则，去这里查阅
+                });
+                return;
+            }
+            if (str1 == undefined || !str2) {
+                return; //$.anbao.dialogs.warningBox("odataStartswith方法传入参数有误!"); 
+            }
+            result += result == "" ? "(startswith(" + str1 + ",'" + str2 + "'))" : " and " + "(startswith(" + str1 + ",'" + str2 + "'))";
+            $(this).data("result", result);
+            return this;
+        },
+        odataSubstringof: function (str1, str2) {
+            var result = $(this).data("result");
+            if (result == null) {
+                TopWin.layer.alert('filter未初始化!', {
+                    icon: 1,
+                    skin: 'layer-ext-moon' //该皮肤由layer.seaning.com友情扩展。关于皮肤的扩展规则，去这里查阅
+                });
+                return;
+            }
+            if (str1 == undefined || !str2) {
+                return;
+            }
+            result += result == "" ? "(substringof('" + str2 + "'," + str1 + "))" : " and " + "(substringof('" + str2 + "'," + str1 + "))";
+            $(this).data("result", result);
+            return this;
+        },
+        //添加条件，自动判断是否需要 and
+        odataJoin: function (str) {
+            var result = $(this).data("result");
+            if (result == null) {
+                TopWin.layer.alert('filter未初始化!', {
+                    icon: 1,
+                    skin: 'layer-ext-moon' //该皮肤由layer.seaning.com友情扩展。关于皮肤的扩展规则，去这里查阅
+                });
+                return;
+            }
+            result += (result ? " and " : "") + "(" + str + ")";
+            $(this).data("result", result);
+            return this;
+        },
+        //非等于 property >= value
+        odataWhere: function (property, operator, value) {
+            var result = $(this).data("result"),
+                    zi_operator = $.Cm_Setting.odataOper;
+            if (result == null) {
+                TopWin.layer.alert('filter未初始化!', {
+                    icon: 1,
+                    skin: 'layer-ext-moon' //该皮肤由layer.seaning.com友情扩展。关于皮肤的扩展规则，去这里查阅
+                });
+                return;
+            }
+            if (!zi_operator[operator] && !operator) {
+                TopWin.layer.alert('操作符定义有误初始化!', {
+                    icon: 1,
+                    skin: 'layer-ext-moon' //该皮肤由layer.seaning.com友情扩展。关于皮肤的扩展规则，去这里查阅
+                });
+                return;
+            }
+            if (value == undefined) {
+                TopWin.layer.alert('value不可为空!', {
+                    icon: 1,
+                    skin: 'layer-ext-moon' //该皮肤由layer.seaning.com友情扩展。关于皮肤的扩展规则，去这里查阅
+                });
+                return;
+            }
+            result += result == "" ? "(" + property + " " + zi_operator[operator] + " '" + value + "')" : " and " + "(" + property + " " + zi_operator[operator] + " '" + value + "')";
+            $(this).data("result", result);
+            return this;
+        },
+        //日期
+        odataWhereDate: function (property, operator, value) {
+
+            var result = $(this).data("result"),
+                    zi_operator = $.Cm_Setting.odataOper;
+            if (result == null) {
+                TopWin.layer.alert('filter未初始化!', {
+                    icon: 1,
+                    skin: 'layer-ext-moon' //该皮肤由layer.seaning.com友情扩展。关于皮肤的扩展规则，去这里查阅
+                });
+                return;
+            }
+            if (!zi_operator[operator] && !operator) {
+                TopWin.layer.alert('操作符定义有误初始化!', {
+                    icon: 1,
+                    skin: 'layer-ext-moon' //该皮肤由layer.seaning.com友情扩展。关于皮肤的扩展规则，去这里查阅
+                });
+                return;
+            }
+            if (value == undefined) {
+                TopWin.layer.alert('value不可为空!', {
+                    icon: 1,
+                    skin: 'layer-ext-moon' //该皮肤由layer.seaning.com友情扩展。关于皮肤的扩展规则，去这里查阅
+                });
+                return;
+            }
+            result += result == "" ? "(" + property + " " + zi_operator[operator] + " DateTime'" + value + "')" : " and " + "(" + property + " " + zi_operator[operator] + " DateTime'" + value + "')";
+            $(this).data("result", result);
+            return this;
+        }
+    });
+
+
 })(jQuery)
+
+
 
 
 //兼容写法，防止ie版本过低console报错
