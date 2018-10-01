@@ -213,7 +213,8 @@ layui.define(['laytpl', 'laypage', 'layer', 'form'], function (exports) {
     };
 
     //表格渲染
-    Class.prototype.render = function () {
+    Class.prototype.render = function ()
+    {
         var that = this
         , options = that.config;
 
@@ -633,11 +634,12 @@ layui.define(['laytpl', 'laypage', 'layer', 'form'], function (exports) {
                 elem: 'layui-table-page' + options.index
               , count: count
               , limit: options.limit
-              , limits: options.limits || [10, 20, 30, 40, 50, 60, 70, 80, 90]
+              , limits: options.limits || [10, 20,50,100,200]
               , groups: 3
               , layout: ['prev', 'page', 'next', 'skip', 'count', 'limit']
               , prev: '<i class="layui-icon">&#xe603;</i>'
               , next: '<i class="layui-icon">&#xe602;</i>'
+              , theme: '#1E9FFF'
               , jump: function (obj, first) {
                   if (!first) {
                       //分页本身并非需要做以下更新，下面参数的同步，主要是因为其它处理统一用到了它们
