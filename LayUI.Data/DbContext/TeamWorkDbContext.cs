@@ -34,6 +34,7 @@
 		public virtual DbSet<T_XT_Data_Entity> T_XT_Data_Entity { get; set; }
 		public virtual DbSet<T_XT_Doc_Entity> T_XT_Doc_Entity { get; set; }
 		public virtual DbSet<T_XT_LogRecords_Entity> T_XT_LogRecords_Entity { get; set; }
+		public virtual DbSet<T_XT_StoreDirectory_Entity> T_XT_StoreDirectory_Entity { get; set; }
 		public virtual DbSet<T_XT_User_Entity> T_XT_User_Entity { get; set; }
 		public virtual DbSet<T_YH_HiddenDanger_Entity> T_YH_HiddenDanger_Entity { get; set; }
 		public virtual DbSet<T_YH_Records_Entity> T_YH_Records_Entity { get; set; }
