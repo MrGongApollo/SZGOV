@@ -10,6 +10,7 @@ using LayUI.Win.Models;
 using LayUI.Utility.Helper;
 using System.Data;
 using System.Data.Entity;
+using System.Configuration;
 
 namespace LayUI.Win.Controllers
 {
@@ -17,6 +18,13 @@ namespace LayUI.Win.Controllers
     {
         #region 隐患汇总视图
         public ActionResult YHSumList()
+        {
+            return View();
+        }
+        #endregion
+
+        #region 隐患汇总查看明细视图
+        public ActionResult YHSumViewList()
         {
             return View();
         }
