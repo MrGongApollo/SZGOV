@@ -26,7 +26,7 @@ namespace LayUI.Data.EntityModel
         /// <summary>
         /// 
         /// </summary>
-        public decimal? MonthDate { get; set; }
+        public string MonthDate { get; set; }
         
         /// <summary>
         /// 
