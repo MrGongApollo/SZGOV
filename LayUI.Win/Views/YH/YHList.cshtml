@@ -5,6 +5,7 @@
 
 <style>
     .layui-table-cell{height:auto;line-height:1.5;}
+    .searchbox .input-md{width:100px;}
 </style>
 
 <script>
@@ -18,55 +19,49 @@
            reloadTable = function () {
                datatable.reload(tableId, {
                    page: { curr: 1 }
-                   , getFilters: function () {
-                       var Result = $("#Result").val();
-                       var SerialNo = $("#SerialNo").val();
-                       var TimeLimitS = $("#TimeLimitS").val();
-                       var TimeLimitE = $("#TimeLimitE").val();
-                       var filters = [];
-                       filters.push("(IsDeleted eq false)");
-                       if (Result != '')
-                           filters.push("(Result eq '" + Result + "')");
-                       if (SerialNo != '')
-                           filters.push("(SerialNo eq " + SerialNo + ")");
-                       if (TimeLimitS != '') {
-                           var ymd = TimeLimitS.split('-');
-                           var strf="(";
-                           strf += "(year(CheckTime) lt " + ymd[0] + ") or";
-                           strf += "(year(CheckTime) eq " + ymd[0] + " and month(CheckTime) lt " + ymd[1] + " ) or ";
-                           strf += "(year(CheckTime) eq " + ymd[0] + " and month(CheckTime) eq " + ymd[1] + " and day(CheckTime) le " + ymd[2] + ") ";
-                           strf += ")";
-                           filters.push(strf);
-                       }
-                          
-                       if (TimeLimitE != '')
-                           filters.push("(CheckTime le datetime'" + TimeLimitE + "')");
-                       return filters.join(" and ");
-                   }
                });
            };
-        laydate.render({
-            elem: '#TimeLimitS'
+
+        //常规用法
+        lay('.laydate').each(function () {
+            laydate.render({
+                elem: this
+              , trigger: 'focus'
+            });
         });
-        laydate.render({
-            elem: '#TimeLimitE'
-        });
+
+        form.render();
+
         datatable.render({
             elem: '#datagrid'
           , url:"@Url.Content("~/odata/")" + "T_YH_HiddenDanger_Entity"
           , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
-          , height: 'full-100'
+          , height: '350'
           , id: tableId
-          , getFilters: function ()
-          {
-              var filters = [];
-              filters.push("IsDeleted eq false");
-              return filters;
+          , where: { "$orderby": "SerialNo" }
+          , getFilters: function () {
+              var Result = $("[name='rdResult']:checked").val(),
+                  SerialNo = $("#SerialNo").val(),
+                  CheckTimeS = $("#txtCheckTime_s").val(),
+                  CheckTimeE = $("#txtCheckTime_e").val();
+
+              var $filters = $({}).data("result","IsDeleted eq false");
+              Result?$filters.odataLet("Result", Result):"";
+              SerialNo ? $filters.odataLet("SerialNo", SerialNo, true) : "";
+              CheckTimeS ? $filters.odataWhereDate("CheckTime", ">=", CheckTimeS) : "";
+              CheckTimeE ? $filters.odataWhereDate("CheckTime", "<", $.Cm_DateTime.dateAddDays(CheckTimeE, 1)) : "";
+              return $filters.data("result");
           }
           , cols: [[
-              { type: 'checkbox' }
+              {type:'numbers'}
+            ,{ type: 'checkbox' }
             , { field: 'SerialNo', width: 90, align: "center", title: '隐患编号' }
-            , { field: 'Result', align: "center", width: 90, title: '整改状态' }
+            , {
+                field: 'Result', align: "center", width: 90, title: '整改状态', templet: function (data)
+                {
+                    return data.Result && "<span class='layui-badge " + (({ "已整改": "layui-bg-green", "未整改": "" }[data.Result]) || "") + "'>" + data.Result + "</span>" || "";
+                }
+            }
             , { field: 'MajorCnt', align: "center", width: 90, title: '填报单位' }
             , {
                 field: 'CheckTime', width: 120, align: "center", title: '检查时间', templet: function (data) {
@@ -93,11 +88,13 @@
             }
             }
           ]],
-            page: true
+          page:true
         });
 
+        //layer.msg('努力中...', { icon: 16, shade: [0.5, '#f5f5f5'], scrollbar: false, offset: '50%', time: 1000 });
 
-        var fncontrolMenus = {
+        var fncontrolMenus =
+            {
             fnadd: function () {
                 fncontrolMenus.open({
                     editMode: "add",
@@ -181,6 +178,7 @@
             var type = $(this).attr("data-type");
             fncontrolMenus[type]();
         });
+
     });
 </script>
 
@@ -188,38 +186,38 @@
 
 <div class="content-padding">
     <form class="layui-form lb-p-m layui-panel" action="">
-        <div class="layui-form-item" style="margin-top: 20px;">
-            <div class="layui-inline">
-                <label class=" layui-form-label">
-                    检查时间
-                </label>
-                <div class="layui-input-inline" style="width:340px">
-                    <div class="layui-input-inline" style="width:140px">
-                        <input type="text" name="TimeLimitS" id="TimeLimitS" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
-                    </div>
-                    <div class="layui-form-mid">-</div>
-                    <div class="layui-input-inline" style="width:140px">
-                        <input type="text" name="TimeLimitE" id="TimeLimitE" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+        <div class="layui-form-item searchbox">
+                <div class="layui-inline">
+                    <label class=" layui-form-label">
+                        检查时间：
+                    </label>
+                    <div class="layui-input-block">
+                        <div class="layui-input-inline input-md">
+                            <input type="text" id="txtCheckTime_s" lay-verify="date" placeholder="检查日期起" autocomplete="off" class="layui-input laydate">
+                        </div>
+                        <div class="layui-form-mid">-</div>
+                        <div class="layui-input-inline input-md">
+                            <input type="text" id="txtCheckTime_e" lay-verify="date" placeholder="检查日期止" autocomplete="off" class="layui-input laydate">
+                        </div>
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">隐患编号</label>
-                    <div class="layui-input-inline">
-                        <input id="SerialNo" type="text" name="SerialNo" autocomplete="off" class="layui-input">
+                        <label class="layui-form-label">隐患编号：</label>
+                        <div class="layui-input-inline input-md">
+                            <input id="SerialNo" type="text" name="SerialNo" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">整改状态：</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="rdResult" value="" title="全部" checked="" />
+                        <input type="radio" name="rdResult" value="已整改" title="已整改" />
+                        <input type="radio" name="rdResult" value="未整改" title="未整改" />
                     </div>
                 </div>
-                <label class="layui-form-label">整改状态</label>
-                <div class="layui-input-inline">
-                    <select name="Result" lay-filter="Result" id="Result">
-                        <option value="">请选择</option>
-                        <option value="未整改">未整改</option>
-                        <option value="已整改">已整改</option>
-                    </select>
+                <div class="layui-inline">
+                    <a class="layui-btn layui-btn-sm layui-btn-normal" data-type="reload"><i class="fa fa-search"></i>查询</a>
                 </div>
-                <div class="layui-inline" style="margin-right: 10px">
-                    <a class="layui-btn layui-btn-normal" data-type="reload">查询</a>
-                </div>
-            </div>
         </div>
     </form>
         <div class="layui-btn-group" id="controlMenus">
