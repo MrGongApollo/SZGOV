@@ -29,11 +29,11 @@
           {
               var filters = [];
               filters.push("(IsDeleted eq false)");
-              filters.push("(startswith(MonthDate , '" + $("#YaerDate").val() + "' ))");
+              filters.push("(startswith(MonthDate , '" + $("#YearDate").val() + "' ))");
               return filters.join(" and ");
           }
           , cols: [[
-              { type: 'checkbox' }
+              { type: 'numbers' }
             , { field: 'MonthDate', align: "center", width: 120, title: '年度月份' }
             , { field: 'CommonlyCnt', align: "center", width: 120, title: '一般隐患' }
             , { field: 'MajorCnt', align: "center", width: 120, title: '重大隐患' }
@@ -43,13 +43,14 @@
                 }
             }
             , {
-                field: '', align: "center", title: '操作', templet: function (data) {
+                field: '', align: "center", title: '操作', templet: function (data)
+                {
                     var nowMon = moment(new Date()).format("YYYYMM");
                     return data.MonthDate == nowMon?("<div class='text-center'>" +
                             "<a href='javascript:;' class='margin_lr_5 text-s layui-btn layui-btn-normal layui-btn-xs' lay-event='fnadd'>录入</a>" +
                             "<a href='javascript:;' class='margin_lr_5 text-s layui-btn layui-btn-normal layui-btn-xs' lay-event='fnmodify'>零隐患上报</a>" +
                             "</div>"
-                            ) : "<div class='text-center'><a href='javascript:;' class='layui-btn layui-btn-xs layui-btn-normal'>查看</a></div>";
+                            ) : "<div class='text-center'><a href='javascript:;' class='layui-btn layui-btn-xs layui-btn-normal' lay-event='fnview'>查看</a></div>";
                 }
             }
             , {
@@ -84,50 +85,27 @@
             //    }
             //}
           ]],
-            page: true
+          page:true
         });
 
         //监听行工具事件
         datatable.on('tool(datagrid)', function (obj) {
             var data = obj.data;
-            fncontrolMenus[obj.event]();
+            fncontrolMenus[obj.event](obj.data);
         });
-        form.on('select(YaerDate)', function (data) {
-            datatable.reload('datagrid', {
-                page: {
-                    curr: 1 //重新从第 1 页开始
-                }
-                , getFilters: function () {
-                    var filters = [];
-                    filters.push("(IsDeleted eq false)");
-                    filters.push("(startswith(MonthDate , '" + $("#YaerDate").val() + "' ))");
-                    return filters.join(" and ");
-                }
-            });
 
+        form.on('select(YearDate)', function (data) {
+            reloadTable();
         });
-        function YHOpera()
-        {
-            var type = $(this).attr("data-type");
-            fncontrolMenus[type]();
-        }
 
         var fncontrolMenus = {
-            fnadd: function () {
+            fnadd: function (data) {
                 fncontrolMenus.open({
                     editMode: "add",
                     pageData: null
                 });
             },
-            fncopy: function () {
-                var datas = datatable.checkStatus(tableId).data;
-                if (datas.length != 1) { TopWin.layer.msg((datas.length ? "只能" : "至少") + "选择一行数据！"); return; }
-                fncontrolMenus.open({
-                    editMode: "add",
-                    pageData: datas[0]
-                });
-            },
-            fnmodify: function () {
+            fnmodify: function (data) {
                 TopWin.layer.msg("上报成功！"); return;
                 var datas = datatable.checkStatus(tableId).data;
                 if (datas.length != 1) { TopWin.layer.msg((datas.length ? "只能" : "至少") + "选择一行数据！"); return; }
@@ -136,7 +114,7 @@
                     pageData: datas[0]
                 });
             },
-            fndelete: function () {
+            fndelete: function (data) {
                 var datas = datatable.checkStatus(tableId).data;
                 if (!datas.length) { TopWin.layer.msg("至少选择一行数据！"); return; }
                 var _index = TopWin.layer.load(), total = datas.length;
@@ -152,7 +130,7 @@
                     });
                 });
             },
-            fnview: function () {
+            fnview: function (data) {
                 var datas = datatable.checkStatus(tableId).data;
                 if (datas.length != 1) { TopWin.layer.msg((datas.length ? "只能" : "至少") + "选择一行数据！"); return; }
                 fncontrolMenus.open({
@@ -190,14 +168,6 @@
             }
         };
 
-
- 
-
-        //$("#controlMenus>.layui-btn").click(function () {
-        //    var type = $(this).attr("data-type");
-        //    fncontrolMenus[type]();
-        //});
-
     });
 </script>
 
@@ -211,7 +181,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">年度</label>
                 <div class="layui-input-inline">
-                    <select id="YaerDate" name="YaerDate" lay-filter="YaerDate">
+                    <select id="YearDate" name="YaerDate" lay-filter="YearDate">
                         <option value="2018">2018</option>
                         <option value="2017">2017</option>
                         <option value="2016">2016</option>
