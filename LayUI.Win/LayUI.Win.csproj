@@ -238,7 +238,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\XT\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -624,6 +623,10 @@
     <Content Include="Views\WH\WHRYEdit.cshtml" />
     <Content Include="Views\WH\ZDWXEdit.cshtml" />
     <Content Include="Views\Shared\_Edit.cshtml" />
+    <Content Include="Views\WH\WHJCList.cshtml" />
+    <Content Include="Views\WH\SafeEvaluationList.cshtml" />
+    <Content Include="Views\XT\FileList.cshtml" />
+    <Content Include="Views\YH\YHSumViewList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

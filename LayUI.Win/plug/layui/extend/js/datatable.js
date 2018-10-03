@@ -289,7 +289,7 @@ layui.define(['laytpl', 'laypage', 'layer', 'form'], function (exports) {
         }
 
         //请求数据
-        that.pullData(that.page);
+        that.pullData(that.page,that.loading());
         that.events();
     };
 
@@ -646,7 +646,6 @@ layui.define(['laytpl', 'laypage', 'layer', 'form'], function (exports) {
                       //而并非用的是 options.page 中的参数（以确保分页未开启的情况仍能正常使用）
                       that.page = obj.curr; //更新页码
                       options.limit = obj.limit; //更新每页条数
-
                       that.pullData(obj.curr, that.loading());
                   }
               }
