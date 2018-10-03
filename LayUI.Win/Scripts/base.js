@@ -1098,7 +1098,7 @@ var TopWin = window.top,
                 });
                 return;
             }
-            result += result == "" ? "(" + property + " " + zi_operator[operator] + " DateTime'" + value + "')" : " and " + "(" + property + " " + zi_operator[operator] + " DateTime'" + value + "')";
+            result += (result?" and ":"")+"(date(" + property + ") " + zi_operator[operator] + " " + value + ")";
             $(this).data("result", result);
             return this;
         }
