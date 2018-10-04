@@ -23,10 +23,12 @@
            };
 
         //常规用法
-        lay('.laydate').each(function () {
+        lay('.laydate').each(function ()
+        {
             laydate.render({
                 elem: this
               , trigger: 'focus'
+              , theme: '#1E9FFF'
             });
         });
 
@@ -45,16 +47,22 @@
                   CheckTimeS = $("#txtCheckTime_s").val(),
                   CheckTimeE = $("#txtCheckTime_e").val();
 
-              var $filters = $({}).data("result","IsDeleted eq false");
-              Result?$filters.odataLet("Result", Result):"";
-              SerialNo ? $filters.odataLet("SerialNo", SerialNo, true) : "";
-              CheckTimeS ? $filters.odataWhereDate("CheckTime", ">=", CheckTimeS) : "";
-              CheckTimeE ? $filters.odataWhereDate("CheckTime", "<", $.Cm_DateTime.dateAddDays(CheckTimeE, 1)) : "";
+              var $filters = $({}).data("result", "IsDeleted eq false");
+              if (SerialNo)
+              {
+                  $filters.odataLet("SerialNo", SerialNo, true);
+              }
+              else
+              {
+                  Result ? $filters.odataLet("Result", Result) : "";
+                  CheckTimeS ? $filters.odataWhereDate("CheckTime", ">=", CheckTimeS) : "";
+                  CheckTimeE ? $filters.odataWhereDate("CheckTime", "<", $.Cm_DateTime.dateAddDays(CheckTimeE, 1)) : "";
+              }
               return $filters.data("result");
           }
           , cols: [[
-              {type:'numbers'}
-            ,{ type: 'checkbox' }
+              { type: 'numbers', title: '序号' }
+            , { type: 'checkbox', title: '年度月份' }
             , { field: 'SerialNo', width: 90, align: "center", title: '隐患编号' }
             , {
                 field: 'Result', align: "center", width: 90, title: '整改状态', templet: function (data)
@@ -147,30 +155,25 @@
             fnexport: function () {
 
             },
-            open: function (options) {
-                TopWin.layer.open({
-                    type: 2,
-                    title: "隐患详情",
-                    area: ['740px', '90%'],
-                    fixed: true, //不固定
-                    maxmin: false,
-                    content: "@Url.Content("~/YH/YHEdit")",
-                    success: function (frm) {
-                        var _frm = frm.find("iframe").get(0).contentWindow;
-                        if (typeof _frm.pageLoad == "function") {
-                            _frm.pageLoad(options);
-                        }
-                    },
-                    close: function (index) {
+            open: function (datas) {
+                var options =
+                    {
+                        setting: {
+                            title: "隐患详情",
+                            area: ['740px', '90%'],
+                            content: "@Url.Content("~/YH/YHEdit")",
+                            end: function (index) {
+                                reloadTable();
+                            }
+                        },
+                        datas: datas
+                    };
 
-                    },
-                    end: function (index) {
-                        reloadTable();
-                    }
-                });
+                $.Cm_Dialog.ShowfrmDialog(options);
             }
         };
-        $('.layui-form-item .layui-btn').on('click', function () {
+
+        $("#btnSearch").click(function () {
             reloadTable();
         });
 
@@ -216,10 +219,12 @@
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <a class="layui-btn layui-btn-sm layui-btn-normal" data-type="reload"><i class="fa fa-search"></i>查询</a>
+                    <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" id="btnSearch"><i class="fa fa-search"></i> 查询</button>
+                    <button type="reset" class="layui-btn layui-btn-sm layui-btn-normal"><i class="fa fa-undo"></i> 重置</button>
                 </div>
         </div>
     </form>
+    <hr/>
         <div class="layui-btn-group" id="controlMenus">
             <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnadd"><i class="fa fa-plus"></i> 新增</button>
             <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnmodify"><i class="fa fa-edit"></i> 修改</button>

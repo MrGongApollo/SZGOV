@@ -12,7 +12,7 @@
 <div class="content-padding">
  
 <form class="layui-form layui-form-pane lb-p-m" action="">
-
+ 
   <fieldset class="layui-elem-field site-demo-button padding_lr_5">
   <legend>隐患信息</legend>
   
@@ -21,14 +21,14 @@
               <div class="layui-inline">
                   <label class="layui-form-label">企业名称</label>
                   <div class="layui-input-inline">
-                      <input type="text" id="OrgName" name="OrgName" autocomplete="off" class="layui-input">
+                      <input type="text" id="OrgName" name="OrgName" autocomplete="off" class="layui-input" lay-verify="required"/>
                   </div>
               </div>
           </div><div class="layui-col-xs6">
               <div class="layui-inline">
                   <label class="layui-form-label">隐患部位</label>
                   <div class="layui-input-inline">
-                      <input type="text" id="HiddenPart" name="HiddenPart" autocomplete="off" class="layui-input">
+                      <input type="text" id="HiddenPart" name="HiddenPart" autocomplete="off" class="layui-input" lay-verify="required"/>
                   </div>
               </div>
           </div>
@@ -39,14 +39,14 @@
               <div class="layui-inline">
                   <label class="layui-form-label">检查时间</label>
                   <div class="layui-input-inline">
-                      <input type="text" autocomplete="off" id="CheckTime" name="CheckTime" class="layui-input laydate">
+                      <input type="text" autocomplete="off" id="CheckTime" name="CheckTime" class="layui-input laydate" lay-verify="required"/>
                   </div>
               </div>
           </div><div class="layui-col-xs6">
               <div class="layui-inline">
                   <label class="layui-form-label">检查人员</label>
                   <div class="layui-input-inline">
-                      <input type="text" id="CheckEmpName" name="CheckEmpName" autocomplete="off" class="layui-input">
+                      <input type="text" id="CheckEmpName" name="CheckEmpName" autocomplete="off" class="layui-input" lay-verify="required"/>
                   </div>
               </div>
           </div>
@@ -57,7 +57,7 @@
               <div class="layui-inline">
                   <label class="layui-form-label">隐患大类</label>
                   <div class="layui-input-inline">
-                      <select name="HiddenTypeL" id="HiddenTypeL">
+                      <select name="HiddenTypeL" id="HiddenTypeL" lay-verify="required">
                           <option value="">请选择</option>
                           <option value="基础管理">基础管理</option>
                           <option value="现场管理">现场管理</option>
@@ -69,7 +69,7 @@
               <div class="layui-inline">
                   <label class="layui-form-label">隐患小类</label>
                   <div class="layui-input-inline">
-                      <select name="HiddenTypeS" id="HiddenTypeS">
+                      <select name="HiddenTypeS" id="HiddenTypeS" lay-verify="required">
                           <option value="">请选择</option>
                           <option value="A01">资质证照</option>
                           <option value="A02">安全生产管理机构及人员</option>
@@ -95,7 +95,7 @@
               <div class="layui-inline">
                   <label class="layui-form-label">隐患级别</label>
                   <div class="layui-input-inline">
-                      <select name="HiddenLevel" id="HiddenLevel">
+                      <select name="HiddenLevel" id="HiddenLevel" lay-verify="required">
                           <option value="">请选择</option>
                           <option value="一般隐患">一般隐患</option>
                           <option value="重大隐患">重大隐患</option>
@@ -172,7 +172,7 @@
               <div class="layui-inline">
                   <label class="layui-form-label">整改结果</label>
                   <div class="layui-input-inline">
-                      <select name="Result" id="Result">
+                      <select name="Result" id="Result" lay-verify="required">
                           <option value="">请选择</option>
                           <option value="已整改">已整改</option>
                           <option value="未整改">未整改</option>
@@ -245,10 +245,11 @@
 <script>
     var _HiddenDangerId = "";
     pageLoad = function (postData) {
-        layui.use(['form', 'laydate'], function () {
+        layui.use(['form', 'laydate', 'util'], function () {
             var form = layui.form,
                 $ = layui.jquery,
                 layer = layui.layer,
+                util = layui.util,
                 laydate = layui.laydate,
                 Cm_editMode = $.Cm_Setting.editMode,
                 _self = parent.layer.getFrameIndex(window.name), //获取窗口索引
@@ -260,6 +261,9 @@
 
             _HiddenDangerId = _pageData.HiddenDangerId || $.Cm_Common.getGuid();
 
+            //必填项 加*
+            $("[lay-verify='required']").parent().prev().prepend($("<i>", { "class": "fa fa-asterisk text-s color-lightred margin_lr_5" }));
+
             //常规用法
             lay('.laydate').each(function () {
                 laydate.render({
@@ -267,6 +271,9 @@
                   , trigger: 'focus'
                 });
             });
+
+            
+            util.fixbar();//右下角工具栏
 
             switch (postData.editMode) {
                 case Cm_editMode.view:
@@ -357,10 +364,10 @@
                     });
                 }
 
-                saveData.CheckTime = moment(saveData.CheckTime);
-                saveData.ValidateDate = moment(saveData.ValidateDate);
-                saveData.TimeLimit = moment(saveData.TimeLimit);
-                saveData.CompleteTime = moment(saveData.CompleteTime);
+                saveData.CheckTime = saveData.CheckTime&&moment(saveData.CheckTime)||null;
+                saveData.ValidateDate = saveData.ValidateDate && moment(saveData.ValidateDate) || null;
+                saveData.TimeLimit = saveData.TimeLimit && moment(saveData.TimeLimit) || null;
+                saveData.CompleteTime = saveData.CompleteTime && moment(saveData.CompleteTime) || null;
 
 
                 ($.Cm_Ajax)[saveMethed](_url, saveData).done(function () {

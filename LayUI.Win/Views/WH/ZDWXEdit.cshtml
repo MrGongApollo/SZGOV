@@ -130,6 +130,7 @@
             //常规用法
             laydate.render({
                 elem: ".laydate"
+                , theme: '#1E9FFF'
             });
 
             switch (postData.editMode) {
@@ -190,27 +191,24 @@
             form.on('submit(btnSub)', function (data) {
                 var saveData = {},
                     _url = baseConst.odata + "T_WH_MajorHazardDossier_Entity";
-                //_url = "@Url.Content("~/WH/MajorHazardDossierAdd")";
                 $.extend(saveData, data.field);
                 if (IsEdit) {
                     _url += "('" + _DossierId + "')";
                     $.extend(saveData, {
-                        ModifyEmpCode: '11'
-                    , ModifyEmpName: '11'
-                    , ModifyTime: new Date()
+                         ModifyTime: new Date()
                     });
 
-                    saveData.CreateTime = moment(saveData.CreateTime);
+                    saveData.CreateTime =saveData.CreateTime&&moment(saveData.CreateTime)||null;
                 }
                 else {
                     $.extend(saveData, {
                         DossierId: _DossierId
-                    , CreateByEmpCode: '11'
-                    , CreateByEmpName: '11'
                     , CreateTime: new Date()
                     , IsDeleted: false
                     });
                 }
+
+                saveData.EvaluationTime = saveData.EvaluationTime && moment(saveData.EvaluationTime)|| null;
 
                 ($.Cm_Ajax)[saveMethed](_url, saveData).done(function () {
                     TopWin.layer.alert("操作成功", function (index) {
