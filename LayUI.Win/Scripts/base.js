@@ -555,6 +555,40 @@ var TopWin = window.top,
     /*******窗口调用 开始**********/
     $.Cm_Dialog =
     {
+        ShowfrmDialog: function (options)
+        {
+            //options= { }
+            var defaults =
+            {
+                type: 2,
+                title: " ",
+                area: ['80%', '90%'],
+                fixed: true, //不固定
+                maxmin: false,
+                content: "",
+                success: function (frm)
+                {
+                    var _frm = frm.find("iframe").get(0).contentWindow;
+                    if (typeof _frm.pageLoad == "function")
+                    {
+                        _frm.pageLoad(options.datas);
+                    }
+                    if (!$.trim(defaults.title))
+                    {
+                        _layer.title(_frm.document.title, _index);
+                    }
+                },
+                close: function (index) {
+
+                },
+                end: function (index) {
+
+                }
+            }, _layer = options.layer||TopWin.layer;
+
+            $.extend(defaults,options.setting);
+            var _index = _layer.open(defaults);
+        },
         //上传文件列表封装
         UploadFileList: function (options)
         {
@@ -572,7 +606,7 @@ var TopWin = window.top,
                     multiple: true,//是否允许多文件上传，不支持ie8-9
                     auto: false,//是否选完文件后自动上传
                     exts: '',//允许上传的文件后缀名
-                    size: 51200,//文件限制大小，默认不限制（单位 kb）限制 50M
+                    size: 10240,//文件限制大小，默认不限制（单位 kb）限制 10M
                     data: {}
                 }
             };
@@ -784,7 +818,7 @@ var TopWin = window.top,
                     multiple: true,//是否允许多文件上传，不支持ie8-9
                     auto: false,//是否选完文件后自动上传
                     exts: '',//允许上传的文件后缀名
-                    size: 10240,//文件限制大小，默认不限制(单位 kb) 限制 10M
+                    size: 10240,//文件限制大小，默认(单位 kb) 限制 10M
                     data: {}
                 }
             };
