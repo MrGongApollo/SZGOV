@@ -37,7 +37,6 @@
 		public virtual DbSet<T_XT_StoreDirectory_Entity> T_XT_StoreDirectory_Entity { get; set; }
 		public virtual DbSet<T_XT_User_Entity> T_XT_User_Entity { get; set; }
 		public virtual DbSet<T_YH_HiddenDanger_Entity> T_YH_HiddenDanger_Entity { get; set; }
-		public virtual DbSet<T_YH_Records_Entity> T_YH_Records_Entity { get; set; }
 		public virtual DbSet<T_YH_SumRecords_Entity> T_YH_SumRecords_Entity { get; set; }
  
     }
