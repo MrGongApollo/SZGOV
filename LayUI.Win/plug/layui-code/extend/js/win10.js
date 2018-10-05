@@ -41,7 +41,7 @@ layui.define(['layer'], function (exports) {
                     if (document.activeElement) {
                         var activeElement = document.activeElement;
                         var _that = Win10._iframeOnClick;
-                        for (var i = _that.iframes.length-1; i >=0;i--) {
+                        for (var i = _that.iframes.length - 1; i >= 0; i--) {
                             var eid = undefined;
                             if (!_that.iframes[i]) break;
                             if ((eid = _that.iframes[i].element.id) && !document.getElementById(eid)) {
@@ -503,7 +503,7 @@ layui.define(['layer'], function (exports) {
                     ['<i class="fa fa-fw fa-window-minimize"></i> ' + Win10.lang('全部隐藏', 'Hide All Windows'), function () { Win10.hideWins() }],
                     ['<i class="fa fa-fw fa-window-close"></i> ' + Win10.lang('全部关闭', 'Close All Windows'), function () { Win10.closeAll() }],
                 ]);
-                
+
                 //处理消息图标闪烁
                 setInterval(function () {
                     var btn = $("#win10-msg-nof.on-new-msg");
@@ -721,7 +721,7 @@ layui.define(['layer'], function (exports) {
                 if (!url) {
                     console.warn("请设置url");
                     return;
-                   // url = '//yuri2.cn';
+                    // url = '//yuri2.cn';
                 }
                 if (!title) {
                     title = url;
@@ -733,7 +733,19 @@ layui.define(['layer'], function (exports) {
                 } else if (typeof areaAndOffset === 'object') {
                     area = areaAndOffset[0];
                     offset = areaAndOffset[1];
-                } else {
+                    var x_per = parseFloat(area[0]) / 100,
+                        y_per = parseFloat(area[1]) / 100;
+
+                    if (!offset || offset == "center") {
+                        var topset, leftset;
+                        topset = parseInt($(window).height());
+                        topset = (topset - (topset * y_per)) / 2 - 41;
+                        leftset = parseInt($(window).width());
+                        leftset = (leftset - (leftset * x_per)) / 2 - 120;
+                        offset = [Math.round((Win10._countTask % 10 * 20) + topset) + 'px', Math.round((Win10._countTask % 10 * 20 + 100) + leftset) + 'px'];
+                    }
+                }
+                else {
                     area = ['80%', '80%'];
                     var topset, leftset;
                     topset = parseInt($(window).height());
@@ -874,8 +886,6 @@ layui.define(['layer'], function (exports) {
                     area: ['320px', '200px'], //宽高
                     content: '<div style="padding: 10px;font-size: 12px">' +
                     '<p>支持组件:layer、jquery、animated.css、font-awesome</p>' +
-                    '<p>尤里2号©版权所有</p>' +
-                    '<p>作者邮箱:yuri2peter@qq.com</p>' +
                     '</div>'
                 });
             },
