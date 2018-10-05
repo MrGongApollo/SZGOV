@@ -109,9 +109,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>T_XT_Manage.tt</DependentUpon>
     </Compile>
-    <Compile Include="EntityModel\T_YH_Records_Entity.cs">
-      <DependentUpon>T_YH_Manage.tt</DependentUpon>
-    </Compile>
     <Compile Include="EntityModel\T_YH_SumRecords_Entity.cs">
       <DependentUpon>T_YH_Manage.tt</DependentUpon>
     </Compile>
@@ -123,9 +120,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="App.config" />
     <Content Include="EntityModel\T_YH_Manage.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>T_YH_Manage.cs</LastGenOutput>
