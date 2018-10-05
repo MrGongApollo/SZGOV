@@ -658,9 +658,8 @@ var TopWin = window.top,
                                                     size = Math.round((_t.Size / 1024) * Math.pow(10, 2)) / Math.pow(10, 2);
                                                     size += " KB";
                                                 }
-                                                var $op_td = $("<td>").append($("<a>", { "href": "javascript:;", "title": "下载", "class": "layui-btn layui-btn-xs layui-btn-normal" }).click(function () {
-
-                                                }).append($("<i>", { "class": "fa fa-download" }))).append($("<a>", { "href": "javascript:;", "title": "删除", "class": "layui-btn layui-btn-xs layui-btn-danger" }).click(function () {
+                                                var $op_td = $("<td>").append($("<a>", { "href": (defaults.RootUrl + "XT/FileDownload?docId="+_t.DocId), "title": "下载", "class": "layui-btn layui-btn-xs layui-btn-normal" })
+                                                                      .append($("<i>", { "class": "fa fa-download" }))).append($("<a>", { "href": "javascript:;", "title": "删除", "class": "layui-btn layui-btn-xs layui-btn-danger" }).click(function () {
                                                     var $that = $(this);
                                                     TopWin.layer.confirm('确认删除选择文件？', {
                                                         btn: ['是', '否'] //按钮
@@ -734,9 +733,8 @@ var TopWin = window.top,
                             size += " KB";
                         }
 
-                        var $op_td = $("<td>", {"class":"text-center"}).append($("<a>", { "href": "javascript:;", "title": "下载", "class": "layui-btn layui-btn-xs layui-btn-normal","style":"margin-right:3px;" }).click(function () {
-
-                        }).append($("<i>", { "class": "fa fa-download" }))).append(defaults.IsReadOnly?"":($("<a>", { "href": "javascript:;", "title": "删除", "class": "layui-btn layui-btn-xs layui-btn-danger" }).click(function () {
+                        var $op_td = $("<td>", { "class": "text-center" }).append($("<a>", { "href": (defaults.RootUrl + "XT/FileDownload?docId=" + _t.DocId), "title": "下载", "class": "layui-btn layui-btn-xs layui-btn-normal", "style": "margin-right:3px;" })
+                                                                          .append($("<i>", { "class": "fa fa-download" }))).append(defaults.IsReadOnly ? "" : ($("<a>", { "href": "javascript:;", "title": "删除", "class": "layui-btn layui-btn-xs layui-btn-danger" }).click(function () {
                             var $that = $(this);
   
                             TopWin.layer.confirm('是否确认删除（不可恢复）？', {

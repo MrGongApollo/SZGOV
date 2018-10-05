@@ -411,6 +411,7 @@
     <Content Include="plug\layui\extend\css\nprogress.css" />
     <Content Include="plug\layui\extend\css\treeselect.css" />
     <Content Include="plug\layui\extend\js\datatable.js" />
+    <Content Include="plug\layui\extend\js\tableSelect.js" />
     <Content Include="plug\layui\extend\js\win10.js" />
     <Content Include="plug\layui\extend\js\app.js" />
     <Content Include="plug\layui\extend\js\kitconfig.js" />
