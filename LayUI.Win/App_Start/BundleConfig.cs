@@ -43,6 +43,10 @@ namespace LayUI.Win
           "~/plug/win10-ui/css/animate.css",
           "~/plug/win10-ui/css/default.css"));
             #endregion
+
+            #region Ztree
+            bundles.Add(new ScriptBundle("~/bundles/Ztreejs").Include("~/plug/zTree_v3/js/jquery.ztree.all.min.js"));
+            #endregion
         }
     }
 }

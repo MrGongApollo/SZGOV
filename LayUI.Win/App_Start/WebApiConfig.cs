@@ -39,8 +39,7 @@ namespace LayUI.Win
             // enable query options for all properties
             config.Filter().Expand().Select().OrderBy().MaxTop(null).Count();
             //config.SetTimeZoneInfo(TimeZoneInfo.Utc);
-            await config.MapRestierRoute<RestierExamApi>(
-                "odataApi", "odata", new RestierBatchHandler(server));
+            await config.MapRestierRoute<RestierFilterApi>("odataApi", "odata", new RestierBatchHandler(server));
 
             //config.MessageHandlers.Add(new ETagMessageHandler());
         }
