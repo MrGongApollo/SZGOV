@@ -1,0 +1,128 @@
+﻿
+@{
+    ViewBag.Title = "静态数据";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Scripts.Render("~/bundles/Ztreejs")
+@Styles.Render("~/plug/zTree_v3/css/metroStyle/metroStyle.css")
+
+<script>
+
+    layui.use(['layer'], function ()
+    {
+
+        var $ = layui.jquery,
+            Cm_editMode = $.Cm_Setting.editMode,
+            newCount = 1,
+            TreeContainer = "TreeContainer",
+            setting =
+            {
+                view: {
+                    addHoverDom: function (treeId, treeNode)
+                    {
+                        if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
+                        var $sObj = $("#" + treeNode.tId + "_span"),
+                            $btnAdd=$("<span>", { "id": "addBtn_" + treeNode.tId, "title": "增加子节点","class":"button add" }).click(function () {
+                                var options=
+                                {
+                                    editMode: Cm_editMode.add,
+                                    pageData: {
+                                        ParentId: treeNode.Id,
+                                        ParentName: treeNode.name
+                                    }
+                                };
+
+                                showForm(options, function (backData)
+                                {
+                                    if (backData)
+                                    {
+                                        var zTree = $.fn.zTree.getZTreeObj(TreeContainer);
+                                        zTree.addNodes(treeNode, { Id: backData.Id, pId: backData.pId, name: backData.name });
+                                    }
+                                });
+                            });
+
+                        $sObj.after($btnAdd);
+                            
+                    },
+                    removeHoverDom: function (treeId, treeNode) {
+                        $("#addBtn_" + treeNode.tId).unbind().remove();
+                    },
+                    selectedMulti: false
+                },
+                data: {
+                    simpleData: {
+                        enable: true
+                    }
+                },
+                edit: {
+                    enable: true,
+                    removeTitle: "删除",
+                    renameTitle: "修改"
+                },
+                callback: {
+                    beforeRemove: function (treeId, treeNode)
+                    {
+                        TopLayer.confirm("删除后无法恢复，是否继续？", { title: "删除询问" }, function () {
+                            TopLayer.msg("操作成功", {icon:"1"})
+                        });
+                        return false;
+                    },
+                    onClick: function (event, treeId, treeNode, clickFlag) {
+                       // console.log(1, event, treeId, treeNode, clickFlag)
+                    },
+                    beforeClick: function (treeId, treeNode, clickFlag) {
+                       // console.log(2, treeId, treeNode, clickFlag)
+                    },
+                    //展开事件
+                    beforeExpand: function (treeId, treeNode) {
+
+                    }
+                }
+            };
+
+        var zNodes = [
+			{
+			    name: "静态数据",Id:"root", open: true,
+			    children: []
+			}
+        ];
+
+        $.Cm_Ajax.getAsync("@Url.Content("~/odata/T_XT_Data_Entity")" + "?$filter=IsDeleted eq false and ParentId eq 'root'&$orderby=SortIndex&$select=DataId,DataName,SubItemAmount").done(function (xhr)
+        {
+            $.each(xhr["value"], function (_i, _t)
+            {
+                zNodes[0].children.push({ name: _t.DataName, Id: _t.DataId, isParent: true });
+            });
+            $.fn.zTree.init($("#" + TreeContainer), setting, zNodes);
+        });
+
+
+        function showForm(options,FncallBack)
+        {
+            var defaults =
+                {
+                    setting:
+                    {
+                        area:["800px","300px"],
+                        content: "@Url.Content("~/XT/XTStaticDatasEdit")"
+                    },
+                    callBack: function (backData)
+                    {
+                        if (FncallBack)
+                        {
+                            FncallBack(backData);
+                        }
+                    },
+                    datas: options
+                };
+
+            $.Cm_Dialog.ShowfrmDialog(defaults);
+        }
+
+    });
+</script>
+<div class="content-padding">
+    <ul id="TreeContainer" class="ztree"></ul>
+</div>

@@ -1,0 +1,192 @@
+﻿
+@{
+    ViewBag.Title = "静态数据维护";
+    Layout = "~/Views/Shared/_Edit.cshtml";
+}
+
+<div class="content-padding">
+    <form class="layui-form lb-p-m layui-panel" action="" lay-filter="form">
+
+        <div class="layui-form-item">
+            <div class="layui-col-xs6">
+                <div class="layui-inline">
+                    <label class="layui-form-label">所属机构</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="OrgName" autocomplete="off" class="layui-input" />
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs6">
+                <div class="layui-inline">
+                    <label class="layui-form-label">上级节点</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="ParentName" autocomplete="off" class="layui-input layui-disabled" disabled />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-col-xs6">
+                <div class="layui-inline">
+                    <label class="layui-form-label">分类组别</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="DataGroup" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs6">
+                <div class="layui-inline">
+                    <label class="layui-form-label">节点编号</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="DataCode" autocomplete="off" class="layui-input" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-col-xs6">
+                <div class="layui-inline">
+                    <label class="layui-form-label">节点名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="DataName" autocomplete="off" class="layui-input" lay-verify="required"/>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs6">
+                <div class="layui-inline">
+                    <label class="layui-form-label">节点值</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="DataValue" autocomplete="off" class="layui-input"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-col-xs6">
+                <div class="layui-inline">
+                    <label class="layui-form-label">排序</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="SortIndex" autocomplete="off" class="layui-input" lay-verify="number" />
+                    </div>
+                </div>
+            </div>
+            @*<div class="layui-col-xs6">
+                <div class="layui-inline">
+                    <label class="layui-form-label">是否有效</label>
+                    <div class="layui-input-inline">
+                        <input type="radio" name="IsPersonChange" value="是" title="是" checked="">
+                        <input type="radio" name="IsPersonChange" value="否" title="否">
+                    </div>
+                </div>
+            </div>*@
+        </div>
+
+        <div class="layui-form-item text-center footer_area">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="btnSub">保存</button>
+            <button class="layui-btn layui-btn-primary" id="btnBack">返回</button>
+        </div>
+        <div class="footer_area_clearfix"></div>
+    </form>
+</div>              
+
+<script>
+    var _DataId = "", RetData = null;
+    pageLoad = function (postData) {
+        layui.use(['form'], function () {
+            var form = null,
+                $ = layui.jquery,
+                layer = layui.layer,
+                laydate = layui.laydate,
+                form = layui.form,
+                Cm_editMode = $.Cm_Setting.editMode,
+                _self = parent.layer.getFrameIndex(window.name), //获取窗口索引
+                IsReadOnly = postData.editMode == Cm_editMode.view,
+                IsEdit = postData.editMode == Cm_editMode.edit,
+                saveMethed = IsEdit ? "putAsync" : "postAsync",
+                user = $.Cm_Auth.userInfo(),
+                _pageData = postData.pageData || {};
+
+            _DataId = _pageData.DataId || $.Cm_Common.getGuid();
+
+            $("[lay-verify]").parent().prev().prepend($("<i>", { "class": "fa fa-asterisk text-s color-lightred margin_lr_5" }));
+
+            var fileds = ["DataName"
+                        , "DataValue"
+                        , "SortIndex"
+                        , "ParentName"];
+
+             $.each(fileds, function (_i, _t) {
+                 $("[name='" + _t + "']").val(_pageData[_t] || "");
+             });
+
+
+            // $("[name='IsPersonChange'][value='" + _pageData.IsPersonChange + "']").attr("checked",true);
+
+             if (IsReadOnly) {
+                 $(":input:not(#btnBack)").attr("disabled", true);
+                 $("[lay-filter='btnSub']").remove();
+             }
+
+            form.render();
+
+            //返回
+            $("#btnBack").click(function ()
+            {
+                TopWin.layer.close(_self);
+            });
+
+
+            //监听提交
+            form.on('submit(btnSub)', function (data) {
+                var saveData = {},_url = baseConst.odata + "T_XT_Data_Entity";
+                $.extend(saveData, data.field);
+                if (IsEdit)
+                {
+                    _url += "('" + _DataId + "')";
+                    $.extend(saveData, {
+                        OrgCode: $("[name='OrgName']").data("orgcode") || null
+                       ,ModifyTime: new Date()
+                        
+                    });
+                    saveData.CreateTime = saveData.CreateTime&&moment(saveData.CreateTime)||null;
+                }
+                else {
+                    $.extend(saveData, {
+                        DataId: _DataId
+                    , OrgCode: $("[name='OrgName']").data("orgcode")||null
+                    , ParentId: _pageData.ParentId
+                    , CreateTime:new Date()
+                    , IsDeleted: false
+                    });
+                }
+
+                saveData.SortIndex = saveData.SortIndex != ""?parseInt(saveData.SortIndex):null;
+
+                ($.Cm_Ajax)[saveMethed](_url, saveData).done(function (xhr)
+                {
+                    TopWin.layer.alert("操作成功", function (index) {
+                        RetData = {
+                            Id: xhr.DataId,
+                            pId: xhr.ParentId,
+                            name: xhr.DataName
+                        };
+                        TopWin.layer.close(index);
+                        TopWin.layer.close(_self);
+                    });
+                });
+                return false;
+            });
+
+
+        });
+    }
+
+    function postBack()
+    {
+        return RetData;
+    }
+</script>
+
