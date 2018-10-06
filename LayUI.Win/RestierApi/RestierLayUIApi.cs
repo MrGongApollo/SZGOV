@@ -23,7 +23,7 @@ using LayUI.Win.Controllers;
 namespace LayUI.RestierApi
 {
 
-    public partial class RestierExamApi : EntityFrameworkApi<TeamWorkDbContext>
+    public partial class RestierFilterApi : EntityFrameworkApi<TeamWorkDbContext>
     {
 
         //OnFilter[实体类型名称](IQueryable<T> entityset)
@@ -103,7 +103,7 @@ namespace LayUI.RestierApi
 
         #endregion
 
-        public RestierExamApi(IServiceProvider serviceProvider) : base(serviceProvider)
+        public RestierFilterApi(IServiceProvider serviceProvider): base(serviceProvider)
         {
         }
 
