@@ -13,15 +13,15 @@ namespace LayUI.Data.EntityModel
 		#region 数据库属性字段
 		
         /// <summary>
-        /// 文件存储编号
-        /// </summary>
-        public string StoreDirectoryId { get; set; }
-        
-        /// <summary>
         /// 主键
         /// </summary>
 		[Key]
         public string DocId { get; set; }
+        
+        /// <summary>
+        /// 文件存储编号
+        /// </summary>
+        public string StoreDirectoryId { get; set; }
         
         /// <summary>
         /// 文件名称
