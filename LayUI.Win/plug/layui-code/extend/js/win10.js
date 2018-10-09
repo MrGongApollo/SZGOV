@@ -707,7 +707,7 @@ layui.define(['layer'], function (exports) {
             },
             openUrl: function (url, title, areaAndOffset) {
                 if (Win10._countTask > 12) {
-                    layer.msg("您打开的太多了，歇会儿吧~");
+                   layer.msg("您打开的太多了，歇会儿吧~");
                     return false;
                 } else {
                     Win10._countTask++;
@@ -718,12 +718,17 @@ layui.define(['layer'], function (exports) {
                 if (!preg.test(url)) {
                     url = 'http://' + url;
                 }
-                if (!url) {
-                    console.warn("请设置url");
-                    return;
-                    // url = '//yuri2.cn';
-                }
-                if (!title) {
+                var _defaults =
+                {
+                    maxmin: true, //开启最大化最小化按钮
+                    title: title,
+                    content: url,
+                    area: area,
+                    offset: offset
+                };
+
+                if (!title)
+                {
                     title = url;
                 }
                 var area, offset;
