@@ -4,6 +4,7 @@
 //}
 
 var TopWin = window.top,
+    TopLayer = TopWin.layer,
     baseConst =
     {
         RootUrl:null,
@@ -27,10 +28,10 @@ var TopWin = window.top,
         },
         //编辑状态
         editMode: {
-            "view": "view",   //默认无
-            "add": "add",    //新增
-            "edit": "edit",   //修改
-            "delete": 3  //删除
+            "view":0,   //默认无
+            "add": 4,    //新增
+            "edit": 16,   //修改
+            "delete": 8  //删除
         },
         //odata操作符
         odataOper: {
@@ -557,9 +558,9 @@ var TopWin = window.top,
     {
         ShowfrmDialog: function (options)
         {
-            //options= { }
-            var defaults =
-            {
+            var _frm,
+              defaults =
+             {
                 type: 2,
                 title: " ",
                 area: ['80%', '90%'],
@@ -568,7 +569,7 @@ var TopWin = window.top,
                 content: "",
                 success: function (frm)
                 {
-                    var _frm = frm.find("iframe").get(0).contentWindow;
+                    _frm = frm.find("iframe").get(0).contentWindow;
                     if (typeof _frm.pageLoad == "function")
                     {
                         _frm.pageLoad(options.datas);
@@ -581,8 +582,13 @@ var TopWin = window.top,
                 close: function (index) {
 
                 },
-                end: function (index) {
-
+                end: function (index)
+                {
+                    if (_frm && typeof _frm.postBack == "function" && options.callBack)
+                    {
+                            var callBackData = _frm.postBack();
+                            options.callBack(callBackData);
+                    }
                 }
             }, _layer = options.layer||TopWin.layer;
 
