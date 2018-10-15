@@ -7,10 +7,11 @@
     .layui-table-cell { height: auto; line-height: 1.5; }
 </style>
 <script>
-    layui.use(['datatable', 'win10'], function () {
+    layui.use(['datatable', 'win10', 'layer'], function () {
         var datatable = layui.datatable,
             Win10 = layui.win10,
             $ = layui.jquery,
+            layer = layui.layer,
             tableId="datagrid",
             reloadTable = function () {
                 datatable.reload(tableId, { page: { curr: 1 } });

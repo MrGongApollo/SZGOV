@@ -253,19 +253,11 @@
                 $.extend(saveData, data.field);
                 if (IsEdit) {
                     _url += "('" + _ToxicId + "')";
-                    $.extend(saveData, {
-                        ModifyEmpCode: '11'
-                    , ModifyEmpName: '11'
-                    , ModifyTime: new Date()
-                    });
-                    saveData.CreateTime = moment(saveData.CreateTime);
+                    saveData.CreateTime =saveData.CreateTime&&moment(saveData.CreateTime)||null;
                 }
                 else {
                     $.extend(saveData, {
                         ToxicId: _ToxicId
-                    , CreateByEmpCode: '11'
-                    , CreateByEmpName: '11'
-                    , CreateTime:new Date()
                     , IsDeleted: false
                     });
                 }

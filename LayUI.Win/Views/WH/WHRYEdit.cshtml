@@ -94,7 +94,7 @@
 <script>
     var _RecordId = "";
     pageLoad = function (postData) {
-    layui.use(['form', 'laydate'], function () {
+        layui.use(['form', 'laydate', 'layer'], function () {
             var form = null,
                 $ = layui.jquery,
                 layer = layui.layer,
@@ -156,19 +156,11 @@
 
                 if (IsEdit) {
                     _url += "('" + _RecordId + "')";
-                    $.extend(saveData, {
-                        ModifyEmpCode: '11'
-                    , ModifyEmpName: '11'
-                    , ModifyTime: new Date()
-                    });
-                    saveData.CreateTime = moment(saveData.CreateTime);
+                    saveData.CreateTime = saveData.CreateTime && moment(saveData.CreateTime) || null;
                 }
                 else {
                     $.extend(saveData, {
                         RecordId: _RecordId
-                    , CreateByEmpCode: '11'
-                    , CreateByEmpName: '11'
-                    , CreateTime: new Date()
                     , IsDeleted: false
                     });
                 }

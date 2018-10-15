@@ -8,9 +8,10 @@
 </style>
 
 <script>
-    layui.use(['datatable', 'win10'], function () {
+    layui.use(['datatable', 'win10', 'layer'], function () {
         var datatable = layui.datatable,
             Win10 = layui.win10,
+            layer = layui.layer,
             $ = layui.jquery,
             tableId="datagrid",
             reloadTable = function () {

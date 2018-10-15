@@ -3,6 +3,10 @@
     Layout = "~/Views/Shared/_Edit.cshtml";
 }
 
+<style>
+    .layui-table-cell { height: auto; line-height: 1.5; }
+</style>
+
 <div class="content-padding">
 
     <form class="layui-form lb-p-m layui-panel" action="">
@@ -102,22 +106,33 @@
 
         </div>
 
-        <div class="layui-form-item text-center">
+        <div class="layui-form-item">
+
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                <legend>安全评价</legend>
+            </fieldset>
+
+            <table class="layui-hide" id="grid-safeEv"></table>
+        </div>
+
+        <div class="layui-form-item text-center footer_area">
             <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="btnSub">保存</button>
 
             <button class="layui-btn layui-btn-primary" id="btnBack">返回</button>
         </div>
+        <div class="footer_area_clearfix"></div>
     </form>
 </div>
 
 <script>
     var _DossierId = "";
     pageLoad = function (postData) {
-        layui.use(['form', 'laydate'], function () {
+        layui.use(['form', 'laydate', 'datatable', 'layer'], function () {
             var form = null,
                 $ = layui.jquery,
                 layer = layui.layer,
                 laydate = layui.laydate,
+                datatable = layui.datatable,
                 Cm_editMode = $.Cm_Setting.editMode,
                 _self = parent.layer.getFrameIndex(window.name), //获取窗口索引
                 IsReadOnly = postData.editMode == Cm_editMode.view,
@@ -182,6 +197,42 @@
             form = layui.form;
             form.render();
 
+            var tableId = "grid-safeEv",
+                reloadTable = function () {
+                    datatable.reload(tableId, { page: { curr: 1 } });
+                };
+
+            datatable.render({
+                elem: '#' + tableId
+              , url: "@Url.Content("~/odata/T_WH_MajorHazardDossier_Entity")"
+              , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+              , id: tableId
+              , getFilters: function ()
+            {
+                var filters = [];
+                filters.push("IsDeleted eq false");
+                return filters;
+            }
+            , cols: [[
+              { field: 'MajorHazardName', width: 160, align: "center", title: '重大危险源名称' }
+              , { field: 'Address', width: 120, align: "center", title: '所在地址' }
+              , { field: 'ResponseEmpName', width: 120, align: "center", title: '主要负责人' }
+              , { field: 'ContactNum', width: 120, align: "center", title: '联系电话' }
+              , { field: 'RecordOrgName', align: "center", width: 160, title: '政府备案部门' }
+              , { field: 'EvaluationTime', width: 120, align: "center", title: '最近评估日期',  templet: function (data) {
+                  return data.EvaluationTime && moment(data.EvaluationTime).format("YYYY-MM-DD") || "";
+              }
+              }
+              , { field: 'EvaluationOrg', width: 120, align: "center", title: '评估机构' }
+              , { field: 'MajorHazardLevel', align: "center", title: '等级' }
+              , { field: '', width: 200, align: "center", title: '附件（基本特征）' }
+              , { field: '', width: 120, align: "center", title: '附件（备案登记）' }
+            ]],
+            page: false
+            });
+
+
+
             //返回
             $("#btnBack").click(function () {
                 TopWin.layer.close(_self);
@@ -194,16 +245,11 @@
                 $.extend(saveData, data.field);
                 if (IsEdit) {
                     _url += "('" + _DossierId + "')";
-                    $.extend(saveData, {
-                         ModifyTime: new Date()
-                    });
-
                     saveData.CreateTime =saveData.CreateTime&&moment(saveData.CreateTime)||null;
                 }
                 else {
                     $.extend(saveData, {
                         DossierId: _DossierId
-                    , CreateTime: new Date()
                     , IsDeleted: false
                     });
                 }
