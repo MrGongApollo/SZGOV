@@ -5,7 +5,7 @@ namespace LayUI.Data
 {
     public class IEntity/*<TEntity>*/
     {
-        public void Create(KeyValModel LoginInfo)
+        public virtual void Create(KeyValModel LoginInfo)
         {
             var entity = this as ICreationAudited;
             if (entity == null) return;
@@ -17,7 +17,7 @@ namespace LayUI.Data
             entity.CreateTime = DateTime.Now;
         }
 
-        public void Modify(KeyValModel LoginInfo)
+        public virtual void Modify(KeyValModel LoginInfo)
         {
             var entity = this as IModificationAudited;
             if (entity == null) return;
@@ -30,7 +30,7 @@ namespace LayUI.Data
             entity.ModifyTime = DateTime.Now;
         }
 
-        public void Remove(KeyValModel LoginInfo)
+        public virtual void Remove(KeyValModel LoginInfo)
         {
             var entity = this as IDeleteAudited;
             if (entity == null) return;
