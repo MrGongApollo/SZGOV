@@ -12,7 +12,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">所属机构</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="OrgName" autocomplete="off" class="layui-input" />
+                        <input type="text" name="OrgName" autocomplete="off" class="layui-input" lay-tip="选择所属机构（非必填）" />
                     </div>
                 </div>
             </div>
@@ -31,7 +31,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">分类组别</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="DataGroup" autocomplete="off" class="layui-input">
+                        <input type="text" name="DataGroup" autocomplete="off" class="layui-input" lay-tip="分类组别：用于标识数据来源或者组别（非必填）"/>
                     </div>
                 </div>
             </div>
@@ -39,7 +39,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">节点编号</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="DataCode" autocomplete="off" class="layui-input" />
+                        <input type="text" name="DataCode" autocomplete="off" class="layui-input" lay-tip="节点编码：用于自定义已经有标识好的唯一编号（非必填）"/>
                     </div>
                 </div>
             </div>
@@ -50,7 +50,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">节点名称</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="DataName" autocomplete="off" class="layui-input" lay-verify="required"/>
+                        <input type="text" name="DataName" autocomplete="off" class="layui-input" lay-verify="required" />
                     </div>
                 </div>
             </div>
@@ -69,7 +69,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">排序</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="SortIndex" autocomplete="off" class="layui-input" lay-verify="number" />
+                        <input type="text" name="SortIndex" autocomplete="off" class="layui-input" lay-verify="number" lay-tip="排序，数值越大排序越靠后（必填）" />
                     </div>
                 </div>
             </div>
@@ -94,8 +94,10 @@
 
 <script>
     var _DataId = "", RetData = null;
-    pageLoad = function (postData) {
-        layui.use(['form'], function () {
+    pageLoad = function (postData) 
+    {
+        layui.use(['form', 'layer'], function () 
+        {
             var form = null,
                 $ = layui.jquery,
                 layer = layui.layer,
@@ -109,21 +111,28 @@
                 user = $.Cm_Auth.userInfo(),
                 _pageData = postData.pageData || {};
 
-            _DataId = _pageData.DataId || $.Cm_Common.getGuid();
+            if (_pageData.DataId) {
+                $.Cm_Ajax.get("@Url.Content("~/odata/T_XT_Data_Entity")" + "?$filter=DataId eq '" + _pageData.DataId + "'").done(function (xhr) {
+                    if (xhr["value"].length) {
+                        _pageData = (xhr["value"])[0];
+                    }
+                });
+            }
+
+            _DataId = _pageData.DataId||$.Cm_Common.getGuid();
 
             $("[lay-verify]").parent().prev().prepend($("<i>", { "class": "fa fa-asterisk text-s color-lightred margin_lr_5" }));
 
             var fileds = ["DataName"
                         , "DataValue"
                         , "SortIndex"
+                        , "DataGroup"
+                        , "OrgName"
                         , "ParentName"];
 
              $.each(fileds, function (_i, _t) {
-                 $("[name='" + _t + "']").val(_pageData[_t] || "");
+                 $("[name='" + _t + "']").val(_pageData[_t]!=null?_pageData[_t]:"");
              });
-
-
-            // $("[name='IsPersonChange'][value='" + _pageData.IsPersonChange + "']").attr("checked",true);
 
              if (IsReadOnly) {
                  $(":input:not(#btnBack)").attr("disabled", true);
@@ -138,40 +147,43 @@
                 TopWin.layer.close(_self);
             });
 
+            //智能提示（只提示一次）
+            $("[lay-tip]").one("focus",function(){
+                var $this = $(this);
+                layer.tips($this.attr("lay-tip"), $this);
+            });
+
+
 
             //监听提交
             form.on('submit(btnSub)', function (data) {
-                var saveData = {},_url = baseConst.odata + "T_XT_Data_Entity";
+                var saveData ={}, _url = baseConst.odata + "T_XT_Data_Entity";
                 $.extend(saveData, data.field);
                 if (IsEdit)
                 {
                     _url += "('" + _DataId + "')";
                     $.extend(saveData, {
                         OrgCode: $("[name='OrgName']").data("orgcode") || null
-                       ,ModifyTime: new Date()
-                        
                     });
-                    saveData.CreateTime = saveData.CreateTime&&moment(saveData.CreateTime)||null;
                 }
-                else {
+                else
+                {
                     $.extend(saveData, {
                         DataId: _DataId
-                    , OrgCode: $("[name='OrgName']").data("orgcode")||null
-                    , ParentId: _pageData.ParentId
-                    , CreateTime:new Date()
-                    , IsDeleted: false
+                      , OrgCode: $("[name='OrgName']").data("orgcode")||null
+                      , ParentId: _pageData.ParentId
                     });
                 }
 
-                saveData.SortIndex = saveData.SortIndex != ""?parseInt(saveData.SortIndex):null;
+                saveData.SortIndex = parseInt(saveData.SortIndex);
 
                 ($.Cm_Ajax)[saveMethed](_url, saveData).done(function (xhr)
                 {
-                    TopWin.layer.alert("操作成功", function (index) {
+                    TopWin.layer.alert("操作成功", function (index)
+                    {
                         RetData = {
-                            Id: xhr.DataId,
-                            pId: xhr.ParentId,
-                            name: xhr.DataName
+                            id:_DataId,
+                            name: saveData.DataName
                         };
                         TopWin.layer.close(index);
                         TopWin.layer.close(_self);
@@ -184,6 +196,7 @@
         });
     }
 
+    //回调函数
     function postBack()
     {
         return RetData;

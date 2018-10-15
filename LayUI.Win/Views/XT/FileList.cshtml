@@ -35,14 +35,22 @@
             var processBack = function () {
                 cur++;
                 element.progress('progress', ((cur * 100 / uploadCnt).toFixed(2)) + '%');
-                if (cur == uploadCnt) {
+                if (cur == uploadCnt)
+                {
                     cur = 0;
                     layer.close(_loadIndex);
                     layer.msg("全部上传完毕！", { time: 500 }, function () {
                         $uploadLoadingDiv.css("visibility", "hidden");
                         element.progress('progress', '0%');
                     });
+                    return true;
                 }
+                return false;
+            }, autoClose = function ()
+            {
+                setTimeout(function () {
+                    TopLayer.close(_self);
+                }, 500);
             };
 
             //多文件列表示例
@@ -101,7 +109,10 @@
                       }
                   }
                   , done: function (res, index, upload) {
-                      processBack();
+                      if (processBack())
+                      {
+                          autoClose();
+                      }
 
                       if (res.Ret) { //上传成功
                           postBackDatas.push(res.Data);
@@ -116,7 +127,10 @@
                       this.error(index, upload);
                   }
                   , error: function (index, upload) {
-                      processBack();
+                      if (processBack())
+                      {
+                          autoClose();
+                      }
 
                       var tr = $FileContainer.find('tr#upload-' + index)
                       , tds = tr.children();

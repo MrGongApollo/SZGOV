@@ -7,47 +7,158 @@
 @Scripts.Render("~/bundles/Ztreejs")
 @Styles.Render("~/plug/zTree_v3/css/metroStyle/metroStyle.css")
 
+
+<div class="content-padding">
+    <ul id="TreeContainer" class="ztree"></ul>
+</div>
+
 <script>
+    //ztree api使用方法：http://www.treejs.cn/v3/api.php
 
     layui.use(['layer'], function ()
     {
-
         var $ = layui.jquery,
+            layer = layui.layer,
             Cm_editMode = $.Cm_Setting.editMode,
             newCount = 1,
+            $zTreeObj,
             TreeContainer = "TreeContainer",
             setting =
             {
+                async: {
+                    enable: true,
+                    type: "get",
+                    contentType: "application/json",
+                    dataType: "json",
+                    url:function(treeId, treeNode) 
+                    {
+                        var _baseUrl="@Url.Content("~/odata/T_XT_Data_Entity")",
+                            _select="?$orderby=SortIndex&$select=DataId,DataName,SubItemAmount",
+                            _filter = "&$filter=IsDeleted eq false and ParentId eq '" + treeNode.id+ "'";
+                        return _baseUrl + _select + _filter;
+                    },
+                    dataFilter: function (treeId, parentNode, responseData)
+                    {
+                        var ret = [];
+                        $.each(responseData.value, function (_i, _t) {
+                            ret.push({ id: _t.DataId, name: _t.DataName, isParent: !!_t.SubItemAmount});
+                        });
+                        return ret;
+                    }
+                },
                 view: {
                     addHoverDom: function (treeId, treeNode)
                     {
-                        if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
+                        if (treeNode.editNameFlag || $("#toolbar_" + treeNode.tId).length > 0) return;
                         var $sObj = $("#" + treeNode.tId + "_span"),
-                            $btnAdd=$("<span>", { "id": "addBtn_" + treeNode.tId, "title": "增加子节点","class":"button add" }).click(function () {
-                                var options=
+                            $toolBar = $("<span>", { "id": "toolbar_" + treeNode.tId }),
+                            IsRoot = treeNode.id == "root",
+                            refreshNode = function ()
+                            {
+                                $toolBar = $("#toolbar_" + treeNode.tId);
+                                var $a_box = $toolBar.parent();
+                                $toolBar.remove();
+                                $a_box.removeClass("curSelectedNode").click();
+                            },
+                            $btnAdd = $("<span>", { "class": "button add", "title": "增加子节点" }).click(function () {
+                                var options =
                                 {
                                     editMode: Cm_editMode.add,
                                     pageData: {
-                                        ParentId: treeNode.Id,
+                                        ParentId: treeNode.id,
                                         ParentName: treeNode.name
                                     }
                                 };
 
-                                showForm(options, function (backData)
+                                $.Cm_Ajax.getAsync("@Url.Content("~/odata/T_XT_Data_Entity")" + "/$count/?$filter=IsDeleted eq false and ParentId eq '" + treeNode.id + "'").done(function (xhr) {
+                                    options.pageData.SortIndex = xhr &&(xhr+1)||1;
+                                }).always(function() {
+                                    showForm(options, function (backData) {
+                                        if (backData) {
+                                            $zTreeObj.addNodes(treeNode, {
+                                                id: backData.id, pId: backData.pId, name: backData.name
+                                            });
+                                        }
+                                    });
+                                });
+                            }),
+                            $btnEdit = $("<span>", { "class": "button edit", "title": "修改" }).click(function () {
+                                var options =
                                 {
+                                    editMode: Cm_editMode.edit,
+                                    pageData: {
+                                        ParentId: treeNode.pId,
+                                        ParentName: treeNode.getParentNode().name,
+                                        DataId: treeNode.id
+                                    }
+                                };
+
+                                showForm(options, function (backData) {
                                     if (backData)
                                     {
-                                        var zTree = $.fn.zTree.getZTreeObj(TreeContainer);
-                                        zTree.addNodes(treeNode, { Id: backData.Id, pId: backData.pId, name: backData.name });
+                                        $.extend(treeNode,backData);
+                                        $zTreeObj.updateNode(treeNode);
                                     }
                                 });
-                            });
+                            }),
+                            $btnRemove = $("<span>", { "class": "button remove","title": "删除" }).click(function () {
+                                TopLayer.confirm("删除后无法恢复，是否继续？", { title: "删除询问" }, function ()
+                                {
+                                    $.Cm_Ajax.postAsync("@Url.Content("~/XT/XTStaticDatasDelete")", { "delId": treeNode.id }).done(function (xhr) {
+                                        if (xhr.Ret)
+                                        {
+                                            $zTreeObj.removeNode(treeNode);
+                                        }
+                                        TopLayer.msg(xhr.Msg, { icon: xhr.Ret && "1" || "2" });
+                                    });
+                                });
+                            }),
+                            $btnUp = $("<span>", { "class": "button meIcon up", "title": "上移" }).click(function () {
+                                var $that = $(this),
+                                    $li = $that.closest("li"),
+                                    $clone = $li.clone(true);
 
-                        $sObj.after($btnAdd);
-                            
+                                $.Cm_Ajax.postAsync("@Url.Content("~/XT/XTStaticDatasSort")", { DataId: treeNode.id, SortFlag: "up" }).done(function (xhr) {
+                                    if (xhr.Ret)
+                                    {
+                                       $li.prev().before($clone);
+                                       $li.remove();
+                                       refreshNode();
+                                    }
+                                    TopLayer.msg(xhr.Msg, { icon: xhr.Ret && "1" || "2", time: 300 });
+                                });
+                            }),
+                            $btnDown = $("<span>", { "class": "button meIcon down", "title": "下移" }).click(function () {
+                                var $that = $(this),
+                                    $li = $that.closest("li"),
+                                    $clone = $li.clone(true);
+                                $.Cm_Ajax.postAsync("@Url.Content("~/XT/XTStaticDatasSort")", { DataId: treeNode.id, SortFlag: "down" }).done(function (xhr) {
+                                    if (xhr.Ret)
+                                    {
+                                            $li.next().after($clone);
+                                            $li.remove();
+                                            refreshNode();
+                                    }
+                                    TopLayer.msg(xhr.Msg, { icon: xhr.Ret && "1" || "2",time:300 });
+                                });
+
+                            });
+                        
+                        var $liBox = $sObj.closest("li"),
+                            _liIndex = $liBox.index(),
+                            IsFirst = _liIndex == 0,
+                            IsLast = _liIndex == $liBox.siblings().length;
+
+                        $sObj.after(
+                            $toolBar.append($btnAdd)
+                                    .append(!IsRoot && $btnEdit || "")
+                                    .append(!IsRoot && $btnRemove || "")
+                                    .append(!IsFirst && $btnUp || "")
+                                    .append(!IsLast && $btnDown || "")
+                            );
                     },
                     removeHoverDom: function (treeId, treeNode) {
-                        $("#addBtn_" + treeNode.tId).unbind().remove();
+                        $("#toolbar_" + treeNode.tId).remove();
                     },
                     selectedMulti: false
                 },
@@ -55,47 +166,36 @@
                     simpleData: {
                         enable: true
                     }
-                },
-                edit: {
-                    enable: true,
-                    removeTitle: "删除",
-                    renameTitle: "修改"
-                },
-                callback: {
-                    beforeRemove: function (treeId, treeNode)
-                    {
-                        TopLayer.confirm("删除后无法恢复，是否继续？", { title: "删除询问" }, function () {
-                            TopLayer.msg("操作成功", {icon:"1"})
-                        });
-                        return false;
-                    },
-                    onClick: function (event, treeId, treeNode, clickFlag) {
-                       // console.log(1, event, treeId, treeNode, clickFlag)
-                    },
-                    beforeClick: function (treeId, treeNode, clickFlag) {
-                       // console.log(2, treeId, treeNode, clickFlag)
-                    },
-                    //展开事件
-                    beforeExpand: function (treeId, treeNode) {
-
-                    }
                 }
+                //, callback: {
+                //    onClick: function (event, treeId, treeNode, clickFlag) {
+                //    }
+                //}
             };
 
         var zNodes = [
 			{
-			    name: "静态数据",Id:"root", open: true,
+			    name: "静态数据", id: "root", open: true, isLoad: true,
 			    children: []
 			}
         ];
+
+        var _loadIndex = TopLayer.msg('数据加载中', {
+              icon: 16
+            , shade: 0.01
+            ,time:0
+        });
 
         $.Cm_Ajax.getAsync("@Url.Content("~/odata/T_XT_Data_Entity")" + "?$filter=IsDeleted eq false and ParentId eq 'root'&$orderby=SortIndex&$select=DataId,DataName,SubItemAmount").done(function (xhr)
         {
             $.each(xhr["value"], function (_i, _t)
             {
-                zNodes[0].children.push({ name: _t.DataName, Id: _t.DataId, isParent: true });
+                zNodes[0].children.push({ name: _t.DataName, id: _t.DataId, isParent: !!_t.SubItemAmount });
             });
             $.fn.zTree.init($("#" + TreeContainer), setting, zNodes);
+            $zTreeObj = $.fn.zTree.getZTreeObj(TreeContainer);
+        }).always(function () {
+           TopLayer.close(_loadIndex);
         });
 
 
@@ -123,6 +223,3 @@
 
     });
 </script>
-<div class="content-padding">
-    <ul id="TreeContainer" class="ztree"></ul>
-</div>
