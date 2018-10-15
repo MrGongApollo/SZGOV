@@ -234,11 +234,11 @@
 
     </fieldset>
 
-  <div class="layui-form-item text-center">
+  <div class="layui-form-item text-center footer_area">
         <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="btnSub">保存</button>
-
         <button class="layui-btn layui-btn-primary" id="btnBack">返回</button>
   </div>
+  <div class="footer_area_clearfix"></div>
 </form>
 </div>              
 
@@ -351,15 +351,11 @@
                 $.extend(saveData, data.field);
                 if (IsEdit) {
                     _url += "('" + _HiddenDangerId + "')";
-                    $.extend(saveData, {
-                        ModifyTime: new Date()
-                    });
-                    saveData.CreateTime = moment(saveData.CreateTime);
+                    saveData.CreateTime = saveData.CreateTime&&moment(saveData.CreateTime)||null;
                 }
                 else {
                     $.extend(saveData, {
                         HiddenDangerId: _HiddenDangerId
-                        , CreateTime:new Date()
                         , IsDeleted: false
                     });
                 }

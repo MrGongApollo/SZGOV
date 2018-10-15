@@ -8,6 +8,29 @@
 </style>
 
 
+
+
+<div class="content-padding">
+  <form class="layui-form lb-p-m layui-panel" action="" id="searchBar">
+      <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">年度</label>
+                <div class="layui-input-inline">
+                    <select id="YearDate" name="YaerDate" lay-filter="YearDate">
+                        <option value="2018">2018</option>
+                        <option value="2017">2017</option>
+                        <option value="2016">2016</option>
+                        <option value="2015">2015</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <hr/>
+    <table class="layui-hide" id="datagrid" lay-filter="datagrid"></table>
+</div>
+
 <script>
     layui.use(['datatable', 'win10', "form"], function () {
         var datatable = layui.datatable,
@@ -130,24 +153,3 @@
 
     });
 </script>
-
-<div class="content-padding">
-  <form class="layui-form lb-p-m layui-panel" action="" id="searchBar">
-      <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">年度</label>
-                <div class="layui-input-inline">
-                    <select id="YearDate" name="YaerDate" lay-filter="YearDate">
-                        <option value="2018">2018</option>
-                        <option value="2017">2017</option>
-                        <option value="2016">2016</option>
-                        <option value="2015">2015</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-    </form>
-
-    <hr/>
-    <table class="layui-hide" id="datagrid" lay-filter="datagrid"></table>
-</div>

@@ -8,6 +8,52 @@
     .searchbox .input-md{width:100px;}
 </style>
 
+<div class="content-padding">
+    <form class="layui-form lb-p-m layui-panel" action="">
+        <div class="layui-form-item searchbox">
+                <div class="layui-inline">
+                    <label class=" layui-form-label">
+                        检查时间：
+                    </label>
+                    <div class="layui-input-block">
+                        <div class="layui-input-inline input-md">
+                            <input type="text" id="CheckTimeS" lay-verify="date"  autocomplete="off" class="layui-input layui-disabled" disabled>
+                        </div>
+                        <div class="layui-form-mid">-</div>
+                        <div class="layui-input-inline input-md">
+                            <input type="text" id="CheckTimeE" lay-verify="date"  autocomplete="off" class="layui-input layui-disabled" disabled/>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                        <label class="layui-form-label">隐患编号：</label>
+                        <div class="layui-input-inline input-md">
+                            <input id="SerialNo" type="text" name="SerialNo" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">整改状态：</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="rdResult" value="" title="全部" checked="" />
+                        <input type="radio" name="rdResult" value="已整改" title="已整改" />
+                        <input type="radio" name="rdResult" value="未整改" title="未整改" />
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <a class="layui-btn layui-btn-normal" id="btnSearch"><i class="fa fa-search"></i>查询</a>
+                </div>
+        </div>
+    </form>
+    <hr/>
+        <div class="layui-btn-group hide" id="controlMenus">
+            <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnadd"><i class="fa fa-plus"></i> 新增</button>
+            <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnmodify"><i class="fa fa-edit"></i> 修改</button>
+            <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fndelete"><i class="fa fa-remove"></i> 删除</button>
+            <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnview"><i class="fa fa-eye"></i> 查看</button>
+        </div>
+        <table class="layui-hide" id="datagrid"></table>
+</div>
+
 <script>
     pageLoad = function (postData)
     {
@@ -188,51 +234,3 @@
         });
     }
 </script>
-
-
-
-<div class="content-padding">
-    <form class="layui-form lb-p-m layui-panel" action="">
-        <div class="layui-form-item searchbox">
-                <div class="layui-inline">
-                    <label class=" layui-form-label">
-                        检查时间：
-                    </label>
-                    <div class="layui-input-block">
-                        <div class="layui-input-inline input-md">
-                            <input type="text" id="CheckTimeS" lay-verify="date"  autocomplete="off" class="layui-input layui-disabled" disabled>
-                        </div>
-                        <div class="layui-form-mid">-</div>
-                        <div class="layui-input-inline input-md">
-                            <input type="text" id="CheckTimeE" lay-verify="date"  autocomplete="off" class="layui-input layui-disabled" disabled/>
-                        </div>
-                    </div>
-                </div>
-                <div class="layui-inline">
-                        <label class="layui-form-label">隐患编号：</label>
-                        <div class="layui-input-inline input-md">
-                            <input id="SerialNo" type="text" name="SerialNo" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                <div class="layui-inline">
-                    <label class="layui-form-label">整改状态：</label>
-                    <div class="layui-input-block">
-                        <input type="radio" name="rdResult" value="" title="全部" checked="" />
-                        <input type="radio" name="rdResult" value="已整改" title="已整改" />
-                        <input type="radio" name="rdResult" value="未整改" title="未整改" />
-                    </div>
-                </div>
-                <div class="layui-inline">
-                    <a class="layui-btn layui-btn-normal" id="btnSearch"><i class="fa fa-search"></i>查询</a>
-                </div>
-        </div>
-    </form>
-    <hr/>
-        <div class="layui-btn-group hide" id="controlMenus">
-            <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnadd"><i class="fa fa-plus"></i> 新增</button>
-            <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnmodify"><i class="fa fa-edit"></i> 修改</button>
-            <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fndelete"><i class="fa fa-remove"></i> 删除</button>
-            <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnview"><i class="fa fa-eye"></i> 查看</button>
-        </div>
-        <table class="layui-hide" id="datagrid"></table>
-</div>
