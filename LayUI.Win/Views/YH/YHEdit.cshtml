@@ -5,7 +5,7 @@
 }
 
 <style>
-    .layui-form.lb-p-m .layui-inline >.layui-form-label { width: 120px; }
+    .layui-form.lb-p-m .layui-inline >.layui-form-label { width: 130px; }
     .layui-form.lb-p-m .layui-inline >.layui-form-label+ .layui-input-block { margin-left: 120px; }
 </style>
 
@@ -57,10 +57,10 @@
               <div class="layui-inline">
                   <label class="layui-form-label">隐患大类</label>
                   <div class="layui-input-inline">
-                      <select name="HiddenTypeL" id="HiddenTypeL" lay-verify="required">
+                      <select name="HiddenTypeL" id="HiddenTypeL" lay-verify="required" lay-filter="HiddenTypeL">
                           <option value="">请选择</option>
-                          <option value="基础管理">基础管理</option>
-                          <option value="现场管理">现场管理</option>
+                          @*<option value="基础管理">基础管理</option>
+                          <option value="现场管理">现场管理</option>*@
                       </select>
                   </div>
               </div>
@@ -71,7 +71,7 @@
                   <div class="layui-input-inline">
                       <select name="HiddenTypeS" id="HiddenTypeS" lay-verify="required">
                           <option value="">请选择</option>
-                          <option value="A01">资质证照</option>
+                          @*<option value="A01">资质证照</option>
                           <option value="A02">安全生产管理机构及人员</option>
                           <option value="A03">安全规章制度</option>
                           <option value="A04">安全培训教育</option>
@@ -83,7 +83,7 @@
                           <option value="A10">应急管理</option>
                           <option value="A11">隐患排查治理</option>
                           <option value="A12">事故报告、调查和处理</option>
-                          <option value="A99">其他</option>
+                          <option value="A99">其他</option>*@
                       </select>
                   </div>
               </div>
@@ -93,7 +93,7 @@
       <div class="layui-form-item">
           <div class="layui-col-xs6">
               <div class="layui-inline">
-                  <label class="layui-form-label">隐患级别</label>
+                  <label class="layui-form-label">隐患级别 <i id="yhExplain" class="text-lg fa fa-question-circle color-blue"></i></label>
                   <div class="layui-input-inline">
                       <select name="HiddenLevel" id="HiddenLevel" lay-verify="required">
                           <option value="">请选择</option>
@@ -129,14 +129,14 @@
               <div class="layui-inline">
                   <label class="layui-form-label">整改责任部门</label>
                   <div class="layui-input-inline">
-                      <input type="text" id="ResponseOrgName" name="ResponseOrgName" autocomplete="off" class="layui-input">
+                      <input type="text" id="ResponseOrgName" name="ResponseOrgName" autocomplete="off" class="layui-input" lay-verify="required"/>
                   </div>
               </div>
           </div><div class="layui-col-xs6">
               <div class="layui-inline">
                   <label class="layui-form-label">整改期限</label>
                   <div class="layui-input-inline">
-                      <input type="text" id="TimeLimit" autocomplete="off" name="TimeLimit" class="layui-input laydate">
+                      <input type="text" id="TimeLimit" autocomplete="off" name="TimeLimit" class="layui-input laydate" lay-verify="required"/>
                   </div>
               </div>
           </div>
@@ -147,7 +147,7 @@
               <div class="layui-inline">
                   <label class="layui-form-label">整改责任人</label>
                   <div class="layui-input-inline">
-                      <input type="text" id="ResponseEmpName" name="ResponseEmpName" autocomplete="off" class="layui-input">
+                      <input type="text" id="ResponseEmpName" name="ResponseEmpName" autocomplete="off" class="layui-input" lay-verify="required"/>
                   </div>
               </div>
           </div><div class="layui-col-xs6">
@@ -261,14 +261,29 @@
 
             _HiddenDangerId = _pageData.HiddenDangerId || $.Cm_Common.getGuid();
 
+            var YHTypes = {};
+            $.Cm_Ajax.get("@Url.Content("~/odata/T_XT_Data_Entity")" + "?$filter=ParentId eq 'c0ec70dcd8a04b19bd3621bdc802b11d' and IsDeleted eq false&$orderby=SortIndex&$select=DataId,DataName").done(function (xhr)
+            {
+                $.each(xhr.value, function (_i, _t)
+                {
+                    YHTypes[_t.DataName] = [];
+                    $.Cm_Ajax.get("@Url.Content("~/odata/T_XT_Data_Entity")" + "?$filter=ParentId eq '" + _t.DataId + "' and IsDeleted eq false&$orderby=SortIndex&$select=DataName").done(function (xhrData) {
+                        YHTypes[_t.DataName] = xhrData.value;
+                    });
+
+                    $("#HiddenTypeL").append($("<option>").val(_t.DataName).text(_t.DataName));
+                });
+            });
+
             //必填项 加*
-            $("[lay-verify='required']").parent().prev().prepend($("<i>", { "class": "fa fa-asterisk text-s color-lightred margin_lr_5" }));
+            $("[lay-verify='required']").parent().prev().prepend($("<i>", { "class": "fa fa-asterisk text-s color-lightred" }));
 
             //常规用法
             lay('.laydate').each(function () {
                 laydate.render({
                     elem: this
                   , trigger: 'focus'
+                  , theme: '#1E9FFF'
                 });
             });
 
@@ -302,6 +317,12 @@
                     $.each(fileds, function (_i, _t) {
                         $("[name='" + _t + "']").val(_pageData[_t] || "");
                     });
+
+                    if (_pageData.HiddenTypeL)
+                    {
+                        //加载小类
+                        LoadTypeS((YHTypes[_pageData.HiddenTypeL] || []), _pageData.HiddenTypeS)
+                    }
 
                     $("[name='CheckTime']").val(_pageData.CheckTime && $.Cm_DateTime.dateFormat(_pageData.CheckTime, "yyyy-MM-dd") || "")
                     $("[name='ValidateDate']").val(_pageData.ValidateDate && $.Cm_DateTime.dateFormat(_pageData.ValidateDate, "yyyy-MM-dd") || "")
@@ -337,6 +358,22 @@
             form = layui.form;
             form.render();
 
+            //隐患类型切换
+            form.on('select(HiddenTypeL)', function (data) {
+                $("[name='HiddenTypeS'] option:gt(0)").remove();
+                var datas = YHTypes[data.value] || [];
+                LoadTypeS(datas);
+                form.render('select');
+            });
+            
+            var tipIndex;
+            $("#yhExplain").hover(function () {
+                var $this=$(this)
+                tipIndex = layer.tips("一般事故隐患：是指危害和整改难度较小，发现后能够立即整改消除的隐患。<br/>重大事故隐患：是指危害和整改难度较大，需要全部或者局部停产停业，并经过一定时间整改治理方能消除的隐患，或者因外部因素影响致使生产经营单位自身难以消除的隐患。", $this, {time:0});
+            },function () {
+                layer.close(tipIndex);
+            });
+
             //返回
             $("#btnBack").click(function () {
                 TopWin.layer.close(_self);
@@ -371,12 +408,20 @@
                         TopWin.layer.close(index);
                         TopWin.layer.close(_self);
                     });
-                }).fail(function (err) {
-                    console.log(err);
                 });
                 return false;
             });
 
+            //加载小类
+            function LoadTypeS(datas,selected)
+            {
+                $.each(datas, function (key, val) {
+                    $("#HiddenTypeS").append($("<option>").val(val.DataName).text(val.DataName));
+                });
+                if (selected) {
+                    $("#HiddenTypeS").val(selected);
+                }
+            }
         });
     }
 

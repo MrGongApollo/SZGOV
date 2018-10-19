@@ -10,8 +10,8 @@
 
 
 <div class="content-padding">
-    <form class="layui-form lb-p-m layui-panel" action="">
-        <div class="layui-form-item searchbox">
+        <form class="layui-form lb-p-m layui-panel" action="">
+            <div class="layui-form-item searchbox">
                 <div class="layui-inline">
                     <label class=" layui-form-label">
                         检查时间：
@@ -27,33 +27,47 @@
                     </div>
                 </div>
                 <div class="layui-inline">
-                        <label class="layui-form-label">隐患编号：</label>
-                        <div class="layui-input-inline input-md">
-                            <input id="SerialNo" type="text" name="SerialNo" autocomplete="off" class="layui-input">
-                        </div>
+                    <label class="layui-form-label">隐患编号：</label>
+                    <div class="layui-input-inline input-md">
+                        <input id="SerialNo" type="text" name="SerialNo" autocomplete="off" class="layui-input">
                     </div>
+                </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">整改状态：</label>
-                    <div class="layui-input-block">
-                        <input type="radio" name="rdResult" value="" title="全部" checked="" />
-                        <input type="radio" name="rdResult" value="已整改" title="已整改" />
-                        <input type="radio" name="rdResult" value="未整改" title="未整改" />
+                    <div class="layui-input-block input-md">
+                        <select name="txtResult">
+                            <option value="">全部</option>
+                            <option value="已整改">已整改</option>
+                            <option value="未整改">未整改</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">隐患等级：</label>
+                    <div class="layui-input-block input-md">
+                        <select name="txtHiddenLevel">
+                            <option value="">全部</option>
+                            <option value="一般隐患">一般隐患</option>
+                            <option value="重大隐患">重大隐患</option>
+                        </select>
                     </div>
                 </div>
                 <div class="layui-inline">
                     <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" id="btnSearch"><i class="fa fa-search"></i> 查询</button>
                     <button type="reset" class="layui-btn layui-btn-sm layui-btn-normal"><i class="fa fa-undo"></i> 重置</button>
                 </div>
-        </div>
-    </form>
-    <hr/>
+            </div>
+        </form>
+        <hr />
+
         <div class="layui-btn-group" id="controlMenus">
             @*<button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnadd"><i class="fa fa-plus"></i> 新增</button>
-            <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnmodify"><i class="fa fa-edit"></i> 修改</button>
-            <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fndelete"><i class="fa fa-remove"></i> 删除</button>*@
+                <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnmodify"><i class="fa fa-edit"></i> 修改</button>
+                <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fndelete"><i class="fa fa-remove"></i> 删除</button>*@
             <button class="layui-btn layui-btn-sm layui-btn-normal" data-type="fnview"><i class="fa fa-eye"></i> 查看</button>
         </div>
         <table class="layui-hide" id="datagrid"></table>
+
 </div>
 
 <script>
@@ -88,9 +102,10 @@
           , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
           , height: '350'
           , id: tableId
-          , where: { "$orderby": "SerialNo" }
+          , where: { "$orderby": "CreateTime desc" }
           , getFilters: function () {
-              var Result = $("[name='rdResult']:checked").val(),
+              var Result = $("[name='txtResult']").val(),
+                  HiddenLevel= $("[name='txtHiddenLevel']").val(),
                   SerialNo = $("#SerialNo").val(),
                   CheckTimeS = $("#txtCheckTime_s").val(),
                   CheckTimeE = $("#txtCheckTime_e").val();
@@ -102,7 +117,8 @@
               }
               else
               {
-                  Result ? $filters.odataLet("Result", Result) : "";
+                  HiddenLevel ? $filters.odataLet("HiddenLevel", encodeURI(HiddenLevel)) : "";
+                  Result ? $filters.odataLet("Result", encodeURI(Result)) : "";
                   CheckTimeS ? $filters.odataWhereDate("CheckTime", ">=", CheckTimeS) : "";
                   CheckTimeE ? $filters.odataWhereDate("CheckTime", "<", $.Cm_DateTime.dateAddDays(CheckTimeE, 1)) : "";
               }
@@ -110,15 +126,16 @@
           }
           , cols: [[
               { type: 'numbers', title: '序号' }
-            , { type: 'checkbox', title: '年度月份' }
-            , { field: 'SerialNo', width: 120, align: "center", title: '隐患编号', sort: true }
+            , { type: 'checkbox'}
             , {
-                field: 'Result', align: "center", width: 120, title: '整改状态', sort: true, templet: function (data)
-                {
+                field: 'Result', align: "center", width: 120, title: '整改状态', sort: true, templet: function (data) {
                     return data.Result && "<span class='layui-badge " + (({ "已整改": "layui-bg-green", "未整改": "" }[data.Result]) || "") + "'>" + data.Result + "</span>" || "";
                 }
             }
-            , { field: 'MajorCnt', align: "center", width: 90, title: '填报单位' }
+            , { field: 'SerialNo', width: 120, align: "center", title: '隐患编号', sort: true }
+
+            //, { field: 'MajorCnt', align: "center", width: 90, title: '填报单位' }
+            , {field: 'HiddenLevel', align: "center", width: 120, title: '隐患等级', sort: true}
             , {
                 field: 'CheckTime', width: 120, align: "center", title: '检查时间',sort:true, templet: function (data) {
                     return data.CheckTime && moment(data.CheckTime).format("YYYY-MM-DD") || "";

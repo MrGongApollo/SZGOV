@@ -31,14 +31,26 @@
                             <input id="SerialNo" type="text" name="SerialNo" autocomplete="off" class="layui-input">
                         </div>
                     </div>
-                <div class="layui-inline">
-                    <label class="layui-form-label">整改状态：</label>
-                    <div class="layui-input-block">
-                        <input type="radio" name="rdResult" value="" title="全部" checked="" />
-                        <input type="radio" name="rdResult" value="已整改" title="已整改" />
-                        <input type="radio" name="rdResult" value="未整改" title="未整改" />
-                    </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">整改状态：</label>
+                <div class="layui-input-block input-md">
+                    <select name="txtResult">
+                        <option value="">全部</option>
+                        <option value="已整改">已整改</option>
+                        <option value="未整改">未整改</option>
+                    </select>
                 </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">隐患等级：</label>
+                <div class="layui-input-block input-md">
+                    <select name="txtHiddenLevel">
+                        <option value="">全部</option>
+                        <option value="一般隐患">一般隐患</option>
+                        <option value="重大隐患">重大隐患</option>
+                    </select>
+                </div>
+            </div>
                 <div class="layui-inline">
                     <a class="layui-btn layui-btn-normal" id="btnSearch"><i class="fa fa-search"></i>查询</a>
                 </div>
@@ -100,29 +112,38 @@
               , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
               , height: '350'
               , id: tableId
-              , where: { "$orderby": "SerialNo" }
+              , where: { "$orderby": "CreateTime desc" }
               , getFilters: function () {
-                  var Result = $("[name='rdResult']:checked").val(),
+                  var Result = $("[name='txtResult']").val(),
+                      HiddenLevel = $("[name='txtHiddenLevel']").val(),
                       SerialNo = $("#SerialNo").val(),
                       CheckTimeS = $("#CheckTimeS").val(),
                       CheckTimeE = $("#CheckTimeE").val();
 
                   var $filters = $({}).data("result", "IsDeleted eq false");
-                  Result ? $filters.odataLet("Result", Result) : "";
-                  SerialNo ? $filters.odataLet("SerialNo", SerialNo, true) : "";
                   CheckTimeS ? $filters.odataWhereDate("CheckTime", ">=", CheckTimeS) : "";
                   CheckTimeE ? $filters.odataWhereDate("CheckTime", "<", $.Cm_DateTime.dateAddDays(CheckTimeE, 1)) : "";
+                  if (SerialNo)
+                  {
+                      $filters.odataLet("SerialNo", SerialNo, true);
+                  }
+                  else
+                  {
+                      Result ? $filters.odataLet("Result", encodeURI(Result)) : "";
+                      HiddenLevel ? $filters.odataLet("HiddenLevel", encodeURI(HiddenLevel)) : "";
+                  }
                   return $filters.data("result");
               }
               , cols: [[
                   { type: 'checkbox' }
-                , { field: 'SerialNo', width: 90, align: "center", title: '隐患编号' }
                 , {
                     field: 'Result', align: "center", width: 90, title: '整改状态', templet: function (data) {
                         return data.Result && "<span class='layui-badge " + (({ "已整改": "layui-bg-green", "未整改": "" }[data.Result]) || "") + "'>" + data.Result + "</span>" || "";
                     }
                 }
-                , { field: 'MajorCnt', align: "center", width: 90, title: '填报单位' }
+                , { field: 'SerialNo', width: 90, align: "center", title: '隐患编号' }
+                //, { field: 'MajorCnt', align: "center", width: 90, title: '填报单位' }
+                , { field: 'HiddenLevel', align: "center", width: 120, title: '隐患等级', sort: true }
                 , {
                     field: 'CheckTime', width: 120, align: "center", title: '检查时间', templet: function (data) {
                         return data.CheckTime && moment(data.CheckTime).format("YYYY-MM-DD") || "";
