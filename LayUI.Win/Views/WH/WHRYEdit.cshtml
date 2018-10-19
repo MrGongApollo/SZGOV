@@ -13,14 +13,14 @@
             <div class="layui-inline">
                 <label class="layui-form-label">单位</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="OrgName" autocomplete="off" class="layui-input">
+                    <input type="text" name="OrgName" autocomplete="off" class="layui-input" lay-verify="required"/>
                 </div>
             </div>
         </div><div class="layui-col-xs6">
             <div class="layui-inline">
                 <label class="layui-form-label">岗位</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="Post" autocomplete="off" class="layui-input">
+                    <input type="text" name="Post" autocomplete="off" class="layui-input" lay-verify="required"/>
                 </div>
             </div>
         </div>
@@ -31,14 +31,14 @@
             <div class="layui-inline">
                 <label class="layui-form-label">姓名</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="EmpName" autocomplete="off" class="layui-input">
+                    <input type="text" name="EmpName" autocomplete="off" class="layui-input" lay-verify="required"/>
                 </div>
             </div>
         </div><div class="layui-col-xs6">
             <div class="layui-inline">
                 <label class="layui-form-label">身份证</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="IdcardNo" autocomplete="off" class="layui-input">
+                    <input type="text" name="IdcardNo" autocomplete="off" class="layui-input" lay-verify="required"/>
                 </div>
             </div>
         </div>
@@ -77,7 +77,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">从业人员所持证件</label>
                 <div class="layui-input-inline">
-                    <input type="text" autocomplete="off" class="layui-input">
+                    <input type="text" autocomplete="off" name="Certificates" class="layui-input">
                 </div>
             </div>
         </div>
@@ -109,6 +109,8 @@
 
             _RecordId = _pageData.RecordId || $.Cm_Common.getGuid();
 
+            $("[lay-verify='required']").parent().prev().prepend($("<i>", { "class": "fa fa-asterisk text-s color-lightred" }));
+
             switch (postData.editMode) {
                 case Cm_editMode.view:
                 case Cm_editMode.edit:
@@ -119,7 +121,8 @@
                        "IdcardNo",
                        "ContactNum",
                        "PermanentAddress",
-                       "CurAddress"
+                       "CurAddress",
+                       "Certificates"
                     ];
 
                     $.each(fileds, function (_i, _t) {

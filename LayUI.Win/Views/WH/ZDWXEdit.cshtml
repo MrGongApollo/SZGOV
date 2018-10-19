@@ -15,14 +15,14 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">重大危险源名称</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="MajorHazardName" autocomplete="off" class="layui-input">
+                        <input type="text" name="MajorHazardName" autocomplete="off" class="layui-input" lay-verify="required">
                     </div>
                 </div>
             </div><div class="layui-col-xs6">
                 <div class="layui-inline">
                     <label class="layui-form-label">所在地址</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="Address" autocomplete="off" class="layui-input">
+                        <input type="text" name="Address" autocomplete="off" class="layui-input" lay-verify="required">
                     </div>
                 </div>
             </div>
@@ -33,14 +33,14 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">主要负责人</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="ResponseEmpName" autocomplete="off" class="layui-input">
+                        <input type="text" name="ResponseEmpName" autocomplete="off" class="layui-input" lay-verify="required">
                     </div>
                 </div>
             </div><div class="layui-col-xs6">
                 <div class="layui-inline">
                     <label class="layui-form-label">联系电话</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="ContactNum" autocomplete="off" class="layui-input">
+                        <input type="text" name="ContactNum" autocomplete="off" class="layui-input" lay-verify="required">
                     </div>
                 </div>
             </div>
@@ -106,14 +106,14 @@
 
         </div>
 
-        <div class="layui-form-item">
+        @*<div class="layui-form-item">
 
             <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
                 <legend>安全评价</legend>
             </fieldset>
 
             <table class="layui-hide" id="grid-safeEv"></table>
-        </div>
+        </div>*@
 
         <div class="layui-form-item text-center footer_area">
             <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="btnSub">保存</button>
@@ -141,6 +141,8 @@
                 user = $.Cm_Auth.userInfo(),
                 _pageData = postData.pageData || {},
                 _DossierId = _pageData.DossierId || $.Cm_Common.getGuid();
+
+            $("[lay-verify='required']").parent().prev().prepend($("<i>", { "class": "fa fa-asterisk text-s color-lightred" }));
 
             //常规用法
             laydate.render({
@@ -202,7 +204,7 @@
                     datatable.reload(tableId, { page: { curr: 1 } });
                 };
 
-            datatable.render({
+            @*datatable.render({
                 elem: '#' + tableId
               , url: "@Url.Content("~/odata/T_WH_MajorHazardDossier_Entity")"
               , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
@@ -229,7 +231,7 @@
               , { field: '', width: 120, align: "center", title: '附件（备案登记）' }
             ]],
             page: false
-            });
+            });*@
 
 
 

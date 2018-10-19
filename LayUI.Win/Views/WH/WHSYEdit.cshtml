@@ -4,7 +4,8 @@
     Layout = "~/Views/Shared/_Edit.cshtml";
 }
 <style>
-    .layui-form.lb-p-m .layui-inline >.layui-form-label { font-size:13px; }
+    .layui-form.lb-p-m .layui-inline > .layui-form-label { width: 130px; font-size: 13px; }
+    .layui-form.lb-p-m .layui-inline > .layui-form-label + .layui-input-block { margin-left: 120px; }
 </style>
 <div class="content-padding">
  
@@ -14,7 +15,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">危险化学品名称</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="ToxicName" autocomplete="off" class="layui-input">
+                    <input type="text" name="ToxicName" autocomplete="off" class="layui-input" lay-verify="required"/>
                 </div>
             </div>
 
@@ -22,7 +23,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">危规号</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="DangerChemCode" autocomplete="off" class="layui-input">
+                    <input type="text" name="DangerChemCode" autocomplete="off" class="layui-input" lay-verify="required"/>
                 </div>
             </div>
         </div>
@@ -33,14 +34,14 @@
             <div class="layui-inline">
                 <label class="layui-form-label">年使用量</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="YearWastage" autocomplete="off" class="layui-input">
+                    <input type="text" name="YearWastage" autocomplete="off" class="layui-input" lay-verify="required"/>
                 </div>
             </div>
         </div><div class="layui-col-xs6">
             <div class="layui-inline">
                 <label class="layui-form-label">最大存储量</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="StockMax" autocomplete="off" class="layui-input">
+                    <input type="text" name="StockMax" autocomplete="off" class="layui-input" lay-verify="required"/>
                 </div>
             </div>
         </div>
@@ -51,7 +52,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">贮存地点</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="StoragePoint" autocomplete="off" class="layui-input">
+                    <input type="text" name="StoragePoint" autocomplete="off" class="layui-input" lay-verify="required"/>
                 </div>
             </div>
 
@@ -59,7 +60,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">生产企业</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="Manufacturer" autocomplete="off" class="layui-input">
+                    <input type="text" name="Manufacturer" autocomplete="off" class="layui-input" lay-verify="required"/>
                 </div>
             </div>
         </div>
@@ -72,7 +73,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">包装方式</label>
                 <div class="layui-input-inline">
-                    <select name="PackWay">
+                    <select name="PackWay" lay-verify="required">
                         <option value="">请选择</option>
                         <option value="桶装">桶装</option>
                     </select>
@@ -83,7 +84,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">是否拥有MSDS</label>
                 <div class="layui-input-inline">
-                    <select name="HasMSDS">
+                    <select name="HasMSDS" lay-verify="required">
                         <option value="">请选择</option>
                         <option value="是">是</option>
                         <option value="否">否</option>
@@ -98,7 +99,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">是否重点监管化学品</label>
                 <div class="layui-input-inline">
-                    <select name="HighSupervise">
+                    <select name="HighSupervise" lay-verify="required">
                         <option value="">请选择</option>
                         <option value="是">是</option>
                         <option value="否">否</option>
@@ -109,7 +110,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">是否易制毒化学品</label>
                 <div class="layui-input-inline">
-                    <select name="IsEasyDrugPro">
+                    <select name="IsEasyDrugPro" lay-verify="required">
                         <option value="">请选择</option>
                         <option value="是">是</option>
                         <option value="否">否</option>
@@ -124,7 +125,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">是否易制爆化学品</label>
                 <div class="layui-input-inline">
-                    <select name="IsEasybBastPro">
+                    <select name="IsEasybBastPro" lay-verify="required">
                         <option value="">请选择</option>
                         <option value="是">是</option>
                         <option value="否">否</option>
@@ -136,7 +137,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">是否剧毒化学品</label>
                 <div class="layui-input-inline">
-                    <select name="IsHighlyToxic">
+                    <select name="IsHighlyToxic" lay-verify="required">
                         <option value="">请选择</option>
                         <option value="是">是</option>
                         <option value="否">否</option>
@@ -172,6 +173,8 @@
                 _pageData = postData.pageData || {};
 
             _DangerChemId = _pageData.DangerChemId || $.Cm_Common.getGuid();
+
+            $("[lay-verify='required']").parent().prev().prepend($("<i>", { "class": "fa fa-asterisk text-s color-lightred" }));
 
             switch (postData.editMode) {
                 case Cm_editMode.view:
@@ -229,8 +232,8 @@
                     });
                 }
 
-                saveData.YearWastage = parseFloat(saveData.YearWastage);
-                saveData.StockMax = parseFloat(saveData.StockMax);
+                //saveData.YearWastage = parseFloat(saveData.YearWastage);
+                //saveData.StockMax = parseFloat(saveData.StockMax);
 
                 ($.Cm_Ajax)[saveMethed](_url, saveData).done(function () {
                     TopWin.layer.alert("操作成功", function (index) {

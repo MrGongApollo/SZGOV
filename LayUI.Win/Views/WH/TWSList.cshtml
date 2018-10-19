@@ -12,6 +12,7 @@
         var datatable = layui.datatable,
             Win10 = layui.win10,
             $ = layui.jquery,
+            Cm_editMode = $.Cm_Setting.editMode,
             layer = layui.layer,
             tableId="datagrid",
             reloadTable = function () {
@@ -32,8 +33,8 @@
           }
           , cols: [[
               { type: 'checkbox' }
-            , { field: 'Year', width: 120, title: '年度' }
-            , { field: 'Month', width: 120, title: '月份' }
+            , { field: 'Year', align: "center", width: 120, title: '年度' }
+            , { field: 'Month', align: "center", width: 120, title: '月份' }
             , { field: 'IsotopeName', align: "center", width: 120, title: '核素名称' }
             , { field: 'StockLastMonth', align: "center", width: 120, title: '上月库存数量' }
             , { field: 'StorageCurMonth', width: 120, align: "center", title: '本月入库量' }
@@ -51,24 +52,21 @@
 
         var fncontrolMenus = {
             fnadd: function () {
+                var _today = new Date();
                 fncontrolMenus.open({
-                    editMode: "add",
-                    pageData: null
-                });
-            },
-            fncopy: function () {
-                var datas = datatable.checkStatus(tableId).data;
-                if (datas.length != 1) { TopWin.layer.msg((datas.length ? "只能" : "至少") + "选择一行数据！"); return; }
-                fncontrolMenus.open({
-                    editMode: "add",
-                    pageData: datas[0]
+                    editMode: Cm_editMode.add,
+                    pageData:
+                    {
+                        Year: _today.getFullYear(),
+                        Month: _today.getMonth()+1
+                    }
                 });
             },
             fnmodify: function () {
                 var datas = datatable.checkStatus(tableId).data;
                 if (datas.length != 1) { TopWin.layer.msg((datas.length ? "只能" : "至少") + "选择一行数据！"); return; }
                 fncontrolMenus.open({
-                    editMode: "edit",
+                    editMode: Cm_editMode.edit,
                     pageData: datas[0]
                 });
             },
@@ -92,7 +90,7 @@
                 var datas = datatable.checkStatus(tableId).data;
                 if (datas.length != 1) { TopWin.layer.msg((datas.length ? "只能" : "至少") + "选择一行数据！"); return; }
                 fncontrolMenus.open({
-                    editMode: "view",
+                    editMode: Cm_editMode.view,
                     pageData: datas[0]
                 });
             },
@@ -102,7 +100,8 @@
             fnexport: function () {
 
             },
-            open: function (options) {
+            open: function (options)
+            {
                 TopWin.layer.open({
                     type: 2,
                     title: "同位素放射源维护",
@@ -115,9 +114,6 @@
                         if (typeof _frm.pageLoad == "function") {
                             _frm.pageLoad(options);
                         }
-                    },
-                    close: function (index) {
-
                     },
                     end: function (index) {
                         reloadTable();

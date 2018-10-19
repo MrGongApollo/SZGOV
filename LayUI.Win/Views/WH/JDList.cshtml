@@ -13,6 +13,7 @@
             Win10 = layui.win10,
             layer = layui.layer,
             $ = layui.jquery,
+            Cm_editMode = $.Cm_Setting.editMode,
             tableId="datagrid",
             reloadTable = function () {
                 datatable.reload(tableId, { page: { curr: 1 } });
@@ -32,10 +33,10 @@
           }
           , cols: [[
               { type: 'checkbox' }
-            , { field: 'Year', width: 120, title: '年度' }
-            , { field: 'Month', width: 120, title: '月份' }
+            , { field: 'Year', width: 120, align: "center", title: '年度' }
+            , { field: 'Month', width: 120, align: "center", title: '月份' }
             , { field: 'ToxicName', width: 100, align: "center", title: '剧毒化学品' }
-            , { field: 'Useage', width: 80, align: "center", title: '用途' }
+            , { field: 'Useage', width: 80, title: '用途' }
             , { field: 'UseOrgName', width: 120, title: '使用部门' }
             , { field: 'ResponseEmpName', align: "center", title: '责任人' }
             , { field: 'ResponseNumber', align: "center", width: 120, title: '联系方式' }
@@ -44,7 +45,7 @@
             , { field: 'StorageCurMonth', align: "center", width: 100, title: '当月进货量' }
             , { field: 'StorageOutCurMonth', align: "center", width: 100, title: '当月使用量' }
             , { field: 'StockCur', align: "center", width: 90, title: '现库存量' }
-            , { field: 'IsPersonChange', align: "center", width: 160, title: '从业人员是否发生变化' }
+            , { field: 'IsPersonChange', align: "center", width: 180, title: '从业人员是否发生变化' }
           ]],
             page: true
         });
@@ -52,24 +53,21 @@
 
         var fncontrolMenus = {
             fnadd: function () {
+                var _today = new Date();
                 fncontrolMenus.open({
-                    editMode: "add",
-                    pageData: null
-                });
-            },
-            fncopy: function () {
-                var datas = datatable.checkStatus(tableId).data;
-                if (datas.length != 1) { TopWin.layer.msg((datas.length ? "只能" : "至少") + "选择一行数据！"); return; }
-                fncontrolMenus.open({
-                    editMode: "add",
-                    pageData: datas[0]
+                    editMode: Cm_editMode.add,
+                    pageData:
+                    {
+                        Year: _today.getFullYear(),
+                        Month: _today.getMonth() + 1
+                    }
                 });
             },
             fnmodify: function () {
                 var datas = datatable.checkStatus(tableId).data;
                 if (datas.length != 1) { TopWin.layer.msg((datas.length ? "只能" : "至少") + "选择一行数据！"); return; }
                 fncontrolMenus.open({
-                    editMode: "edit",
+                    editMode: Cm_editMode.edit,
                     pageData: datas[0]
                 });
             },
@@ -93,7 +91,7 @@
                 var datas = datatable.checkStatus(tableId).data;
                 if (datas.length != 1) { TopWin.layer.msg((datas.length ? "只能" : "至少") + "选择一行数据！"); return; }
                 fncontrolMenus.open({
-                    editMode: "view",
+                    editMode: Cm_editMode.view,
                     pageData: datas[0]
                 });
             },
@@ -116,9 +114,6 @@
                         if (typeof _frm.pageLoad == "function") {
                             _frm.pageLoad(options);
                         }
-                    },
-                    close: function (index) {
-
                     },
                     end: function (index) {
                         reloadTable();

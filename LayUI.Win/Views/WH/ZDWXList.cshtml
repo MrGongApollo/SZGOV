@@ -34,18 +34,16 @@
           , cols: [[
               { type: 'checkbox' }
             , { field: 'MajorHazardName', width: 160, align: "center", title: '重大危险源名称' }
-            , { field: 'Address', width: 120, align: "center", title: '所在地址' }
+            , { field: 'Address', width: 200, align: "center", title: '所在地址' }
             , { field: 'ResponseEmpName', width: 120, align: "center", title: '主要负责人' }
-            , { field: 'ContactNum', width: 120, align: "center", title: '联系电话' }
-            , { field: 'RecordOrgName', align: "center", width: 160, title: '政府备案部门' }
+            , { field: 'ContactNum', width: 160, align: "center", title: '联系电话' }
+            , { field: 'RecordOrgName', align: "center", width: 200, title: '政府备案部门' }
             , { field: 'EvaluationTime', width: 120, align: "center", title: '最近评估日期',  templet: function (data) {
                 return data.EvaluationTime && moment(data.EvaluationTime).format("YYYY-MM-DD") || "";
                 }
             }
-            , { field: 'EvaluationOrg', width: 120, align: "center", title: '评估机构' }
+            , { field: 'EvaluationOrg', width: 200, align: "center", title: '评估机构' }
             , { field: 'MajorHazardLevel', align: "center", title: '等级' }
-            , { field: '', width: 200, align: "center", title: '附件（基本特征）' }
-            , { field: '', width: 120, align: "center", title: '附件（备案登记）' }
           ]],
             page: true
         });

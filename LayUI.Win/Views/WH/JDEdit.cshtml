@@ -13,7 +13,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">年度</label>
                 <div class="layui-input-inline">
-                    <select name="Year">
+                    <select name="Year" lay-verify="required">
                         <option value="">请选择</option>
                         <option value="2019">2019</option>
                         <option value="2018">2018</option>
@@ -27,7 +27,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">月份</label>
                 <div class="layui-input-inline">
-                    <select name="Month">
+                    <select name="Month" lay-verify="required">
                         <option value="">请选择</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -52,14 +52,14 @@
             <div class="layui-inline">
                 <label class="layui-form-label">申报单位</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="ApplyOrgName" autocomplete="off" class="layui-input">
+                    <input type="text" name="ApplyOrgName" autocomplete="off" class="layui-input" lay-verify="required"/>
                 </div>
             </div>
         </div><div class="layui-col-xs6">
             <div class="layui-inline">
                 <label class="layui-form-label">剧毒化学品名称</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="ToxicName" autocomplete="off" class="layui-input">
+                    <input type="text" name="ToxicName" autocomplete="off" class="layui-input" lay-verify="required"/>
                 </div>
             </div>
         </div>
@@ -70,14 +70,14 @@
             <div class="layui-inline">
                 <label class="layui-form-label">存储地点</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="StoragePoint" autocomplete="off" class="layui-input">
+                    <input type="text" name="StoragePoint" autocomplete="off" class="layui-input" lay-verify="required"/>
                 </div>
             </div>
         </div><div class="layui-col-xs6">
             <div class="layui-inline">
                 <label class="layui-form-label">用途</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="Useage" autocomplete="off" class="layui-input">
+                    <input type="text" name="Useage" autocomplete="off" class="layui-input" lay-verify="required"/>
                 </div>
             </div>
         </div>
@@ -88,7 +88,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">当月进货量</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="StorageCurMonth" autocomplete="off" class="layui-input">
+                    <input type="text" name="StorageCurMonth" autocomplete="off" class="layui-input"/>
                 </div>
             </div>
 
@@ -96,7 +96,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">当月使用量</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="StorageOutCurMonth" autocomplete="off" class="layui-input">
+                    <input type="text" name="StorageOutCurMonth" autocomplete="off" class="layui-input"/>
                 </div>
             </div>
 
@@ -108,7 +108,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">现库存量</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="StockCur" autocomplete="off" class="layui-input">
+                    <input type="text" name="StockCur" autocomplete="off" class="layui-input" lay-verify="required"/>
                 </div>
             </div>
 
@@ -127,7 +127,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">保管人</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="StoreMan" autocomplete="off" class="layui-input">
+                    <input type="text" name="StoreMan" autocomplete="off" class="layui-input" lay-verify="required"/>
                 </div>
             </div>
 
@@ -135,7 +135,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">保管人电话</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="StoreManNumber" autocomplete="off" class="layui-input">
+                    <input type="text" name="StoreManNumber" autocomplete="off" class="layui-input" lay-verify="required"/>
                 </div>
             </div>
         </div>
@@ -146,7 +146,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">责任人</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="ResponseEmpName" autocomplete="off" class="layui-input">
+                    <input type="text" name="ResponseEmpName" autocomplete="off" class="layui-input" lay-verify="required"/>
                 </div>
             </div>
 
@@ -154,7 +154,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">责任人电话</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="ResponseNumber" autocomplete="off" class="layui-input">
+                    <input type="text" name="ResponseNumber" autocomplete="off" class="layui-input" lay-verify="required"/>
                 </div>
             </div>
         </div>
@@ -165,8 +165,8 @@
             <div class="layui-inline">
                 <label class="layui-form-label">从业人员是否变化</label>
                 <div class="layui-input-inline">
-                    <input type="radio" name="IsPersonChange" value="是" title="是" checked="">
-                    <input type="radio" name="IsPersonChange" value="否" title="否">
+                    <input type="radio" name="IsPersonChange" value="是" title="是">
+                    <input type="radio" name="IsPersonChange" value="否" title="否" checked="">
                 </div>
             </div>
         </div>
@@ -198,10 +198,12 @@
 
             _ToxicId = _pageData.ToxicId || $.Cm_Common.getGuid();
 
+            $("[lay-verify='required']").parent().prev().prepend($("<i>", { "class": "fa fa-asterisk text-s color-lightred" }));
 
             switch (postData.editMode) {
                 case Cm_editMode.view:
                 case Cm_editMode.edit:
+                case Cm_editMode.add:
                     var fileds = [
                          "Year",
                          "Month",
@@ -223,15 +225,12 @@
                         $("[name='" + _t + "']").val(_pageData[_t] || "");
                     });
 
-                    $("[name='IsPersonChange'][value='" + _pageData.IsPersonChange + "']").attr("checked",true);
+                    $("[name='IsPersonChange'][value='" + _pageData.IsPersonChange||"否" + "']").attr("checked",true);
 
                     if (IsReadOnly) {
                         $(":input:not(#btnBack)").attr("disabled", true);
                         $("[lay-filter='btnSub']").remove();
                     }
-                    break;
-                case Cm_editMode.add:
-                    _ToxicId = $.Cm_Common.getGuid();
                     break;
             }
 
@@ -249,7 +248,6 @@
             form.on('submit(btnSub)', function (data) {
                 var saveData = {},
                     _url = baseConst.odata + "T_WH_Toxic_Entity";
-                // _url ="@Url.Content("~/WH/ToxicAdd")";
                 $.extend(saveData, data.field);
                 if (IsEdit) {
                     _url += "('" + _ToxicId + "')";
@@ -264,9 +262,9 @@
 
                 saveData.Year = parseFloat(saveData.Year);
                 saveData.Month = parseFloat(saveData.Month);
-                saveData.StorageCurMonth = parseFloat(saveData.StorageCurMonth);
-                saveData.StorageOutCurMonth = parseFloat(saveData.StorageOutCurMonth);
-                saveData.StockCur = parseFloat(saveData.StockCur);
+                //saveData.StorageCurMonth = parseFloat(saveData.StorageCurMonth);
+                //saveData.StorageOutCurMonth = parseFloat(saveData.StorageOutCurMonth);
+                //saveData.StockCur = parseFloat(saveData.StockCur);
 
                 ($.Cm_Ajax)[saveMethed](_url, saveData).done(function () {
                     TopWin.layer.alert("操作成功", function (index) {
