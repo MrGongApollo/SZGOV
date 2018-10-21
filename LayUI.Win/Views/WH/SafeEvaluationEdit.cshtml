@@ -1,0 +1,159 @@
+﻿@{
+    ViewBag.Title = "安全评估信息维护";
+    Layout = "~/Views/Shared/_Edit.cshtml";
+}
+
+<style>
+    .layui-form.lb-p-m .layui-inline > .layui-form-label { width: 130px; font-size: 13px; }
+    .layui-form.lb-p-m .layui-inline >.layui-form-label+ .layui-input-block { margin-left: 120px; }
+</style>
+
+<div class="content-padding">
+
+    <form class="layui-form lb-p-m layui-form-pane" action="">
+        <div class="layui-form-item">
+            <div class="layui-col-xs6">
+                <div class="layui-inline">
+                    <label class="layui-form-label">安全评价机构</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="EvaluateOrgName" autocomplete="off" class="layui-input" lay-verify="required" />
+                    </div>
+                </div>
+            </div><div class="layui-col-xs6">
+                <div class="layui-inline">
+                    <label class="layui-form-label">等级</label>
+                    <div class="layui-input-inline">
+                        <select name="MajorHazardLevel" lay-verify="required">
+                            <option value="">请选择</option>
+                            <option value="一级">一级</option>
+                            <option value="二级">二级</option>
+                            <option value="三级">三级</option>
+                            <option value="四级">四级</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-col-xs6">
+                <div class="layui-inline">
+                    <label class="layui-form-label">评估时间</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="EvaluateTime" autocomplete="off" class="layui-input laydate" lay-verify="required" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+      <div class="layui-form-item layui-form-text">
+          <div class="layui-col-xs12">
+                  <label class="layui-form-label">评价结论</label>
+                  <div class="layui-input-block">
+                      <textarea placeholder="" id="HiddenContent" name="SafetyEvalua" class="layui-textarea" lay-verify="required"></textarea>
+                  </div> 
+          </div>
+      </div>
+
+        <div class="layui-form-item text-center footer_area">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="btnSub">保存</button>
+            <button class="layui-btn layui-btn-primary" id="btnBack">返回</button>
+        </div>
+        <div class="footer_area_clearfix"></div>
+
+    </form>
+</div>
+
+<script>
+    var _EvaluateId = "";
+
+    pageLoad = function (postData) {
+        layui.use(['form', 'laydate', 'layer'], function () {
+            var form = null,
+                $ = layui.jquery,
+                layer = layui.layer,
+                laydate = layui.laydate,
+                Cm_editMode = $.Cm_Setting.editMode,
+                _self = parent.layer.getFrameIndex(window.name), //获取窗口索引
+                IsReadOnly = postData.editMode == Cm_editMode.view,
+                IsEdit = postData.editMode == Cm_editMode.edit,
+                saveMethed = IsEdit ? "putAsync" : "postAsync",
+                user = $.Cm_Auth.userInfo(),
+                _pageData = postData.pageData || {};
+
+            _EvaluateId = _pageData.EvaluateId || $.Cm_Common.getGuid();
+
+            $("[lay-verify='required']").parent().prev().prepend($("<i>", { "class": "fa fa-asterisk text-s color-lightred" }));
+
+            switch (postData.editMode) {
+                case Cm_editMode.view:
+                case Cm_editMode.edit:
+                case Cm_editMode.add:
+                    var fileds = [
+                         "EvaluateOrgName",
+                         "EvaluateTime",
+                         "MajorHazardLevel",
+                         "SafetyEvalua"
+                    ];
+
+                    $.each(fileds, function (_i, _t) {
+                        $("[name='" + _t + "']").val(_pageData[_t] || "");
+                    });
+                    
+                    $("[name='EvaluateTime']").val($.Cm_DateTime.dateMomentFormat(_pageData.EvaluateTime) || "");
+
+                    if (IsReadOnly) {
+                        $(":input:not(#btnBack)").attr("disabled", true);
+                        $("[lay-filter='btnSub']").remove();
+                    }
+                    break;
+            }
+
+            form = layui.form;
+
+            form.render();
+
+            //返回
+            $("#btnBack").click(function () {
+                TopWin.layer.close(_self);
+            });
+
+            //常规用法
+            lay('.laydate').each(function () {
+                laydate.render({
+                    elem: this
+                  , trigger: 'click'
+                  , theme: '#1E9FFF'
+                });
+            });
+
+            //监听提交
+            form.on('submit(btnSub)', function (data) {
+                var saveData = {},
+                    _url = baseConst.odata + "T_WH_Evaluate_Entity";
+                $.extend(saveData, data.field);
+                if (IsEdit)
+                {
+                    _url += "('" + _EvaluateId + "')";
+                }
+                else {
+                    $.extend(saveData, {
+                        EvaluateId: _EvaluateId
+                        ,DossierId:_pageData.DossierId || null
+                        , IsDeleted: false
+                    });
+                }
+
+                ($.Cm_Ajax)[saveMethed](_url, saveData).done(function () {
+                    TopWin.layer.alert("操作成功", function (index) {
+                        TopWin.layer.close(index);
+                        TopWin.layer.close(_self);
+                    });
+                });
+                return false;
+            });
+
+
+        });
+    }
+</script>
