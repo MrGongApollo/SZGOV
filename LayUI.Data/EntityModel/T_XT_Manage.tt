@@ -16,7 +16,7 @@ namespace <#=manager.DefaultProjectNamespace #>.EntityModel
 {
 <# manager.EndBlock(); #>
 <# 
-	foreach (DbTable tb in DbHelper.GetDbTables(config.ConnectionString,config.DbDatabase,startTable:config.DbStartTables))
+	foreach (DbTable tb in DbHelper.GetDbTables(DbHelper.getConnectionString(),config.DbDatabase,startTable:config.DbStartTables))
 	{
 		string entityName = tb.TableName+"_Entity";
 		manager.StartNewFile(entityName+".cs","");
@@ -28,7 +28,7 @@ namespace <#=manager.DefaultProjectNamespace #>.EntityModel
     public partial class <#=entityName #> : IEntity, ICreationAudited, IModificationAudited, IDeleteAudited
 	{
 		#region 数据库属性字段
-		<# foreach(DbColumn column in DbHelper.GetDbColumns(config.ConnectionString, config.DbDatabase, tb.TableName)){#>
+		<# foreach(DbColumn column in DbHelper.GetDbColumns(DbHelper.getConnectionString(), config.DbDatabase, tb.TableName)){#>
 
         /// <summary>
         /// <#=column.Remark#>
@@ -56,7 +56,7 @@ namespace <#=manager.DefaultProjectNamespace #>.EntityModel
 <#+
     public class config
     {
-        public static readonly string ConnectionString="Data Source=.;Initial Catalog=GOV;Persist Security Info=True;User ID=sa;Password=123456";
+       // public static readonly string ConnectionString="Data Source=.;Initial Catalog=GOV;Persist Security Info=True;User ID=sa;Password=123456";
         public static readonly string DbDatabase="GOV";
         public static readonly string DbStartTables = "T_XT_";
     }

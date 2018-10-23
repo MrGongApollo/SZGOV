@@ -9,6 +9,13 @@
 <#+
     public class DbHelper
     {
+	 	private static readonly string connectionConfig="Data Source=.;Initial Catalog=GOV;Persist Security Info=True;User ID=sa;Password=123456";
+
+		public static string getConnectionString()
+		{
+				return connectionConfig;
+		}
+
         #region GetDbTables
         
         public static List<DbTable> GetDbTables(string connectionString, string database, string tables = null

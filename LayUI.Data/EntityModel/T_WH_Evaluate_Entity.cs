@@ -51,7 +51,7 @@ namespace LayUI.Data.EntityModel
         /// <summary>
         /// 评估日期
         /// </summary>
-        public string EvaluateTime { get; set; }
+        public DateTime? EvaluateTime { get; set; }
         
         /// <summary>
         /// 创建人工号

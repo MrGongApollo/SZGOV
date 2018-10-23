@@ -41,17 +41,17 @@ namespace LayUI.Data.EntityModel
         /// <summary>
         /// 年产量
         /// </summary>
-        public decimal? YearYield { get; set; }
+        public string YearYield { get; set; }
         
         /// <summary>
         /// 年销售量
         /// </summary>
-        public decimal? YearSales { get; set; }
+        public string YearSales { get; set; }
         
         /// <summary>
         /// 最大储存量
         /// </summary>
-        public decimal? StockMax { get; set; }
+        public string StockMax { get; set; }
         
         /// <summary>
         /// 贮存地点

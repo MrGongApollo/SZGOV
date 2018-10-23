@@ -54,6 +54,16 @@ namespace LayUI.Data.EntityModel
         public decimal? CorrectCnt { get; set; }
         
         /// <summary>
+        /// 按期整改数
+        /// </summary>
+        public decimal? ScheduleCnt { get; set; }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public decimal? TotalCnt { get; set; }
+        
+        /// <summary>
         /// 创建人工号
         /// </summary>
         public string CreateByEmpCode { get; set; }

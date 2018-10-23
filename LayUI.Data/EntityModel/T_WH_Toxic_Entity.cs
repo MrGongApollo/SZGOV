@@ -52,18 +52,18 @@ namespace LayUI.Data.EntityModel
         /// 当月进货量
    
         /// </summary>
-        public decimal? StorageCurMonth { get; set; }
+        public string StorageCurMonth { get; set; }
         
         /// <summary>
         /// 当月使用量
    
         /// </summary>
-        public decimal? StorageOutCurMonth { get; set; }
+        public string StorageOutCurMonth { get; set; }
         
         /// <summary>
         /// 现库存量
         /// </summary>
-        public decimal? StockCur { get; set; }
+        public string StockCur { get; set; }
         
         /// <summary>
         /// 存放点

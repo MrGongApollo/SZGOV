@@ -41,12 +41,12 @@ namespace LayUI.Data.EntityModel
         /// <summary>
         /// 年使用量
         /// </summary>
-        public decimal? YearWastage { get; set; }
+        public string YearWastage { get; set; }
         
         /// <summary>
         /// 最大储存量
         /// </summary>
-        public decimal? StockMax { get; set; }
+        public string StockMax { get; set; }
         
         /// <summary>
         /// 贮存地点

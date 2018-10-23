@@ -64,6 +64,11 @@ namespace LayUI.Data.EntityModel
         public string CurAddress { get; set; }
         
         /// <summary>
+        /// 持有证件
+        /// </summary>
+        public string Certificates { get; set; }
+        
+        /// <summary>
         /// 创建人工号
         /// </summary>
         public string CreateByEmpCode { get; set; }
