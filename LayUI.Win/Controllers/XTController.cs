@@ -53,7 +53,7 @@ namespace LayUI.Win.Controllers
         /// GUID
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpPost]
         public JsonResult getGUID() 
         {
             return Json(Guid.NewGuid().ToString("N"),JsonRequestBehavior.AllowGet);
@@ -266,11 +266,13 @@ namespace LayUI.Win.Controllers
                                 file.SaveAs(fullPath);
                             }
 
+                            string fileName = file.FileName.Substring(file.FileName.LastIndexOf('/')+1);
+
                             T_XT_Doc_Entity _doc = new T_XT_Doc_Entity
                             {
                                 DocId=Guid.NewGuid().ToString("N"),
                                 StoreDirectoryId = storeDirectoryId,
-                                DocName = file.FileName,
+                                DocName = fileName,
                                 DocType = suffix,
                                 DocSize = file.ContentLength,
                                 SubDirectory = subDirectory,
@@ -580,6 +582,158 @@ namespace LayUI.Win.Controllers
 
         }
         #endregion
+        #endregion
+
+        #endregion
+
+        #region 静态数据
+
+        #region 视图
+
+        #region 静态数据树形
+        /// <summary>
+        /// 静态数据树形
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult XTStaticDatasTree()
+        {
+            return View();
+        }
+        #endregion
+
+        #region 静态数据维护
+        /// <summary>
+        /// 静态数据修改
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult XTStaticDatasEdit()
+        {
+            return View();
+        }
+        #endregion
+
+        #endregion
+
+        #region 操作方法
+
+        #region 静态数伪删除
+        /// <summary>
+        /// 静态数伪删除
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult XTStaticDatasDelete(string delId)
+        {
+            JsonRetModel ret = new JsonRetModel { Ret = false };
+            try
+            {
+                using (TeamWorkDbContext et = new TeamWorkDbContext())
+                {
+
+                    T_XT_Data_Entity _d = et.T_XT_Data_Entity.FirstOrDefault(k => k.DataId == delId);
+                                     
+                    if (_d != null)
+                    {
+                        _d.ModifyTime = DateTime.Now;
+                        _d.IsDeleted = true;
+                        T_XT_Data_Entity _p = et.T_XT_Data_Entity.FirstOrDefault(k => k.DataId == _d.ParentId);
+                        if (_p != null)
+                        {
+                            _p.SubItemAmount = et.T_XT_Data_Entity.Where(k => k.ParentId == _p.DataId && k.IsDeleted == false).Count() - 1;
+                        }
+                        et.SaveChanges();
+                        ret.Ret = true;
+                        ret.Msg = "操作成功！";
+                    }
+                    else
+                    {
+                        ret.Msg = "操作失败，此节点可能已经被删除！";
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                ret.Msg = ex.Message;
+            }
+            return Json(ret);
+        }
+        #endregion
+
+        #region 节点排序
+        /// <summary>
+        /// 静态数据排序
+        /// </summary>
+        /// <param name="DataId">主键</param>
+        /// <param name="SortFlag">排序类型：up、down</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult XTStaticDatasSort(string DataId, string SortFlag)
+        {
+            JsonRetModel ret = new JsonRetModel {Ret=false };
+            try
+            {
+                using (TeamWorkDbContext et = new TeamWorkDbContext())
+                {
+                    T_XT_Data_Entity _d = et.T_XT_Data_Entity.Where(item => item.DataId == DataId).FirstOrDefault();
+                    if (_d != null)
+                    {
+                        var list = et.T_XT_Data_Entity.Where(item => item.ParentId == _d.ParentId && item.IsDeleted == false).OrderBy(k => k.SortIndex);
+                        var _list = list.ToList();
+                        if (_list.Any())
+                        {
+                            if (SortFlag == "up" && _list.FirstOrDefault().DataId == DataId)
+                            {
+                                ret.Msg = "已经是第一个了！";
+                            }
+                            else if (SortFlag == "down" && _list.LastOrDefault().DataId == DataId)
+                            {
+                                ret.Msg = "已经是最后一个了！";
+                            }
+                            else
+                            {
+                                int _index = 0, _target = 0;
+                                foreach (var d in list)
+                                {
+                                    d.SortIndex = _index++;
+                                    if (d.DataId == DataId) { _target = Convert.ToInt32(d.SortIndex); }
+                                }
+
+                                T_XT_Data_Entity dd = list.Skip(_target).FirstOrDefault();
+
+                                switch (SortFlag)
+                                {
+                                    case "up":
+                                        dd.SortIndex--;
+                                        var _prev = list.Skip(_target - 1).FirstOrDefault();
+                                        _prev.SortIndex++;
+                                        break;
+                                    case "down":
+                                        dd.SortIndex++;
+                                        var _next = list.Skip(_target + 1).FirstOrDefault();
+                                        _next.SortIndex--;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                et.SaveChanges();
+                                ret.Ret = true;
+                                ret.Msg = "操作成功！";
+                            }
+                        }
+                        
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ret.Msg = ex.Message;
+            }
+            
+            return Json(ret);
+        }
+        #endregion
+
         #endregion
 
         #endregion

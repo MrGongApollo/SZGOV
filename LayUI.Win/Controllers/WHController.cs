@@ -101,8 +101,13 @@ namespace LayUI.Win.Controllers
         }
         #endregion
 
-        #region 监测管理
+        #region 安全评估
         public ActionResult SafeEvaluationList()
+        {
+            return View();
+        }
+
+        public ActionResult SafeEvaluationEdit()
         {
             return View();
         }
