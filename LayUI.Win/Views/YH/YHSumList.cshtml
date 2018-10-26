@@ -37,9 +37,10 @@
             Win10 = layui.win10,
             $ = layui.jquery,
             tableId = "datagrid",
+            Cm_editMode = $.Cm_Setting.editMode,
             form = layui.form,
             reloadTable = function () {
-                datatable.reload(tableId, { page: { curr: 1 } });
+                datatable.reload(tableId);
             };
 
         datatable.render({
@@ -47,7 +48,7 @@
           , url: "@Url.Content("~/odata/T_YH_SumRecords_Entity")"
           , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
           , id: tableId
-          ,height: 'full-100'
+          , height: 'full-100'
           , where: { "$orderby": "MonthDate desc" }
           , totalRow: true
           , getFilters: function () {
@@ -59,8 +60,8 @@
           , cols: [[
               { type: 'numbers', title: '序号', totalRowText: '合计行' }
             , { field: 'MonthDate', align: "center", width: 120, title: '年度月份' }
-            , { field: 'CommonlyCnt', align: "center", width: 120, title: '一般隐患' }
-            , { field: 'MajorCnt', align: "center", width: 120, title: '重大隐患' }
+            , { field: 'CommonlyCnt', align: "center", width: 110, title: '一般隐患' }
+            , { field: 'MajorCnt', align: "center", width: 110, title: '重大隐患' }
             , {
                 field: '', width: 120, align: "center", title: '自查合计', templet: function (data) {
                     return data.CommonlyCnt + data.MajorCnt;
@@ -72,28 +73,39 @@
                 }
             }
             , {
-                field: '', width: 120, align: "center", title: '隐患总数', templet: function (data) {
+                field: '', width: 110, align: "center", title: '隐患总数', templet: function (data) {
                     return data.CommonlyCnt + data.MajorCnt + data.CheckedCnt;
                 }
             }
             , {
-                field: '', width: 120, align: "center", title: '已整改数', templet: function (data) {
-                    return data.CommonlyCnt + data.MajorCnt + data.CheckedCnt;
+                field: 'CorrectCnt', width: 110, align: "center", title: '已整改数', templet: function (data) {
+                    return data.CorrectCnt;
                 }
             }
             , {
                 field: '', width: 120, align: "center", title: '整改完成率', templet: function (data) {
-                    return "100%";
+                    var total = data.TotalCnt,
+                        percent = (total && (parseFloat((data.CorrectCnt / (total)) * 100).toFixed(2)) || 100);
+                    return "<span class='layui-badge " + (percent == 100 ? "layui-bg-green" : "") + "'>" + parseFloat(percent) + "%</span>";
                 }
             }
             , {
                 field: '', width: 120, align: "center", title: '按期整改率', templet: function (data) {
-                    return "100%";
+                    var total = data.TotalCnt,
+                       percent = (total && (parseFloat((data.ScheduleCnt / (total)) * 100).toFixed(2)) || 100);
+                    return "<span class='layui-badge " + (percent == 100 ? "layui-bg-green" : "") + "'>" + parseFloat(percent) + "%</span>";
                 }
-            }, {
-                field: '', align: "center", title: '操作', templet: function (data) {
+            }
+            , {
+                field: '', align: "center", title: '状态', templet: function (data) {
+                    var _status = data.TotalCnt || data.IsSub;
+                    return "<span class='layui-badge " + (_status && "layui-bg-green'>已" || "'>未") + "上报</span>";
+                }
+            }
+            ,{
+                field: '', width: 150, align: "center", title: '操作', fixed: "right", templet: function (data) {
                     var nowMon = moment(new Date()).format("YYYYMM");
-                    return data.MonthDate == nowMon ? ("<div class='text-center'>" +
+                    return  (data.MonthDate == nowMon && !data.IsSub)? ("<div class='text-center'>" +
                             "<a href='javascript:;' class='margin_lr_5 text-s layui-btn layui-btn-normal layui-btn-xs' lay-event='fnadd'>录入</a>" +
                             "<a href='javascript:;' class='margin_lr_5 text-s layui-btn layui-btn-normal layui-btn-xs' lay-event='fnmodify'>零隐患上报</a>" +
                             "</div>"
@@ -101,7 +113,7 @@
                 }
             }
           ]],
-            page: true
+            page: false
         });
 
         //监听行工具事件
@@ -117,24 +129,22 @@
         var fncontrolMenus = {
             fnadd: function (data) {
                 fncontrolMenus.open({
-                    editMode: "add",
+                    editMode: Cm_editMode.add,
                     pageData: data
                 });
             },
             fnmodify: function (data) {
-                TopWin.layer.msg("上报成功！");
+                $.Cm_Ajax.putAsync(baseConst.odata + "T_YH_SumRecords_Entity('" + data.YHSumId + "')", { IsSub: true }).always(function () {
+                    TopWin.layer.msg("上报成功！");
+                    reloadTable();
+                });
+
             },
             fnview: function (data) {
                 fncontrolMenus.open({
-                    editMode: "view",
+                    editMode: Cm_editMode.view,
                     pageData: data
                 });
-            },
-            fnimport: function () {
-
-            },
-            fnexport: function () {
-
             },
             open: function (options) {
                 $.Cm_Dialog.ShowfrmDialog({

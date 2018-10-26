@@ -93,7 +93,7 @@
       <div class="layui-form-item">
           <div class="layui-col-xs6">
               <div class="layui-inline">
-                  <label class="layui-form-label">隐患级别 <i id="yhExplain" class="text-lg fa fa-question-circle color-blue"></i></label>
+                  <label class="layui-form-label">隐患等级 <i id="yhExplain" class="text-lg fa fa-question-circle color-blue"></i></label>
                   <div class="layui-input-inline">
                       <select name="HiddenLevel" id="HiddenLevel" lay-verify="required">
                           <option value="">请选择</option>
@@ -136,7 +136,7 @@
               <div class="layui-inline">
                   <label class="layui-form-label">整改期限</label>
                   <div class="layui-input-inline">
-                      <input type="text" id="TimeLimit" autocomplete="off" name="TimeLimit" class="layui-input laydate" lay-verify="required"/>
+                      <input type="text" id="TimeLimit" autocomplete="off" name="TimeLimit" class="layui-input laydate" lay-verify="required|geCkTime"/>
                   </div>
               </div>
           </div>
@@ -172,7 +172,7 @@
               <div class="layui-inline">
                   <label class="layui-form-label">整改结果</label>
                   <div class="layui-input-inline">
-                      <select name="Result" id="Result" lay-verify="required">
+                      <select name="Result" id="Result" lay-verify="required" lay-filter="Result">
                           <option value="">请选择</option>
                           <option value="已整改">已整改</option>
                           <option value="未整改">未整改</option>
@@ -182,8 +182,8 @@
           </div>
           <div class="layui-col-xs6">
               <div class="layui-inline">
-                  <label class="layui-form-label">完成日期</label>
-                  <div class="layui-input-inline">
+                  <label class="layui-form-label"><i class="fa fa-asterisk text-s color-lightred hide" id="verifyCompleteTime"></i>完成日期</label>
+                  <div class="layui-input-inline" lay-filter="CompleteTime">
                       <input type="text" id="CompleteTime" autocomplete="off" name="CompleteTime" class="layui-input laydate">
                   </div>
               </div>
@@ -199,7 +199,7 @@
 
     </fieldset>
   
-  <fieldset class="layui-elem-field site-demo-button padding_lr_5">
+  <fieldset class="layui-elem-field site-demo-button padding_lr_5 hide" id="ValidateBox">
         <legend>验证信息</legend>
       <div class="layui-form-item">
           <div class="layui-col-xs6">
@@ -224,7 +224,7 @@
               <div class="layui-inline">
                   <label class="layui-form-label">验证日期</label>
                   <div class="layui-input-inline">
-                      <input type="text" autocomplete="off" name="ValidateDate" class="layui-input laydate">
+                      <input type="text" autocomplete="off" name="ValidateDate" class="layui-input laydate" lay-verify="geCKC" />
                   </div>
               </div>
               <div class="layui-inline">
@@ -278,15 +278,6 @@
             //必填项 加*
             $("[lay-verify='required']").parent().prev().prepend($("<i>", { "class": "fa fa-asterisk text-s color-lightred" }));
 
-            //常规用法
-            lay('.laydate').each(function () {
-                laydate.render({
-                    elem: this
-                  , trigger: 'focus'
-                  , theme: '#1E9FFF'
-                });
-            });
-
             
             util.fixbar();//右下角工具栏
 
@@ -324,11 +315,12 @@
                         LoadTypeS((YHTypes[_pageData.HiddenTypeL] || []), _pageData.HiddenTypeS)
                     }
 
-                    $("[name='CheckTime']").val(_pageData.CheckTime && $.Cm_DateTime.dateFormat(_pageData.CheckTime, "yyyy-MM-dd") || "")
-                    $("[name='ValidateDate']").val(_pageData.ValidateDate && $.Cm_DateTime.dateFormat(_pageData.ValidateDate, "yyyy-MM-dd") || "")
-                    $("[name='TimeLimit']").val(_pageData.TimeLimit && $.Cm_DateTime.dateFormat(_pageData.TimeLimit, "yyyy-MM-dd") || "")
-                    $("[name='CompleteTime']").val(_pageData.CompleteTime && $.Cm_DateTime.dateFormat(_pageData.CompleteTime, "yyyy-MM-dd") || "")
+                    $("[name='CheckTime']").val($.Cm_DateTime.dateMomentFormat(_pageData.CheckTime, "YYYY-MM-DD") || "");
+                    $("[name='ValidateDate']").val($.Cm_DateTime.dateMomentFormat(_pageData.ValidateDate, "YYYY-MM-DD") || "");
+                    $("[name='TimeLimit']").val($.Cm_DateTime.dateMomentFormat(_pageData.TimeLimit, "YYYY-MM-DD")|| "");
+                    $("[name='CompleteTime']").val($.Cm_DateTime.dateMomentFormat(_pageData.CompleteTime, "YYYY-MM-DD")|| "");
 
+                    $("#ValidateBox")[_pageData.Result=="已整改"? "removeClass" : "addClass"]("hide");
 
                     if (IsReadOnly) {
                         $(":input:not(#btnBack)").attr("disabled", true);
@@ -340,22 +332,74 @@
                     break;
             }
 
+            if (!IsReadOnly)
+            {
+                //常规用法
+                lay('.laydate').each(function () {
+                    laydate.render({
+                        elem: this
+                      , trigger: 'click'
+                      , theme: '#1E9FFF'
+                    });
+                });
+            }
+
+
+            //加载图片预览+图片上传控件
             $(".layui-upload").each(function (_i, _t) {
                 $.Cm_Dialog.showImgScan({
-                    title:$(_t).attr("data-title"),
+                    title: $(_t).attr("data-title"),
                     container: _t,
-                    IsReadOnly:IsReadOnly,
+                    IsReadOnly: IsReadOnly,
                     setting: {
                         data: {
                             RelevanceId: _HiddenDangerId,
                             FromTableName: "T_YH_HiddenDanger",
                             FromModuleName: $(_t).attr("data-mdname")
                         }
-                 }
+                    }
+                });
             });
-        });
+
+            //定义自定义表单提交规则
+            var myVerify =
+            {
+                //整改期限≥检查日期
+                geCkTime: function (value, item)//value：表单的值、item：表单的DOM对象
+                { 
+                    var ckTime = $("#CheckTime").val();
+                    if ((ckTime && value)&&(moment(value) - moment(ckTime)<0))
+                    {
+                        var _dic = { "CompleteTime": "完成日期", "TimeLimit": "整改期限" };
+                        
+                        return _dic[$(item).attr("id")]+"不能早于检查日期";
+                    }
+                },
+                geCKC: function (value, item)//value：表单的值、item：表单的DOM对象
+                {
+                    var ckTime = $("#CheckTime").val(),
+                        cpTime = $("#CompleteTime").val();
+                    if (ckTime && cpTime && value)
+                    {
+                        if (moment(value) - moment(ckTime) < 0)
+                        {
+                            return "验证日期不能早于检查日期";
+                        }
+
+                        if (moment(value) - moment(cpTime) < 0)
+                        {
+                            return "验证日期不能早于完成日期";
+                        }
+                    }
+                }
+            };
+
+            ///初始化  
+            $("#CompleteTime").attr("lay-verify", $("#Result").val() == "已整改" && "required|geCkTime" || "");
+            $("#verifyCompleteTime")[$("#Result").val() == "已整改" ? "removeClass" : "addClass"]("hide");
 
             form = layui.form;
+            form.verify(myVerify);
             form.render();
 
             //隐患类型切换
@@ -366,6 +410,22 @@
                 form.render('select');
             });
             
+
+            form.on('select(Result)', function (data) {
+                var _result=data.value == "已整改";
+                $("#CompleteTime").attr("lay-verify", _result && "required|geCkTime" || "");
+                $("#verifyCompleteTime")[_result ? "removeClass" : "addClass"]("hide");
+                form.render(null, "CompleteTime");
+                $("#ValidateBox")[_result ? "removeClass" : "addClass"]("hide");
+                if (_result)
+                {
+                    $('html,body').animate({
+                        scrollTop:99999
+                    }, 200);
+                }
+            });
+
+
             var tipIndex;
             $("#yhExplain").hover(function () {
                 var $this=$(this)
@@ -388,22 +448,18 @@
                 $.extend(saveData, data.field);
                 if (IsEdit) {
                     _url += "('" + _HiddenDangerId + "')";
-                    saveData.CreateTime = saveData.CreateTime&&moment(saveData.CreateTime)||null;
                 }
                 else {
-                    $.extend(saveData, {
-                        HiddenDangerId: _HiddenDangerId
-                        , IsDeleted: false
-                    });
+                    $.extend(saveData, {HiddenDangerId: _HiddenDangerId});
                 }
 
-                saveData.CheckTime = saveData.CheckTime&&moment(saveData.CheckTime)||null;
-                saveData.ValidateDate = saveData.ValidateDate && moment(saveData.ValidateDate) || null;
-                saveData.TimeLimit = saveData.TimeLimit && moment(saveData.TimeLimit) || null;
-                saveData.CompleteTime = saveData.CompleteTime && moment(saveData.CompleteTime) || null;
-
+                //saveData.CheckTime = saveData.CheckTime|| null;
+                saveData.ValidateDate = saveData.ValidateDate || null;
+                //saveData.TimeLimit = saveData.TimeLimit || null;
+                saveData.CompleteTime = saveData.CompleteTime || null;
 
                 ($.Cm_Ajax)[saveMethed](_url, saveData).done(function () {
+                    $.Cm_Ajax.post("@Url.Content("~/YH/YHSumUpdate")", { yhId: _HiddenDangerId });
                    TopWin.layer.alert("操作成功", function (index) {
                         TopWin.layer.close(index);
                         TopWin.layer.close(_self);

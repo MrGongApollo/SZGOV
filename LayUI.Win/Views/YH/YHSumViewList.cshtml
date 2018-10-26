@@ -4,57 +4,92 @@
 }
 
 <style>
+    .layui-inline > .layui-form-label { width: 90px; }
+    .layui-inline > .layui-form-label + .layui-input-block { margin-left: 120px; }
     .layui-table-cell{height:auto;line-height:1.5;}
-    .searchbox .input-md{width:100px;}
 </style>
 
 <div class="content-padding">
     <form class="layui-form lb-p-m layui-panel" action="">
-        <div class="layui-form-item searchbox">
-                <div class="layui-inline">
-                    <label class=" layui-form-label">
-                        检查时间：
-                    </label>
-                    <div class="layui-input-block">
-                        <div class="layui-input-inline input-md">
-                            <input type="text" id="CheckTimeS" lay-verify="date"  autocomplete="off" class="layui-input layui-disabled" disabled>
-                        </div>
-                        <div class="layui-form-mid">-</div>
-                        <div class="layui-input-inline input-md">
-                            <input type="text" id="CheckTimeE" lay-verify="date"  autocomplete="off" class="layui-input layui-disabled" disabled/>
+        <table>
+            <tr>
+                <td>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">
+                            检查时间起：
+                        </label>
+                        <div class="layui-input-block">
+                            <div class="layui-input-inline input-md">
+                                <input type="text" id="CheckTimeS" lay-verify="date" autocomplete="off" class="layui-input layui-disabled" disabled>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="layui-inline">
+                </td>
+                <td>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">隐患等级：</label>
+                        <div class="layui-input-block input-md">
+                            <select name="txtHiddenLevel">
+                                <option value="">全部</option>
+                                <option value="一般隐患">一般隐患</option>
+                                <option value="重大隐患">重大隐患</option>
+                            </select>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">是否超期：</label>
+                        <div class="layui-input-block">
+                                <input type="radio" name="rdIsOver" value="All" title="全部" checked="">
+                                <input type="radio" name="rdIsOver" value="Y" title="是">
+                                <input type="radio" name="rdIsOver" value="N" title="否">
+                        </div>
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+            <tr style="height:5px;"></tr>
+            <tr>
+                <td>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">
+                            检查时间止：
+                        </label>
+                        <div class="layui-input-block">
+                            <div class="layui-input-inline input-md">
+                                <input type="text" id="CheckTimeE" lay-verify="date" autocomplete="off" class="layui-input layui-disabled" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">整改状态：</label>
+                        <div class="layui-input-block input-md">
+                            <select name="txtResult">
+                                <option value="">全部</option>
+                                <option value="已整改">已整改</option>
+                                <option value="未整改">未整改</option>
+                            </select>
+                        </div>
+                    </div>
+                </td>                
+                <td>
+                    <div class="layui-inline">
                         <label class="layui-form-label">隐患编号：</label>
-                        <div class="layui-input-inline input-md">
+                        <div class="layui-input-block">
                             <input id="SerialNo" type="text" name="SerialNo" autocomplete="off" class="layui-input">
                         </div>
                     </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">整改状态：</label>
-                <div class="layui-input-block input-md">
-                    <select name="txtResult">
-                        <option value="">全部</option>
-                        <option value="已整改">已整改</option>
-                        <option value="未整改">未整改</option>
-                    </select>
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">隐患等级：</label>
-                <div class="layui-input-block input-md">
-                    <select name="txtHiddenLevel">
-                        <option value="">全部</option>
-                        <option value="一般隐患">一般隐患</option>
-                        <option value="重大隐患">重大隐患</option>
-                    </select>
-                </div>
-            </div>
-                <div class="layui-inline">
-                    <a class="layui-btn layui-btn-normal" id="btnSearch"><i class="fa fa-search"></i>查询</a>
-                </div>
-        </div>
+                </td>
+                <td>
+                    <div class="layui-inline padding_lr_5">
+                        <a class="layui-btn layui-btn-normal" id="btnSearch"><i class="fa fa-search"></i>查询</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
     </form>
     <hr/>
         <div class="layui-btn-group hide" id="controlMenus">
@@ -69,10 +104,11 @@
 <script>
     pageLoad = function (postData)
     {
-        layui.use(['datatable', "form"], function () {
+        layui.use(['datatable', "form", "layer"], function () {
             var datatable = layui.datatable,
                $ = layui.jquery,
                form = layui.form,
+               layer=layui.layer,
                tableId = "datagrid",
                IsReadOnly=postData.editMode == $.Cm_Setting.editMode.view,
                reloadTable = function () {
