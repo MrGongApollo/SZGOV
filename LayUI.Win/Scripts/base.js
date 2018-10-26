@@ -28,10 +28,10 @@ var TopWin = window.top,
         },
         //编辑状态
         editMode: {
-            "view":0,   //默认无
-            "add": 4,    //新增
-            "edit": 16,   //修改
-            "delete": 8  //删除
+            "view": "view",   //默认无
+            "add": "add",    //新增
+            "edit": "edit",   //修改
+            "delete": "delete"  //删除
         },
         //odata操作符
         odataOper: {
@@ -132,7 +132,7 @@ var TopWin = window.top,
             _date.setMonth(mm + months);
             return this.dateFormat(_date, format || "yyyy-MM-dd");
         },
-        //日期格式化，但是安保项目 时间存在问题， 格式化后的时间 会相差8小时
+        //日期格式化
         dateFormat: function (dataValue, fmtOpts) {
             //格式化选项匹配正则
             var formatOptions = {
@@ -235,19 +235,19 @@ var TopWin = window.top,
             }
             else { return dataValue; }
         },
-        //将时间格式化成  yyyy-MM-dd     安保项目 时间存在问题， 该方法会更正误差的8小时
+        //将时间格式化成  yyyy-MM-dd     
         dateFormatAnbao: function (dataValue) {
             if (!dataValue) return "";
             var that = this;
             return that.dateFormat(new Date(that.dateFormathmsAnbao(dataValue).replace(/\-/g, "/")), "yyyy-MM-dd"); //调用了dateFormathmsAnbao该方法会更正误差的8小时
         },
-        //将时间格式化成  yyyy-MM-dd HH:mm     安保项目 时间存在问题， 该方法会将转换后的时间+8小时
+        //将时间格式化成  yyyy-MM-dd HH:mm     
         dateFormathmAnbao: function (dataValue) {
             if (!dataValue) { return ""; }
             var that = this;
             return that.dateFormat(new Date(that.dateFormathmsAnbao(dataValue).replace(/\-/g, "/")), "yyyy-MM-dd HH:mm"); //调用了dateFormathmsAnbao，该方法会更正误差的8小时
         },
-        //将时间格式化成  yyyy-MM-dd HH:mm:ss    安保项目 时间存在问题， 该方法会将转换后的时间+8小时
+        //将时间格式化成  yyyy-MM-dd HH:mm:ss    
         dateFormathmsAnbao: function (dataValue) {
             if (!dataValue) { return ""; }
             var RegDate = {
@@ -266,6 +266,27 @@ var TopWin = window.top,
                 return dataValue;
             }
             return that.dateFormat(_dataValue, "yyyy-MM-dd HH:mm:ss"); //该方法会更正误差的8小时
+        },
+        //moment格式化,格式化 使用odata查询获得的日期 
+        dateMomentFormat: function (dataValue, format)
+        {
+            var defaults = {
+                dataValue: null,
+                format: "YYYY-MM-DD",//格式化日期 YYYY MM DD HH mm ss
+                localOffset:0  //时区,使用odata查询获得的日期
+            };
+
+            if (typeof dataValue != "object")
+            {
+                defaults.dataValue = dataValue;
+                defaults.format = format || defaults.format;
+            }
+            else
+            {
+                $.extend(defaults, dataValue);
+            }
+
+            return dataValue && moment(dataValue).utcOffset(defaults.localOffset).format(defaults.format);
         },
         //时间差
         dateDiff: function (dtb, dte) {
@@ -497,8 +518,11 @@ var TopWin = window.top,
         //获取guid
         getGuid: function () {
             var ret = null;
-            $.Cm_Ajax.get(baseConst.RootUrl+"XT/GetGUID").done(function (xhr) {
+            $.Cm_Ajax.post(baseConst.RootUrl+"XT/GetGUID").done(function (xhr) {
                 ret = xhr;
+            }).fail(function ()
+            {
+                ret = Math.floor(Math.random() * 1000000000000) + "";
             });
             return ret;
         },
@@ -579,15 +603,10 @@ var TopWin = window.top,
                         _layer.title(_frm.document.title, _index);
                     }
                 },
-                close: function (index) {
-
-                },
-                end: function (index)
-                {
-                    if (_frm && typeof _frm.postBack == "function" && options.callBack)
-                    {
-                            var callBackData = _frm.postBack();
-                            options.callBack(callBackData);
+                closing: function () {
+                    if (_frm && typeof _frm.postBack == "function" && options.callBack) {
+                        var callBackData = _frm.postBack();
+                        options.callBack(callBackData);
                     }
                 }
             }, _layer = options.layer||TopWin.layer;
@@ -641,17 +660,13 @@ var TopWin = window.top,
                                     _frm.pageLoad(defaults.setting);
                                 }
                             },
-                            close: function (index) {
-                                
-                            },
-                            end: function (index) {
+                            //关闭前事件
+                            closing: function (index) {
                                 if (_frm) {
-                                    if (typeof _frm.postBack == "function" && defaults.callBack)
-                                    {
+                                    if (typeof _frm.postBack == "function" && defaults.callBack) {
                                         var callBackData = _frm.postBack();
 
-                                        if (callBackData && callBackData.length > 0)
-                                        {
+                                        if (callBackData && callBackData.length > 0) {
 
                                             $.each(callBackData, function (_i, _t) {
 
@@ -664,34 +679,34 @@ var TopWin = window.top,
                                                     size = Math.round((_t.Size / 1024) * Math.pow(10, 2)) / Math.pow(10, 2);
                                                     size += " KB";
                                                 }
-                                                var $op_td = $("<td>").append($("<a>", { "href": (defaults.RootUrl + "XT/FileDownload?docId="+_t.DocId), "title": "下载", "class": "layui-btn layui-btn-xs layui-btn-normal" })
+                                                var $op_td = $("<td>", { "class": "text-center" }).append($("<a>", { "href": (defaults.RootUrl + "XT/FileDownload?docId=" + _t.DocId), "title": "下载", "class": "layui-btn layui-btn-xs layui-btn-normal" })
                                                                       .append($("<i>", { "class": "fa fa-download" }))).append($("<a>", { "href": "javascript:;", "title": "删除", "class": "layui-btn layui-btn-xs layui-btn-danger" }).click(function () {
-                                                    var $that = $(this);
-                                                    TopWin.layer.confirm('确认删除选择文件？', {
-                                                        btn: ['是', '否'] //按钮
-                                                    }, function () {
-                                                        var _index = TopWin.layer.load(0, { shade: false });
-                                                        $.Cm_Ajax.postAsync(defaults.RootUrl + "XT/FilesDelete", { docIds: [_t.DocId] }).done(function (xhr) {
-                                                            if (xhr.Ret) {
-                                                                TopWin.layer.msg("删除成功");
-                                                                $that.closest("tr").remove();
-                                                            }
-                                                            else {
-                                                                TopWin.layer.alert(xhr.Msg, {
-                                                                    icon: 2,
-                                                                    skin: 'layer-ext-moon'
-                                                                });
-                                                            }
-                                                        }).always(function () {
-                                                            TopWin.layer.close(_index);
-                                                        });
-                                                    }, function () { });
-                                                }).append($("<i>", {"class":"fa fa-remove"})));
+                                                                          var $that = $(this);
+                                                                          TopWin.layer.confirm('确认删除选择文件？', {
+                                                                              btn: ['是', '否'] //按钮
+                                                                          }, function () {
+                                                                              var _index = TopWin.layer.load(0, { shade: false });
+                                                                              $.Cm_Ajax.postAsync(defaults.RootUrl + "XT/FilesDelete", { docIds: [_t.DocId] }).done(function (xhr) {
+                                                                                  if (xhr.Ret) {
+                                                                                      TopWin.layer.msg("删除成功");
+                                                                                      $that.closest("tr").remove();
+                                                                                  }
+                                                                                  else {
+                                                                                      TopWin.layer.alert(xhr.Msg, {
+                                                                                          icon: 2,
+                                                                                          skin: 'layer-ext-moon'
+                                                                                      });
+                                                                                  }
+                                                                              }).always(function () {
+                                                                                  TopWin.layer.close(_index);
+                                                                              });
+                                                                          }, function () { });
+                                                                      }).append($("<i>", { "class": "fa fa-remove" })));
 
                                                 $tbody.append($(['<tr>'
                                                 , '<td><div title=\"' + _t.DocName + '\">' + $.Cm_Common.Substr(_t.DocName, 30, "...") + '</div></td>'
                                                 , '<td class=\"text-center\">' + size + '</td>'
-                                                , '<td class=\"text-center\">' + $.Cm_DateTime.dateFormat(_t.CreateTime, "yyyy-MM-dd HH:mm:ss") + '</td>'
+                                                , '<td class=\"text-center\">' + (_t.CreateTime && moment(_t.CreateTime).format("YYYY-MM-DD HH:mm:ss") || "") + '</td>'
                                               , '</tr>'].join('')).append($op_td));
                                             });
                                         }
@@ -699,8 +714,7 @@ var TopWin = window.top,
                                         defaults.callBack(callBackData);
                                     }
                                 }
-                            
-                        }
+                            }
                     });
                     }),
                     $list = $("<div>", {
@@ -768,7 +782,7 @@ var TopWin = window.top,
                         $tbody.append($(['<tr>'
                         , '<td><div title=\"' + _t.DocName + '\">' + $.Cm_Common.Substr(_t.DocName, 30, "...") + '</div></td>'
                         , '<td class=\"text-center\">' + size + '</td>'
-                        , '<td class=\"text-center\">' + $.Cm_DateTime.dateFormat(_t.CreateTime, "yyyy-MM-dd HH:mm:ss") + '</td>'
+                        , '<td class=\"text-center\">' + (_t.CreateTime && moment(_t.CreateTime).utcOffset(0).format("YYYY-MM-DD HH:mm:ss") || "") + '</td>'
                         , '</tr>'].join('')).append($op_td));
 
                     });
@@ -851,10 +865,7 @@ var TopWin = window.top,
                                     _frm.pageLoad(defaults.setting);
                                 }
                             },
-                            close: function (index) {
-
-                            },
-                            end: function (index) {
+                            closing: function (index) {
                                 if (_frm) {
                                     if (typeof _frm.postBack == "function" && defaults.callBack) {
                                         var callBackData = _frm.postBack();
@@ -911,7 +922,8 @@ var TopWin = window.top,
                                        $.Cm_Ajax.postAsync(defaults.RootUrl + "XT/FilesDelete", { docIds: [_t.DocId] }).done(function (xhr) {
                                            if (xhr.Ret) {
                                                TopWin.layer.msg("删除成功");
-                                               $that.closest("li").remove();
+                                               $Imglist.remove();
+                                               loadImglist();
                                            }
                                            else {
                                                TopWin.layer.alert(xhr.Msg, {
