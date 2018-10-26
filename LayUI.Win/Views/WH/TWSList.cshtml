@@ -32,7 +32,8 @@
               return filters;
           }
           , cols: [[
-              { type: 'checkbox' }
+              { type: 'numbers', title: '序号' }
+            , { type: 'checkbox' }
             , { field: 'Year', align: "center", width: 120, title: '年度' }
             , { field: 'Month', align: "center", width: 120, title: '月份' }
             , { field: 'IsotopeName', align: "center", width: 120, title: '核素名称' }
@@ -100,7 +101,7 @@
             fnexport: function () {
 
             },
-            open: function (options)
+            open: function (options,fnBack)
             {
                 TopWin.layer.open({
                     type: 2,

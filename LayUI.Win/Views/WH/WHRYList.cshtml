@@ -13,6 +13,7 @@
             layer = layui.layer,
             Win10 = layui.win10,
             $ = layui.jquery,
+            Cm_editMode=$.Cm_Setting.editMode,
             tableId="datagrid",
             reloadTable = function () {
                 datatable.reload(tableId, { page: { curr: 1 } });
@@ -31,7 +32,8 @@
               return filters;
           }
           , cols: [[
-              { type: 'checkbox' }
+              { type: 'numbers', title: '序号' }
+            , { type: 'checkbox' }
             , { field: 'Post', width: 120, align: "center", title: '岗位' }
             , { field: 'EmpName', width: 120, align: "center", title: '姓名' }
             , { field: 'IdcardNo', width: 180, align: "center", title: '身份证号' }
@@ -47,23 +49,23 @@
         var fncontrolMenus = {
             fnadd: function () {
                 fncontrolMenus.open({
-                    editMode: "add",
+                    editMode: Cm_editMode.add,
                     pageData: null
                 });
             },
-            fncopy: function () {
-                var datas = datatable.checkStatus(tableId).data;
-                if (datas.length != 1) { TopWin.layer.msg((datas.length ? "只能" : "至少") + "选择一行数据！"); return; }
-                fncontrolMenus.open({
-                    editMode: "add",
-                    pageData: datas[0]
-                });
-            },
+            //fncopy: function () {
+            //    var datas = datatable.checkStatus(tableId).data;
+            //    if (datas.length != 1) { TopWin.layer.msg((datas.length ? "只能" : "至少") + "选择一行数据！"); return; }
+            //    fncontrolMenus.open({
+            //        editMode: "add",
+            //        pageData: datas[0]
+            //    });
+            //},
             fnmodify: function () {
                 var datas = datatable.checkStatus(tableId).data;
                 if (datas.length != 1) { TopWin.layer.msg((datas.length ? "只能" : "至少") + "选择一行数据！"); return; }
                 fncontrolMenus.open({
-                    editMode: "edit",
+                    editMode: Cm_editMode.edit,
                     pageData: datas[0]
                 });
             },
@@ -87,7 +89,7 @@
                 var datas = datatable.checkStatus(tableId).data;
                 if (datas.length != 1) { TopWin.layer.msg((datas.length ? "只能" : "至少") + "选择一行数据！"); return; }
                 fncontrolMenus.open({
-                    editMode: "view",
+                    editMode: Cm_editMode.view,
                     pageData: datas[0]
                 });
             },
